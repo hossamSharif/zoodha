@@ -13,7 +13,7 @@
 
 <ion-content> 
    
-  <ion-grid class="ion-no-padding">
+  <ion-grid class="ion-no-padding" >
     <ion-row> 
       <ion-col size="12" class="head2 ion-text-center ">  
         <svg class="logoSvg" width="157" height="75" viewBox="0 0 157 75" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -42,7 +42,7 @@
 
 
   
-  <ion-grid class="custGrid ">
+  <ion-grid class="custGrid " *ngIf="mode == 'default'">
     <ion-row class="ion-justify-content-center">
       <ion-col size="10" >
        <ion-card class="bordernon w100" >
@@ -145,5 +145,53 @@
       </ion-row>
   </ion-grid>
  
+
+  <ion-grid class="custGrid " *ngIf="mode == 'phone'">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="10" >
+       <ion-card class="bordernon w100" >
+        <ion-card-header>
+          <ion-card-title>
+           <h3 class="custH"><b>Login</b></h3> 
+          </ion-card-title>
+        </ion-card-header>
+         <ion-grid> 
+          <ion-row class="ion-margin">
+            <ion-list class="w100">
+              <ion-item >
+                <ion-label position="floating">Phone</ion-label> 
+                <ion-input [(ngModel)]="phone"></ion-input>
+                <!-- <ion-icon name="eye-outline"></ion-icon> -->
+                <ion-icon slot="end" name="checkmark-outline" ></ion-icon>
+              </ion-item>
+             
+              <ion-row class="ion-justify-content-end">
+                <ion-button fill="clear" (click)="froget()">
+                  <ion-label><ion-text color="primary"><b>Forget?</b></ion-text></ion-label>
+                </ion-button>
+              </ion-row> 
+            </ion-list>
+          </ion-row> 
+          <ion-row class="ion-margin">
+            <ion-col size="12">
+              <ion-item color="primary" button (click)="login()">
+                <ion-label class="ion-text-center">LOGIN</ion-label>
+                
+              </ion-item>
+            </ion-col>
+          </ion-row> 
+         </ion-grid> 
+        </ion-card>
+      </ion-col>
+    </ion-row>
+      <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-button fill="clear" (click)="signUp()">
+            <ion-label color="medium">Don't have account? <ion-text color="dark"><strong>Sign Up</strong> </ion-text></ion-label>
+  
+          </ion-button>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
 </ion-content>
  

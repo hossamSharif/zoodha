@@ -10,24 +10,121 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
-  <ion-grid class="ion-no-margin  ion-no-padding"  dir="rtl" > 
-    <ion-row class="ion-no-margin  ion-no-padding"> 
-      <ion-col size="12" class="ion-no-margin"> 
-        <img class="radus5 img" src="../../assets/imgs/mars.jpg"/>   
-      </ion-col>  
-      <ion-col size="12"  class="borderbt">
+<ion-content> 
+  <ion-grid class="ion-no-margin  ion-no-padding"  dir="rtl" >  
+    <!--  -->
+    <!-- -->
+    <div class="bidAnim " *ngIf="showMe == true">
+      <div class="childDiv animate__animated animate__fadeOutUp animate__delay-0s">
+        <img class="bidImg" src="../../assets/imgs/bidprimary.png"/> 
+        <h2 class="bidH">{{bidPrice}}</h2>
+      </div>
+    </div>
+
+    <ion-row class="ion-no-margin  ion-no-padding po" *ngIf="mzd"> 
+      <ion-col size="12" class="ion-no-margin imgContainer"> 
+        <img class="radus5 custImg" [src]="mzd['imgs'][0]"/>  
+      </ion-col> 
+ 
+      <div class="fixGadegt">
+        <ion-grid class="ion-no-margin pd10 " dir="rtl">
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <ion-card-content class="ion-no-padding pd10">
+                <ion-text class="priceText"> {{+mzd['productPrice'] - (0.3 * +mzd['productPrice'])}} </ion-text><br>
+                <!-- <ion-text  class="white"> ج.س</ion-text> -->
+                <ion-text class="white"><b> السعر الإفتتاحي</b> </ion-text>
+              </ion-card-content>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="ion-no-margin  ion-no-padding " dir="rtl">
+          <!-- <ion-row class="ion-no-margin  ion-no-padding"> 
+                  </ion-row> -->
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <ion-card-content class="ion-no-padding pd10" [ngClass]="{'ion-no-padding pd10 animate__animated animate__zoomIn':showMe == true , 'ion-no-padding pd10':showMe == false}">
+                <ion-text class="priceText"> {{highestBidd}} </ion-text><br>
+                <!-- <ion-text  class="white"> ج.س</ion-text>  -->
+                <ion-text class="white"><b>أعلي مزايدة</b> </ion-text>
+              </ion-card-content>
+            </ion-col>
+          </ion-row> 
+        </ion-grid>
+      
+        <ion-grid class="ion-no-margin  ion-no-padding " dir="rtl">
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <ion-card-content class="ion-no-padding pd10">
+                <ion-text class="priceText"> {{lastBidd4U}} </ion-text> <br>
+                <!-- <ion-text  class="white"> ج.س</ion-text>  -->
+                <ion-text class="white"><b>اخر مزايدة لك</b> </ion-text>
+              </ion-card-content>
+            </ion-col>
+          </ion-row> 
+        </ion-grid>
+      
+        <!-- <ion-grid class="ion-no-margin  ion-no-padding " dir="rtl">
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <ion-card-content class="ion-no-padding pd10">
+                <ion-text class="priceText"> 3 </ion-text>
+                <ion-text class="white"> من </ion-text>
+                <ion-text class="priceText"> 3</ion-text><br>
+                <ion-text class="white"><b>مزايداتك المتبقية</b> </ion-text>
+              </ion-card-content>
+            </ion-col>
+          </ion-row>
+        </ion-grid> -->
+      </div> 
+    </ion-row> 
+
+
+
+    <ion-row class="ion-no-padding ion-margin-top" *ngIf="mzd"> 
+      <ion-col size="12" class="colSpic" *ngIf="mzd['end']">
+        <!-- timeLine  -->
+        <ion-card class="cardStatus2" *ngIf="timeLeft | async as tm"> 
+          <ion-grid>
+            <ion-row> 
+              <ion-col class="ion-text-center">
+                <ion-card-content  class="ion-no-padding ion-padding-top"> 
+                  <ion-text class="priceText" >{{tm['da'] }}  </ion-text> <br>
+                  <ion-text class="white"><b> يوم</b> </ion-text>
+                </ion-card-content>
+              </ion-col>
+              <ion-col class="ion-text-center">
+                <ion-card-content  class="ion-no-padding ion-padding-top"> 
+                  <ion-text class="priceText"> {{tm['hr'] }} </ion-text> <br>
+                  <ion-text class="white"><b> ساعة </b> </ion-text>
+                </ion-card-content>
+              </ion-col>
+              <ion-col class="ion-text-center">
+                <ion-card-content  class="ion-no-padding ion-padding-top"> 
+                  <ion-text class="priceText">  {{tm['mn'] }} </ion-text> <br>
+                  <ion-text class="white"><b> دقيقة </b> </ion-text>
+                </ion-card-content>
+              </ion-col>
+              <ion-col class="ion-text-center">
+                <ion-card-content  class="ion-no-padding ion-padding-top"> 
+                  <ion-text class="priceText"> {{tm['sc'] }}  </ion-text> <br>
+                  <ion-text class="white"><b> ثانية </b> </ion-text>
+                </ion-card-content>
+              </ion-col> 
+            </ion-row> 
+          </ion-grid>
+        </ion-card>  
+      </ion-col>
+      <!-- <ion-col size="12"  class="borderbt">
         <ion-card-header> 
           <ion-card-title>مارسيدس مايباخ 2021</ion-card-title>
         </ion-card-header> 
         <ion-card-content>
           تعلن شركة زد للمزادات العقارية عن البيع بالمزاد العلني لمجموعة من العقارات المتنوعة تحت إشراف مركز الاسناد والتصفية «إنفاذ» وبقرار من محكمة التنفيذ
         </ion-card-content>
-      </ion-col> 
-    </ion-row> 
-
-    <ion-row class="ion-no-padding"> 
-      <ion-card class="w100"> 
+      </ion-col>  -->
+      <!-- <ion-card class="w100"> 
         <ion-card-header>  
             <ion-card-title>
               <ion-icon name="radio-outline" color="primary"></ion-icon> 
@@ -40,14 +137,14 @@
                 <ion-card-content  class="ion-no-padding ion-padding-top"> 
                     <ion-text color="primary"><b>أعلي مزايدة</b> </ion-text><br> 
                     <ion-text> 3000 </ion-text>
-                    <ion-text> ر.س </ion-text> 
+                    <ion-text> ج.س</ion-text> 
                   </ion-card-content>
               </ion-col>
               <ion-col class="ion-text-center">
                 <ion-card-content  class="ion-no-padding ion-padding-top"> 
                     <ion-text color="primary"><b>اخر مزايدة لك</b> </ion-text><br> 
                     <ion-text> 0 </ion-text>
-                    <ion-text> ر.س </ion-text> 
+                    <ion-text> ج.س</ion-text> 
                   </ion-card-content>
               </ion-col>
               <ion-col class="ion-text-center">
@@ -58,23 +155,93 @@
                        <ion-text>  3</ion-text>  
                 </ion-card-content>
               </ion-col>
-
-                <!-- <ion-col class="ion-text-center totcol">
-                <ion-card-content> 
-                  <ion-text color="primary"><b>الحالة </b>  </ion-text><br>
-                  <ion-text>   مشارك </ion-text>
-                  <ion-text>   ر.س </ion-text> 
-                </ion-card-content>
-              </ion-col>   -->
             </ion-row>
           </ion-grid> 
-      </ion-card> 
+      </ion-card>  -->
+    
 
-      <ion-card class="w100"> 
+      <!-- <ion-card class="w100 ">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="bookmark-outline" color="primary"></ion-icon> 
+          المشاركين 
+          </ion-card-title> 
+        </ion-card-header>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" >
+              <ion-item *ngFor="let per of mazad.users"> 
+                <ion-avatar>
+                  <ion-icon name="person" slot="start"></ion-icon>
+                </ion-avatar>
+                <ion-label>{{per.firstName}}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card>  -->
+
+   <!-- history log  -->
+   <ion-card class="w100">
+    <ion-card-header>  
+      <ion-card-title>
+        <ion-icon name="time-outline" color="primary"></ion-icon>
+        المزايدات 
+        <!-- <h2 *ngIf="time$ | async as time" >
+          {{time | date:'h:mm:ss'}}
+        </h2>     -->
+      </ion-card-title>
+    </ion-card-header>
+    <ion-list *ngIf="usersLogs">
+      <ion-item *ngFor="let log of usersLogs">
+        <ion-avatar >
+          <ion-img src="../../assets/imgs/bid.png"></ion-img>
+         </ion-avatar>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="10">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+                   <ion-item lines="none">
+                    <ion-label>{{log.userName}}</ion-label>
+                   </ion-item>
+                  </ion-col>
+                  <ion-col size="12">
+                    <ion-label> 
+                      <ion-text>{{log.time | dateAgo}}</ion-text> 
+                      </ion-label>
+                  </ion-col> 
+                </ion-row>
+              </ion-grid>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+       <ion-badge slot="end">
+        <ion-label><ion-text>{{log.pay}}</ion-text></ion-label>  
+       </ion-badge>
+      </ion-item>
+      <ion-item button (click)="viewMoreLess()" lines="none" class="lightItem lightBorder">
+         <h4 class="custH">
+          <ion-label *ngIf="view == 0">
+            <ion-note >المزيد</ion-note><br>
+            <ion-icon name="chevron-down-outline" color="primary"></ion-icon>
+          </ion-label>
+          <ion-label *ngIf="view == 1">
+            <ion-note >اقل</ion-note><br>
+            <ion-icon   name="chevron-up-outline" color="primary"></ion-icon> 
+          </ion-label> 
+         </h4> 
+      </ion-item> 
+    </ion-list>
+    </ion-card> 
+
+
+      <!-- fees  -->
+      <ion-card class="w100" *ngIf="mzd"> 
         <ion-card-header>  
             <ion-card-title>
-                         <ion-icon name="cash-outline" color="primary"></ion-icon>
-
+               <ion-icon name="cash-outline" color="primary"></ion-icon>
               رسوم المشاركة
             </ion-card-title>
           </ion-card-header>
@@ -83,28 +250,30 @@
               <ion-col size="4" class="ion-text-center">
                 <ion-card-content> 
                     <ion-text color="primary"><b>العربون</b> </ion-text><br> 
-                    <ion-text> 3000 </ion-text>
-                    <ion-text> ر.س </ion-text> 
+                    <ion-text> {{mzd['deposit']}} </ion-text>
+                    <ion-text> ج.س</ion-text> 
                   </ion-card-content>
               </ion-col>
               <ion-col size="4" class="ion-text-center">
                 <ion-card-content>  
                       <ion-text color="primary"><b>رسوم دفتر </b> </ion-text><br> 
-                       <ion-text> 100 </ion-text> 
-                       <ion-text>   ر.س </ion-text>  
+                       <ion-text> {{mzd['fee']}} </ion-text> 
+                       <ion-text>   ج.س</ion-text>  
                 </ion-card-content>
               </ion-col>
 
               <ion-col size="4" class="ion-text-center totcol">
                 <ion-card-content> 
                   <ion-text color="primary"><b>المجموع </b>  </ion-text><br>
-                  <ion-text>   200 </ion-text>
-                  <ion-text>   ر.س </ion-text> 
+                  <ion-text>  {{mzd['deposit'] + mzd['fee']}}  </ion-text>
+                  <ion-text>   ج.س</ion-text> 
                 </ion-card-content>
               </ion-col>
             </ion-row>
           </ion-grid> 
       </ion-card> 
+      <!-- terms -->
+
       <ion-card class="w100 ">
         <ion-card-header>
           <ion-card-title>
@@ -116,72 +285,55 @@
           <ion-row>
             <ion-col size="12" >
              <ion-card-content>
+             <ion-label *ngFor="let term of mzd['terms']">
               <ion-icon name="pin" color="primary"></ion-icon>
-              <ion-label>تعلن شركة زد للمزادات العقارية عن البيع بالمزاد العلني لمجموعة من العقارات المتنوعة تحت إشراف مركز الاسناد والتصفية «إنفاذ» وبقرار من محكمة التنفيذ</ion-label>
+              <ion-text>{{term.descr}}</ion-text><br>
+             </ion-label> 
             </ion-card-content>
             </ion-col>
           </ion-row>
         </ion-grid>
-      </ion-card> 
-      <ion-card class="w100">
-        <ion-card-header>  
-          <ion-card-title>
-            <ion-icon name="calendar-outline" color="primary"></ion-icon>
-          الجدول الزمني 
-          </ion-card-title>
-        </ion-card-header>
-        <ion-grid>
-          <ion-row>  
-            <ion-col size="12" >
-              <h6 class="htext">
-                 <!-- <ion-text>انتنهي :</ion-text>
-                <ion-text>بدأ منذ : </ion-text> -->
-                <ion-label><ion-text color="primary" class="paddind"><b>  يبدأ بعد :</b> </ion-text></ion-label>
-                <ion-label><ion-text color="primary" class="paddind"><b>{{da}}</b> </ion-text>يوم : </ion-label>
-                <ion-label><ion-text color="primary" class="paddind"><b>{{hr}}</b> </ion-text>ساعة : </ion-label>
-                <ion-label><ion-text color="primary" class="paddind"><b>{{mn}}</b> </ion-text>دقيقة : </ion-label>
-                <ion-label><ion-text color="primary" class="paddind"><b>{{sc}}</b> </ion-text>ثانية </ion-label>
-              </h6> 
-            </ion-col>
-          </ion-row>
-          <ion-row class="ion-margin-top ion-padding-bottom"> 
-            <ion-col size="6" >
-              <ion-label> 
-                <ion-label><ion-text color="primary" class="paddind"><b> التاريخ :</b> </ion-text></ion-label>
-                <ion-text class="paddind">{{startDate}}</ion-text>    
-                <ion-text class="paddind" color="primary"> <b>{{startDate | date:'EEE'}}</b> </ion-text>
-              </ion-label> 
-            </ion-col> 
-            <ion-col size="4" >
-              <ion-label class="padding5">
-                <ion-text color="medium" >02 : 30 ص</ion-text>
-               </ion-label>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
       </ion-card>
+
     </ion-row>
 
 </ion-grid>
 </ion-content>
+
+
 <ion-footer class="footer">
-  <ion-grid dir="rtl">
-    <ion-row>
-      <ion-col size="6">
-       <ion-button expand="block"> 
-        <h5>مزايدة</h5> 
-        <ion-icon name="hand-right-outline"  color="light" slot="end"></ion-icon> 
-       </ion-button>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="8" class="flex">
+        <ion-button size="small" (click)="decrease(bidPrice)">
+          <ion-icon name="remove-circle" color="light"></ion-icon>
+        </ion-button>
+        <ion-input (ionFocus)="focusBidding($event)" (ionBlur)="unCheckFocus()" (ionChange)="bidChange($event)" type="number"
+          class="blueBorder" [(ngModel)]="bidPrice"
+          [ngClass]="{'redBorder': showError == true ,'blueBorder': showError == false}"> 
+        </ion-input><br>
+        <ion-button size="small" (click)="increase(bidPrice)">
+          <ion-icon name="add-circle" color="light"></ion-icon>
+        </ion-button>   
       </ion-col>
-      <ion-col size="6" class="ion-text-center">
+      <ion-col size="8" *ngIf="showError == true" class="ion-no-margin ion-no-padding ion-text-center">
+        <ion-note color="danger">{{msgError}}</ion-note>
+      </ion-col> 
+      <ion-col size="8">
+        <ion-button expand="block" [disabled]="showError ==true" (click)="bidding()">
+          <h5>مزايدة</h5>
+          <ion-icon name="hand-right-outline" color="light" slot="end"></ion-icon>
+        </ion-button> 
+      </ion-col>
+      <!-- <ion-col size="6" class="ion-text-center">
         <h4 class="ion-no-margin">
         <ion-text color="primary">
             أعلي مزايدة
         </ion-text> <br>  
         <ion-text> 3000 </ion-text>
-         <ion-text> ر.س </ion-text>
+         <ion-text> ج.س</ion-text>
        </h4>  
-      </ion-col> 
+      </ion-col>  -->
     </ion-row>
   </ion-grid>
 </ion-footer>

@@ -1,32 +1,26 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Observable, timer } from 'rxjs';
+import { Observable, timer ,Observer} from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router'
+import { SocketServiceService } from "../services/socket-service.service"; 
+import * as momentObj from 'moment';
+import * as momentTz from 'moment-timezone';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+ 
+  timeLeftArr :Array<Object> =[{da:String ,hr:String,mn:String ,sc:String }] 
+  auctionsArray:Array<any>=[]
 
    slideOpts = {
     slidesPerView: 3,
     nitialSlide: 0
-  }
+     }
 
-  startDate
-  startAfter
- day:Observable<number> 
-   hour:Observable<number>
-    minut:Observable<number>
-     second:Observable<number>
-      da :any  = 10
-      hr :any  = 10
-      mn:any  = 30
-      sc :any =30
-
-
-      // (alias) timer(dueTime?: number | Date, periodOrScheduler?: number | SchedulerLike, scheduler?: SchedulerLike): Observable<number>
+       // (alias) timer(dueTime?: number | Date, periodOrScheduler?: number | SchedulerLike, scheduler?: SchedulerLike): Observable<number>
       // import timer
       // Creates an Observable that starts emitting after an dueTime and emits ever increasing numbers after each period of time thereafter.
       
@@ -48,56 +42,78 @@ export class HomePage implements OnInit {
       // const numbers = timer(5000);
       // numbers.subscribe(x => console.log(x))
 
-  constructor(private datePipe:DatePipe ,private rout : Router) {
-    this.second=timer(60000, -1000)
-    this.minut=timer(60000, 60000)
-   // this.hour=timer(60000*60, - 60000*60) 
-    // this.day=timer(60000*24 , - 60000*24) 
-    // this.day.subscribe(x=>{this.da = x}) 
-    // this.hour.subscribe(x=> {this.hr = x}) 
-   // this.minut.subscribe(x=> { this.mn = x}) 
-    // this.second.subscribe(x=>{ 
-    //  this.sc = x  
-    //  if (x <= 1 ){
-    //   this.sc = 60 
-    //  }
-    // })
-
-     
-
-   this.prepare()
-   
-  }
-
-  ngOnInit() {
-           
-  }
- 
-  options(){
+  constructor(private api:SocketServiceService,private datePipe:DatePipe ,private rout : Router ,private socket :SocketServiceService) {
     
   }
 
-mazdDetails(){
-  // let navigationExtras: NavigationExtras = {
-  //   queryParams: {
-  //     payInvo: JSON.stringify(payInvo),
-  //     sub_name: JSON.stringify(sub_name),
-  //     user_info:JSON.stringify(this.user_info),
-  //     store_info:JSON.stringify(this.store_info),
-  //     itemList:JSON.stringify(itemList)
-  //   }
-  // };
-  this.rout.navigate(['mazad-details']); 
+  ngOnInit() {
+  //  this.socket.getNewAuction()
+    this.getAllAuction()     
+   } 
+
+  getAllAuction(){
+    this.api.getAllAuction().subscribe(data =>{
+      console.log(data)
+      let res = data['auctions'] 
+      this.auctionsArray = res
+      console.log(this.auctionsArray)
+      this.prepareAuc()
+    }, (err) => {
+    console.log(err);
+  })  
+  }
+
+  prepareAuc(){ 
+    //set count down for auctions
+       for (let index = 0; index < this.auctionsArray.length; index++) {
+        const element = this.auctionsArray[index];
+        element.timeLeft = this.endAfterounter(index)
+        //duration
+        let du = momentObj.duration(momentObj(element.end).diff(momentObj(element.start))); 
+        let hr = ""
+        let day = "" 
+        let con = ""
+        if(du.days() > 0){
+          day = du.days().toString() + " يوم"  
+        } 
+        if(du.hours() > 0){
+          hr =  du.hours().toString() + " ساعة"  
+        }
+        if(du.hours() > 0 && du.hours() > 0){
+          con = " , " 
+        }
+        element.duration = day + con + hr 
+       }
+       console.log(this.auctionsArray) 
+  }
+
+  endAfterounter(index){ 
+    let offset =  momentTz().utcOffset()
+    let newDate = momentObj(this.auctionsArray[index]['end']).add(); 
+     console.log('init',this.auctionsArray[index]['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+    return new Observable<object>((observer: Observer<object>) => {
+      setInterval(() => observer.next(
+        {da:this.memnto(newDate).days().toString(),hr: this.memnto(newDate).hours().toString() ,mn:this.memnto(newDate).minutes().toString(),sc:this.memnto(newDate).seconds().toString()}
+        ), 1000);
+    });
+  }
+
+memnto(newDate){  
+  return momentObj.duration(momentObj(newDate).diff(momentObj()));
+}
+ 
+
+ 
+mazdDetails(id){
+  let navigationExtras: NavigationExtras = {
+    queryParams: {
+      id: JSON.stringify(id)
+    }
+  };
+  this.rout.navigate(['mazad-details'],navigationExtras); 
 }
 
-  prepare(){ 
-  
-    console.log(this.second)
-    let d = new Date 
-    this.startDate = this.datePipe.transform(d, 'yyyy/MM/dd')
-    this.startAfter = "01" + " : "+ "14" + " : "+ "20" + " : " + "10"
-    //this.startAfter = this.da + ": "+ this.hr + " : "+ this.mn + " : " + this.sc
-  
+
+
  
-  }
 }

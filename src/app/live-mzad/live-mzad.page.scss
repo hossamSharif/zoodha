@@ -3,11 +3,151 @@
     border-width: .5px;
     border-color: var(--ion-color-light-shade);
 }
+.flex{display: flex;}
 
 .borderbt{
     border-bottom-style: solid;
     border-bottom-width: .5px;
+   
+}
+
+.pd10{
+  padding-top: 10px;
+}
+
+.imgContainer{
+    height: 220px;
+}
+
+.custH{
+    text-align: center;
+    width: 100%;
+}
+
+.lightItem{
+--backgroun : var(--ion-color-light)
+}
+
+.white{
+    color: white;
+}
+
+
+
+.custGrid{
+ background-color: var(--ion-color-medium-shade);
+}
+
+
+
+.priceText{
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.po{
+    position:relative;  
+}
+
+
+.fixGadegt{
+    position:absolute; 
+    border-radius: 10px;
+    height: 80%;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.colSpic{
+    margin-top: -50px;
+}
+
+.cardStatus{
+    position:absolute;
+    bottom: 0px; 
+    background-image: linear-gradient(to right top, var(--ion-color-medium), var(--ion-color-light-shade));
+    border-radius: 10px;
+}
+
+.cardStatus2{
+    // position:absolute;
+    // bottom: 0px;
+    width: 90%;
+    background-image: linear-gradient(to right top, var(--ion-color-medium), var(--ion-color-primary-shade));
+    border-radius: 10px;
+}
+
+.custImg{
+width: 100%;
+height: 100%;
+}
+
+
+
+.redBorder{
+    border-radius: 20px;
+    border-style: solid; 
+    font-weight: bold;
+    text-align: center; 
+    border-width: 0.5px; 
+    border-color: var(--ion-color-danger);
+}
+
+.lightBorder{
+  
     border-color: var(--ion-color-light-shade);
+}
+
+.blueBorder{
+    border-radius: 20px;
+    border-style: solid; 
+    font-weight: bold;
+    text-align: center; 
+    border-width: 0.5px; 
+   border-color: var(--ion-color-primary);
+}
+
+
+
+.childDiv{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.bidAnim{
+    position: fixed;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items:  center;
+    //background-image: linear-gradient(to right top, var(--ion-color-medium), var(--ion-color-light-shade));
+    top: 10%;
+    width: 100%;
+    opacity: 0.8;
+    height: 100%;
+} 
+
+.animate__animated.animate__fadeOutUp{
+    --animate-duration: 2s;
+}
+
+.bidH{
+    width: 100%;
+    color: var(--ion-color-primary-contrast);
+    font-weight: bolder;
+    position: absolute;
+    top: 19%;
+    text-align: center;
+}
+
+.bidImg{
+width: 100%;
+height: 100%;
 }
 
 .paddind{
