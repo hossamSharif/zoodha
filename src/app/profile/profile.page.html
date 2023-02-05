@@ -2,11 +2,81 @@
   <ion-toolbar dir="rtl">
     <ion-title>
       <ion-icon name="person-outline"></ion-icon>
-    الملف الشخصي   
+      الملف الشخصي   
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <form [formGroup]="ionicForm" (ngSubmit)="update()" novalidate>
+  <ion-list class="w100" *ngIf="USER_INFO" dir="rtl"> 
+    <ion-item class="ion-margin-top" >
+     <ion-label>الجوال: </ion-label>  
+      <ion-input readonly="true" formControlName="phone" [(ngModel)]="USER_INFO.phone"></ion-input> 
+      <ion-button slot="end" size="small" (click)="changePhone()">تغيير</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label > الإسم الكامل:  </ion-label> 
+      <ion-input  formControlName="fullName" [(ngModel)]="USER_INFO.fullName" ></ion-input> 
+      <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.fullName.errors?.required"> الحقل مطلوب</ion-note>
+      <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.fullName.errors?.pattern"> حروف فقط </ion-note>
 
+    </ion-item> 
+    <ion-item>
+      <ion-label>البريد الإلكتروني: </ion-label> 
+      <ion-input formControlName="email" [(ngModel)]="USER_INFO.email" ></ion-input> 
+      <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.email.errors?.required"> الحقل مطلوب </ion-note> 
+      <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.email.errors?.pattern">    خطأ في صيغة البريد  </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label>تاريخ الميلاد: </ion-label> 
+      <ion-input  value="{{ USER_INFO.birthDate | date: 'dd MMM yyyy' }}" id="date" (click)="presentPopover($event)"></ion-input>
+      <ion-popover #popover [isOpen]="isOpen" trigger="date">
+          <ng-template>
+              <ion-datetime max="2004-01-01T00:00:00"  min="1960-12-30T23:59:59" formControlName="birth" presentation="date" [(ngModel)]="USER_INFO.birthDate" locale="en-US" (ionChange)="dateChange($event)"></ion-datetime>
+          </ng-template>
+      </ion-popover>
+    </ion-item>
+    <ion-radio-group formControlName="gender"  [(ngModel)]="USER_INFO.gender" (ionChange)="genderChange($event)">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              <ion-item>
+                <ion-label>ذكـر</ion-label>
+                <ion-radio slot="start" value=0>  </ion-radio>
+              </ion-item> 
+            </ion-col>
+            <ion-col size="6">
+              <ion-item>
+                <ion-label>انثي</ion-label>
+                <ion-radio slot="start" value=1></ion-radio> 
+              </ion-item> 
+            </ion-col>
+          </ion-row>
+        </ion-grid> 
+    </ion-radio-group> 
+  
+   
+    <!-- <ion-item>
+      <ion-label position="floating">Password</ion-label> 
+      <ion-input [(ngModel)]="USER_INFO.password" type="password"></ion-input>
+      <ion-icon  slot="end"  name="eye-off-outline" ></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Confirm Password</ion-label> 
+      <ion-input [(ngModel)]="confirmPass" type="password"></ion-input>
+      <ion-icon  slot="end"   name="eye-off-outline" ></ion-icon>
+    </ion-item> -->
+    
+  </ion-list>
+
+  <ion-row class="ion-margin" dir="rtl">
+    <ion-col size="12">
+      <ion-item color="primary" [disabled]="spinner == true" button (click)="update()">
+        <ion-label class="ion-text-center">حفــظ </ion-label>
+        <ion-spinner name="lines" color="light" *ngIf="spinner == true"></ion-spinner>  
+      </ion-item>
+    </ion-col>
+  </ion-row> 
+  </form>
 </ion-content>

@@ -67,9 +67,23 @@ export class HomePage implements OnInit {
     //set count down for auctions
        for (let index = 0; index < this.auctionsArray.length; index++) {
         const element = this.auctionsArray[index];
-        element.timeLeft = this.endAfterounter(index)
+        
+        if(element.currentStatus == 1 ){
+          element.timeLeft = this.startAfterounter(index)
+          
+        }else if (element.currentStatus == 2){
+          //edit here
+          element.timeLeft = this.endAfterounter(index)
+
+        }else if (element.currentStatus == 3){
+          //edit here
+          element.timeLeft = this.endSinceAfterounter(index)
+
+        }  
+        
+
         //duration
-        let du = momentObj.duration(momentObj(element.end).diff(momentObj(element.start))); 
+        let du = momentObj.duration(momentObj(element.end).diff(momentObj(element.start)));
         let hr = ""
         let day = "" 
         let con = ""
@@ -93,15 +107,50 @@ export class HomePage implements OnInit {
      console.log('init',this.auctionsArray[index]['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
     return new Observable<object>((observer: Observer<object>) => {
       setInterval(() => observer.next(
-        {da:this.memnto(newDate).days().toString(),hr: this.memnto(newDate).hours().toString() ,mn:this.memnto(newDate).minutes().toString(),sc:this.memnto(newDate).seconds().toString()}
+        {da:this.memntoEnd(newDate).asDays().toFixed(0).toString(),hr: this.memntoEnd(newDate).hours().toString() ,mn:this.memntoEnd(newDate).minutes().toString(),sc:this.memntoEnd(newDate).seconds().toString()}
         ), 1000);
     });
   }
 
-memnto(newDate){  
-  return momentObj.duration(momentObj(newDate).diff(momentObj()));
-}
- 
+  memntoEnd(newDate){  
+    return momentObj.duration(momentObj(newDate).diff(momentObj()));
+  }
+
+
+  startAfterounter(index){ 
+    let offset =  momentTz().utcOffset()
+    let newDate = momentObj(this.auctionsArray[index]['start']).add(); 
+     console.log(momentObj(),'init',this.auctionsArray[index]['start'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     return new Observable<object>((observer: Observer<object>) => {
+      setInterval(() => observer.next(
+        {da:this.memntoStart(newDate).asDays().toFixed(0).toString(),hr: this.memntoStart(newDate).hours().toString() ,mn:this.memntoStart(newDate).minutes().toString(),sc:this.memntoStart(newDate).seconds().toString()}
+        ), 1000);
+    });
+  }
+
+
+  memntoStart(newDate){  
+    let today = new Date() 
+    return momentObj.duration(momentObj(newDate).diff(momentObj(today)));
+  }
+
+
+
+  endSinceAfterounter(index){ 
+    let offset =  momentTz().utcOffset()
+    let newDate = momentObj(this.auctionsArray[index]['end']).add(); 
+     console.log(momentObj(),'init',this.auctionsArray[index]['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     return new Observable<object>((observer: Observer<object>) => {
+      setInterval(() => observer.next(
+        {da:this.memnSinceEnd(newDate).asDays().toFixed(0).toString(),hr: this.memnSinceEnd(newDate).hours().toString() ,mn:this.memnSinceEnd(newDate).minutes().toString(),sc:this.memnSinceEnd(newDate).seconds().toString()}
+        ), 1000);
+    });
+  }
+
+  memnSinceEnd(newDate){  
+    return momentObj.duration(momentObj().diff(momentObj(newDate)));
+  }
+
 
  
 mazdDetails(id){

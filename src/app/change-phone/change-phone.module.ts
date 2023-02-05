@@ -4,9 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SignUpPageRoutingModule } from './sign-up-routing.module';
+import { ChangePhonePageRoutingModule } from './change-phone-routing.module';
 
-import { SignUpPage } from './sign-up.page';
+import { ChangePhonePage } from './change-phone.page';
 
 @NgModule({
   imports: [
@@ -14,8 +14,8 @@ import { SignUpPage } from './sign-up.page';
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
-    SignUpPageRoutingModule
+    ChangePhonePageRoutingModule
   ],
-  declarations: [SignUpPage]
+  declarations: [ChangePhonePage]
 })
-export class SignUpPageModule {}
+export class ChangePhonePageModule {}

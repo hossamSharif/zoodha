@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
-
+import { AuthGaurdService } from '../auth/auth-gaurd.service';
 const routes: Routes = [
   {
     path: 'tabs',
@@ -9,11 +9,11 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadChildren: () => import('../home/home.module').then( m => m.HomePageModule)
+        loadChildren: () => import('../home/home.module').then( m => m.HomePageModule), canActivate: [AuthGaurdService]
       },
       {
-        path: 'profile',
-        loadChildren: () => import('../profile/profile.module').then( m => m.ProfilePageModule)
+        path: 'my-account',
+        loadChildren: () => import('../my-account/my-account.module').then( m => m.MyAccountPageModule)
       },
       {
         path: 'cart',

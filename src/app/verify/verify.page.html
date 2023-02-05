@@ -1,16 +1,16 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="primary" >
     <ion-buttons slot="start">
      <ion-button fill="clear" >
        <ion-icon name="arrow-back-outline" color="light"></ion-icon>
      </ion-button>
     </ion-buttons>
-     <ion-title>OTP Verification</ion-title>
+     <ion-title dir="rtl"> تأكيد الحساب</ion-title>
    </ion-toolbar>
 </ion-header>
  
 
-<ion-content>
+<ion-content dir="rtl">
   <ion-grid class="ion-no-padding">
     <ion-row>
       <ion-col size="12" class="head3 newHeight ion-text-center ">
@@ -32,52 +32,49 @@
     <ion-col size="10" >
      <ion-card class="bordernon w100" >
       <ion-card-header>
-        <ion-card-title>
-         <h3 ><b>Verify Phone</b></h3> 
+        <ion-card-title class="ion-text-center">
+         <h3 ><b> تأكيد الجوال</b></h3> 
         </ion-card-title>
-        <ion-card-subtitle>
-          Code is sent to +91 9876543210
+        <ion-card-subtitle class="ion-text-center">
+           تم إرسال رسالة نصية برمز تأكيد الي   
+        </ion-card-subtitle>
+        <ion-card-subtitle class="ion-text-center">
+          <ion-text *ngIf="phone && orignalCode"> {{phone}} - {{orignalCode}} </ion-text>
         </ion-card-subtitle>
       </ion-card-header>
        <ion-grid>
+        <form [formGroup]="ionicForm" (ngSubmit)="confirmAccount()" novalidate>
         <ion-row class="ion-padding-start">
-          <ion-label>Enter 4 Digit Code</ion-label> 
+          <ion-label>أدخل رمز التأكيد</ion-label> 
         </ion-row>
-        <ion-row class="ion-margin"> 
-          <ion-col > 
-            <ion-item >
-              <ion-input></ion-input>
-            </ion-item> 
-          </ion-col>
-          <ion-col > 
-            <ion-item >
-              <ion-input></ion-input>
-            </ion-item> 
-          </ion-col>
-          <ion-col > 
-            <ion-item >
-              <ion-input></ion-input>
-            </ion-item> 
-          </ion-col>
-          <ion-col > 
-            <ion-item >
-              <ion-input></ion-input>
+        <ion-row class="ion-margin" *ngIf="orignalCode"> 
+          <ion-col> 
+            <ion-item>
+              <ion-input class="custInput" formControlName="code" [(ngModel)]="code" (ionChange)="inputChang($event)"></ion-input>
+                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.code.errors?.pattern">ادخل ارقام فقط  </ion-note> 
+                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.code.errors?.required">رمز التأكيد مطلوب </ion-note>
+                <ion-note slot="error" *ngIf="isSubmitted == true && (errorControl.code.errors?.minlength || errorControl.code.errors?.maxlength)">يجب ان يتكون من4 أرقام </ion-note> 
             </ion-item> 
           </ion-col> 
         </ion-row> 
-        <ion-row class="ion-justify-content-start">
-          <ion-button fill="clear" >
-            <ion-label><ion-text color="primary"><b>Resnd OTP</b></ion-text></ion-label>
-          </ion-button>
-        </ion-row> 
-        <ion-row class="ion-margin">
+       
+        <ion-row class="ion-margin" >
           <ion-col size="12">
-            <ion-item color="primary" button >
-              <ion-label class="ion-text-center">VERIFY</ion-label> 
+            <ion-item color="primary" button  [disabled]="spinner == true"  (click)="confirmAccount()">
+              <ion-label class="ion-text-center">إرسال</ion-label> 
+              <ion-spinner name="lines" color="light" *ngIf="spinner == true"></ion-spinner> 
+
             </ion-item>
           </ion-col>
-        </ion-row> 
+        </ion-row>
+        <ion-row class="ion-justify-content-start">
+          <ion-button  fill="clear"(click)="getsms()">
+            <ion-label><ion-text color="primary"><b>إعادة إرسال الرمز</b></ion-text></ion-label>
+          </ion-button>
+        </ion-row>  
+         </form>
        </ion-grid> 
+    
       </ion-card>
     </ion-col>
     </ion-row>

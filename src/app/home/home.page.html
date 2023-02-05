@@ -85,7 +85,7 @@
         </ion-slide>  
       </ion-slides> -->
      
-      </ion-row>
+    </ion-row>
 </ion-grid>
 <!-- 
   <ion-icon name="chevron-down-outline"></ion-icon>
@@ -133,11 +133,12 @@
               </ion-row> 
               <ion-row class="mgt10 ion-justify-content-center">
                 <ion-label> 
-                  <ion-text color="primary"><b>التاريخ : </b></ion-text>    
-                  <ion-text> {{auct.start | date:'EEE dd-MM'}} </ion-text>
+                  <!-- <ion-text color="primary"><b> التاريخ : </b></ion-text>  -->
+                  <ion-text> {{auct.start | date:'EEE dd-MM-yyyy' : undefined  : 'ar'}} </ion-text>
+                  <!-- <ion-text> {{auct.start | date:'EEE dd-MM'}} </ion-text> -->
                 </ion-label>
-                <ion-label class="ion-text-center padding5">
-                  <ion-text color="medium" >{{auct.start | date:'hh:mm'}}</ion-text>
+                <ion-label class="ion-text-center padding5" dir="rtl">
+                  <ion-text color="medium" >{{auct.start | date:'hh:mm a': undefined  : 'ar'}}</ion-text>
                  </ion-label>
               </ion-row>
               <ion-row   class="mgt10 ion-justify-content-center">
@@ -159,10 +160,22 @@
               <ion-text>ثانية </ion-text>
             </h6>
             <h6 class="hnom">
-              <ion-text color="primary"><b>{{tm['da']}} :</b> </ion-text>
-              <ion-text color="primary"><b>{{tm['hr']}} :</b> </ion-text>
-              <ion-text color="primary"><b>{{tm['mn']}} :</b> </ion-text>
-              <ion-text color="primary"><b>{{tm['sc']}}</b> </ion-text>
+              <ion-text color="primary">
+                <b *ngIf="auct.currentStatus < 3 ">{{tm['da']}} :</b> 
+                <b *ngIf="auct.currentStatus == 3">00 :</b> 
+              </ion-text>
+              <ion-text color="primary">
+                <b *ngIf="auct.currentStatus < 3 ">{{tm['hr']}} :</b> 
+                <b *ngIf="auct.currentStatus == 3 ">00 :</b> 
+              </ion-text>
+              <ion-text color="primary">
+                <b *ngIf="auct.currentStatus < 3 ">{{tm['mn']}} :</b> 
+                <b *ngIf="auct.currentStatus == 3 ">00 :</b> 
+              </ion-text>
+              <ion-text color="primary">
+                <b *ngIf="auct.currentStatus < 3 ">{{tm['sc']}}</b>
+                <b *ngIf="auct.currentStatus == 3 ">00</b>
+               </ion-text>
             </h6>
           </ion-col>
 

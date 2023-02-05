@@ -1,10 +1,18 @@
 .header-md::after {
     background-image:none;
 }
+
+
 .bordernon{
     border: none;
 }
 
+.custInput{ 
+    text-align: center;
+    font-size: 20px; 
+    font-weight: bold;
+    letter-spacing: 2rem;
+}
 .newHeight{
     height: 375px;
 }

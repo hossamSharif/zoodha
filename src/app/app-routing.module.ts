@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-
+import { AuthGaurdService } from './auth/auth-gaurd.service';
 const routes: Routes = [
   
   {
     path: '',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule), canActivate: [AuthGaurdService]
   },
   {
     path: 'login',
@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: 'tabs',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule), canActivate: [AuthGaurdService]
   },
   {
     path: 'mazad-details',
@@ -67,6 +67,10 @@ const routes: Routes = [
   {
     path: 'order-details',
     loadChildren: () => import('./order-details/order-details.module').then( m => m.OrderDetailsPageModule)
+  },
+  {
+    path: 'change-phone',
+    loadChildren: () => import('./change-phone/change-phone.module').then( m => m.ChangePhonePageModule)
   }
 ];
 @NgModule({

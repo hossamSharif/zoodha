@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title dir="rtl">تغيير رقم الجوال</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="ionicForm" (ngSubmit)="updatePhone()" novalidate>
+  <ion-grid *ngIf="USER_INFO" dir="rtl">
+    <ion-row>
+      <ion-list class="w100">
+        <ion-label> <ion-text color="dark">رقم الجوال </ion-text></ion-label>
+        <ion-item dir="ltr"> 
+          <ion-label slot="start">+249</ion-label>
+          <ion-input  formControlName="phone" placeholder="New phone here" [(ngModel)]="USER_INFO.phone"></ion-input>
+          <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.phone.errors?.pattern">ادخل ارقام فقط  </ion-note> 
+          <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.phone.errors?.required">رقم الجوال مطلوب </ion-note>
+          <ion-note slot="error" *ngIf="isSubmitted == true && (errorControl.phone.errors?.minlength || errorControl.phone.errors?.maxlength)">يجب ان يتكون من 9 أرقام </ion-note> 
+        </ion-item>
+      </ion-list>
+    </ion-row>
+    <ion-row class="ion-margin">
+      <ion-col size="12">
+        <ion-item color="primary"  [disabled]="spinner == true" button (click)="updatePhone()">
+          <ion-label class="ion-text-center">حفــظ </ion-label> 
+          <ion-spinner name="lines" color="light" *ngIf="spinner == true"></ion-spinner>  
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid> 
+</form>
+</ion-content>

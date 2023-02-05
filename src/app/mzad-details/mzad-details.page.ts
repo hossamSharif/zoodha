@@ -83,7 +83,7 @@ USER_INFO : {
    
       id:any
 
-      timeLeft :any = {da:"" ,hr:"",mn:"" ,sc:"" } 
+  timeLeft :any = {da:"" ,hr:"",mn:"" ,sc:"" } 
   constructor(private api:SocketServiceService,private socket :SocketServiceService ,private route: ActivatedRoute,private storage: Storage ,private loadingController:LoadingController,private toast:ToastController,private actionSheetCtl:ActionSheetController ,private datePipe:DatePipe ,private rout : Router,private modalController:ModalController) {
     this.route.queryParams.subscribe(params => {
       if (params && params.id) {
@@ -112,6 +112,20 @@ USER_INFO : {
      //use dateAgo pipe
      this.timeLeft = this.endAfterounter() 
 
+     if(this.mzd['currentStatus'] == 1 ){
+      this.mzd['timeLeft'] = this.startAfterounter( )
+      
+    }else if (this.mzd['currentStatus'] == 2){
+      //edit here
+      this.mzd['timeLeft'] = this.endAfterounter( )
+
+    } else if (this.mzd['currentStatus'] == 3){
+      //edit here
+      this.mzd['timeLeft'] = this.endSinceAfterounter( )
+
+    }  
+
+
      let du = momentObj.duration(momentObj(this.mzd['end']).diff(momentObj(this.mzd['start']))); 
      let hr = ""
      let day = "" 
@@ -129,23 +143,57 @@ USER_INFO : {
    
     console.log(this.mzd) 
   }
-
-
-
-  endAfterounter(){ 
+  
+  endAfterounter( ){ 
     let offset =  momentTz().utcOffset()
-    let newDate = momentObj(this.mzd['end']).add(); 
-     console.log('init',this.mzd['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+    let newDate = momentObj( this.mzd['end']).add(); 
+     console.log('init', this.mzd['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
     return new Observable<object>((observer: Observer<object>) => {
       setInterval(() => observer.next(
-        {da:this.memnto(newDate).days().toString(),hr: this.memnto(newDate).hours().toString() ,mn:this.memnto(newDate).minutes().toString(),sc:this.memnto(newDate).seconds().toString()}
+        {da:this.memntoEnd(newDate).asDays().toFixed(0).toString(),hr: this.memntoEnd(newDate).hours().toString() ,mn:this.memntoEnd(newDate).minutes().toString(),sc:this.memntoEnd(newDate).seconds().toString()}
         ), 1000);
     });
   }
-  
-  memnto(newDate){  
-      return momentObj.duration(momentObj(newDate).diff(momentObj()));
+
+  memntoEnd(newDate){  
+    return momentObj.duration(momentObj(newDate).diff(momentObj()));
   }
+
+
+  startAfterounter( ){ 
+    let offset =  momentTz().utcOffset()
+    let newDate = momentObj( this.mzd['start']).add(); 
+     console.log(momentObj(),'init', this.mzd['start'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     return new Observable<object>((observer: Observer<object>) => {
+      setInterval(() => observer.next(
+        {da:this.memntoStart(newDate).asDays().toFixed(0).toString(),hr: this.memntoStart(newDate).hours().toString() ,mn:this.memntoStart(newDate).minutes().toString(),sc:this.memntoStart(newDate).seconds().toString()}
+        ), 1000);
+    });
+  }
+
+
+  memntoStart(newDate){  
+    let today = new Date() 
+    return momentObj.duration(momentObj(newDate).diff(momentObj(today)));
+  }
+
+
+
+  endSinceAfterounter( ){ 
+    let offset =  momentTz().utcOffset()
+    let newDate = momentObj( this.mzd['end']).add(); 
+     console.log(momentObj(),'init', this.mzd['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     return new Observable<object>((observer: Observer<object>) => {
+      setInterval(() => observer.next(
+        {da:this.memnSinceEnd(newDate).asDays().toFixed(0).toString(),hr: this.memnSinceEnd(newDate).hours().toString() ,mn:this.memnSinceEnd(newDate).minutes().toString(),sc:this.memnSinceEnd(newDate).seconds().toString()}
+        ), 1000);
+    });
+  }
+
+  memnSinceEnd(newDate){  
+    return momentObj.duration(momentObj().diff(momentObj(newDate)));
+  }
+
 
 
 
