@@ -15,9 +15,18 @@
   padding-top: 10px;
 }
 
-.imgContainer{
-    height: 220px;
+.pb0{
+   padding-bottom: 0px;
 }
+.imgContainer{
+    height: 200px;
+}
+
+.centerDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
 .custH{
     text-align: center;

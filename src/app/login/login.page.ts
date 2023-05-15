@@ -12,27 +12,42 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  mode ='phone'
+///  mode ='phone'
+  mode ='google'
   phone :any 
+  password:any
+  email:any
   ionicForm: FormGroup;
+  ionic2Form: FormGroup;
   spinner:boolean =false
   isSubmitted = false;
+  isSubmitted2 = false;
   constructor(private formBuilder: FormBuilder,private toast:ToastController,private storage: Storage, private rout : Router ,private api:SocketServiceService) {
     this.ionicForm = this.formBuilder.group({
       phone: ['', [Validators.required, Validators.minLength(9),Validators.maxLength(9),Validators.pattern('^[0-9]+$')]],
    })
+
+   this.ionic2Form = this.formBuilder.group({ 
+    email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+    password: ['',Validators.required], 
+    })
    }
 
   ngOnInit() {
 
   }
-
-
-
+ 
   get errorControl() {
     return this.ionicForm.controls;
   }
 
+  get error2Control() {
+    return this.ionic2Form.controls;
+  }
+
+  getInfo(type){
+
+  }
 
   login(){  
     if(this.mode == 'phone'){
@@ -154,6 +169,10 @@ export class LoginPage implements OnInit {
   // handl1(data1,data2){
   //   console.log(data1,data2);
   // }
+
+  loginEmail(){
+    
+  }
 
   async presentToast(msg,color?) {
     const toast = await this.toast.create({

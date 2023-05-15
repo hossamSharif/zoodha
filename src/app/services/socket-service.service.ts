@@ -17,6 +17,7 @@ export class SocketServiceService {
     public message$: BehaviorSubject<string> = new BehaviorSubject('');
     public liveStremUserHadJoined: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
     public liveStremUserHadBidding: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+    public liveStremAuctionHadEndOnTime: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
     public liveStremUserFucosToBidding: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
     public liveStremUserFucosLostToBidding: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
     constructor(public http: HttpClient ) {}
@@ -52,9 +53,45 @@ export class SocketServiceService {
       params=params.append('id' , id)
       return this.http.get(this.api+'auctions/'+id)
     }
+    
+    getOrder(id){ 
+      console.log('this.auctionId from live service',  id)
+      let params = new HttpParams() 
+      params=params.append('id' , id)
+      return this.http.get(this.api+'orders/'+id)
+    }
+
+    getUserOrder(userId){ 
+      console.log('this.auctionId from live service',  userId)
+      let params = new HttpParams() 
+      params=params.append('userId' , userId)
+      return this.http.get(this.api+'orders/all/'+userId)
+    }
+
+    getBalance(userId){ 
+      console.log('this.auctionId from live service',  userId)
+      let params = new HttpParams() 
+      params=params.append('userId' , userId)
+      return this.http.get(this.api+'transactions/balance/'+userId)
+    }
+
+    getAllTransaction(userId){ 
+      console.log('this.auctionId from live service',  userId)
+      let params = new HttpParams() 
+      params=params.append('userId' , userId)
+      return this.http.get(this.api+'transactions/all/'+userId)
+    }
 
     getAllAuction( ){  
       return this.http.get(this.api+'auctions/all')
+    }
+
+
+    getUserAuction(userId){ 
+      console.log('this.auctionId from live service',  userId)
+      let params = new HttpParams() 
+      params=params.append('userId' , userId)
+      return this.http.get(this.api+'auctions/userauction/'+userId)
     }
 
     getNewAuction(){
@@ -79,6 +116,37 @@ export class SocketServiceService {
       params=params.append('auction' , auction)
       return this.http.post(this.api+'auctions/updatelog/', auction)
     }
+
+      endAuctionOntime(auction){ 
+      let params = new HttpParams() 
+      params=params.append('auction' , auction)
+      return this.http.post(this.api+'auctions/endAuctionOnTime/', auction)
+      }
+
+    updateAuctionUsers(auction){ 
+      let params = new HttpParams() 
+      params=params.append('auction' , auction)
+      return this.http.post(this.api+'auctions/updateAuctionUsers/', auction)
+    }
+
+    cancelAuctionUsers(auction){ 
+      let params = new HttpParams() 
+      params=params.append('auction' , auction)
+      return this.http.post(this.api+'auctions/cancelAuctionUsers/', auction)
+    }
+
+    resubiscribeAuctionUsers(auction){ 
+      let params = new HttpParams() 
+      params=params.append('auction' , auction)
+      return this.http.post(this.api+'auctions/resubiscribeAuctionUsers/', auction)
+    }
+    
+    createTransaction(transaction){ 
+      let params = new HttpParams() 
+      params=params.append('transaction' , transaction)
+      return this.http.post(this.api+'transactions/', transaction)
+    }
+
 
     loginPhone(phone , imei){ 
       let params = new HttpParams() 
@@ -116,7 +184,7 @@ export class SocketServiceService {
       let params = new HttpParams() 
       params=params.append('token' , token)
       return this.http.get(this.api+'users/auth/'+token)
-    }
+     }
 
    userJoiningAuction(auctionRoom){ 
       console.log(auctionRoom)
@@ -145,6 +213,15 @@ export class SocketServiceService {
          this.liveStremUserHadBidding.next(auctionRoom)
         }); 
       return this.liveStremUserHadBidding.asObservable(); 
+    }
+/// mzad end on time 
+
+    auctionEndOntime = () =>{
+      this.socket.on('auctionEndOntime', (ar) => { 
+        console.log('auctionEndOntime' ,ar)
+         this.liveStremAuctionHadEndOnTime.next(ar)
+        }); 
+      return this.liveStremAuctionHadEndOnTime.asObservable(); 
     }
 
     //fucos to bidding 

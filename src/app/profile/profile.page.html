@@ -8,6 +8,16 @@
 </ion-header>
 
 <ion-content>
+    <!-- <ion-grid class="ion-margin-bottom">
+    <ion-row class="ion-justify-content-center"> 
+      <ion-col size="8" class="ion-align-items-center">
+        <ion-avatar> 
+          <ion-icon name="person-circle-outline" color="primary" class="custIcon"></ion-icon>
+        </ion-avatar>
+        <p>{{USER_INFO.fullName}}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
   <form [formGroup]="ionicForm" (ngSubmit)="update()" novalidate>
   <ion-list class="w100" *ngIf="USER_INFO" dir="rtl"> 
     <ion-item class="ion-margin-top" >

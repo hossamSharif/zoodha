@@ -1,17 +1,22 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Observable, timer ,Observer} from 'rxjs';
+import { Observable, timer ,Observer, using} from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router'
 import { SocketServiceService } from "../services/socket-service.service"; 
 import * as momentObj from 'moment';
 import * as momentTz from 'moment-timezone';
+import { Storage } from '@ionic/storage';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
- 
+  USER_INFO : {
+    _id: any ,
+    firstName: any,
+    lastName :any
+};
   timeLeftArr :Array<Object> =[{da:String ,hr:String,mn:String ,sc:String }] 
   auctionsArray:Array<any>=[]
 
@@ -42,14 +47,24 @@ export class HomePage implements OnInit {
       // const numbers = timer(5000);
       // numbers.subscribe(x => console.log(x))
 
-  constructor(private api:SocketServiceService,private datePipe:DatePipe ,private rout : Router ,private socket :SocketServiceService) {
-    
+  constructor(private storage: Storage,private api:SocketServiceService,private datePipe:DatePipe ,private rout : Router ,private socket :SocketServiceService) {
+    //  this.socket.getNewAuction()
+  
   }
 
   ngOnInit() {
-  //  this.socket.getNewAuction()
-    this.getAllAuction()     
+    this.storage.get('user_info').then((response) => {
+      if (response) {
+        this.USER_INFO = response.user
+        console.log('kkkkkkkkkk',this.USER_INFO) 
+        this.getAllAuction()  
+      }
+     });
    } 
+
+   ionViewWillEnter(){
+   
+   }
 
   getAllAuction(){
     this.api.getAllAuction().subscribe(data =>{
@@ -77,10 +92,27 @@ export class HomePage implements OnInit {
 
         }else if (element.currentStatus == 3){
           //edit here
-          element.timeLeft = this.endSinceAfterounter(index)
-
+          element.timeLeft = this.endSinceAfterounter(index) 
         }  
-        
+
+        // userIn
+         let fltuse:Array<any> =[]
+         fltuse = element.users.filter(x=>x.userId ==  this.USER_INFO._id)
+         console.log('fltuse'+index, fltuse )
+
+        if(fltuse.length> 0 && element.currentStatus < 3 && fltuse[0].cancel == 0){
+          element.userIn = true 
+         }else if(fltuse.length> 0 && fltuse[0].cancel == 1){
+          element.userOut = true 
+         }else if(element.logs.length > 0 && fltuse.length> 0 && element.currentStatus == 3){
+          // userWin
+          let mx =  element.logs.reduce((acc, shot) => acc = acc > shot.pay ? acc : shot.pay, 0); 
+          let flt = element.logs.filter(x=>x.pay == mx)
+          console.log('userWin', mx , flt )
+          if(flt[0].userId == this.USER_INFO._id){
+           element.userWin = true
+          }
+         }
 
         //duration
         let du = momentObj.duration(momentObj(element.end).diff(momentObj(element.start)));
@@ -101,6 +133,8 @@ export class HomePage implements OnInit {
        console.log(this.auctionsArray) 
   }
 
+  
+
   endAfterounter(index){ 
     let offset =  momentTz().utcOffset()
     let newDate = momentObj(this.auctionsArray[index]['end']).add(); 
@@ -116,7 +150,6 @@ export class HomePage implements OnInit {
     return momentObj.duration(momentObj(newDate).diff(momentObj()));
   }
 
-
   startAfterounter(index){ 
     let offset =  momentTz().utcOffset()
     let newDate = momentObj(this.auctionsArray[index]['start']).add(); 
@@ -128,13 +161,10 @@ export class HomePage implements OnInit {
     });
   }
 
-
   memntoStart(newDate){  
     let today = new Date() 
     return momentObj.duration(momentObj(newDate).diff(momentObj(today)));
   }
-
-
 
   endSinceAfterounter(index){ 
     let offset =  momentTz().utcOffset()
@@ -153,13 +183,26 @@ export class HomePage implements OnInit {
 
 
  
-mazdDetails(id){
+mazdDetails(auct){
   let navigationExtras: NavigationExtras = {
     queryParams: {
-      id: JSON.stringify(id)
+      id: JSON.stringify(auct._id),
+      user_info: JSON.stringify(this.USER_INFO )
     }
-  };
-  this.rout.navigate(['mazad-details'],navigationExtras); 
+};
+
+
+  if(auct.userIn == true && auct.currentStatus == 2){
+   this.rout.navigate(['live-mzad'], navigationExtras); 
+  } else if( auct.userWin == true ){ 
+    // redirect to tabs/cart and pass _id to present details modal 
+  this.rout.navigate(['oreder-details'],navigationExtras);
+  }else if( auct.userOut == true && auct.currentStatus == 1){
+    this.rout.navigate(['mazad-details'],navigationExtras);
+  }else{
+    this.rout.navigate(['mazad-details'],navigationExtras); 
+  }
+  
 }
 
 

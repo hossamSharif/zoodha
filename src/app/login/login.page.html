@@ -91,7 +91,7 @@
             <ion-col size="3" class="padd1">
               <svg width="100" height="1" viewBox="0 0 93 1" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect opacity="0.4" width="93" height="1" fill="#191B1D"/>
-                </svg>
+              </svg>
             </ion-col>
             <ion-col size="5" class="ion-text-center padd1" >
                <ion-label>Or login with</ion-label>
@@ -99,7 +99,7 @@
             <ion-col size="3" class="padd1">
               <svg width="100" height="1" viewBox="0 0 93 1" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect opacity="0.4" width="93" height="1" fill="#191B1D"/>
-                </svg>
+              </svg>
             </ion-col>
           </ion-row>
           
@@ -183,7 +183,104 @@
               </ion-item>
             </ion-col>
           </ion-row> 
+        </form>
+         </ion-grid> 
+        </ion-card>
+      </ion-col>
+    </ion-row>
+       <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-button fill="clear" (click)="signUp()">
+            <ion-label color="medium">Don't have account? <ion-text color="dark"><strong>Sign Up</strong> </ion-text></ion-label>
+  
+          </ion-button>
+        </ion-col>
+      </ion-row> 
+  </ion-grid>
+
+
+  <!-- login with google -->
+
+  <ion-grid class="custGrid " *ngIf="mode == 'google'">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="10" >
+       <ion-card class="bordernon w100" >
+        <ion-card-header>
+          <ion-card-title  >
+           <h3 class="ion-text-center"><b>تسجيل دخول</b></h3> 
+          </ion-card-title>
+        </ion-card-header>
+         <ion-grid>
+          <form [formGroup]="ionic2Form" (ngSubmit)="login()" novalidate>
+
+          <ion-row class="ion-margin">
+            <ion-list class="w100"> 
+              <ion-item dir="ltr">  
+                <ion-label  position="floating"> <ion-text color="dark"> البريد الإلكتروني </ion-text></ion-label>
+                <ion-input   formControlName="email"  type="email" placeholder="example@info.com"  [(ngModel)]="email">
+                 
+                </ion-input>
+                <ion-note slot="error" *ngIf="isSubmitted2 == true && error2Control.email.errors?.required"> الحقل مطلوب </ion-note> 
+                <ion-note slot="error" *ngIf="isSubmitted2 == true && error2Control.email.errors?.pattern">    خطأ في صيغة البريد  </ion-note>
+              </ion-item> 
+
+              
+              <ion-item dir="ltr"> 
+                <ion-label position="floating"> <ion-text color="dark">كلمة المرور</ion-text></ion-label> 
+                <ion-input   formControlName="password" type="password" placeholder="*****"  [(ngModel)]="password">
+                 
+                </ion-input>
+                <ion-note slot="error" *ngIf="isSubmitted2 == true && error2Control.password.errors?.required"> الحقل مطلوب </ion-note> 
+
+              </ion-item>
+            </ion-list>
+          </ion-row> 
+          <ion-row >
+            <ion-col size="12">
+              <ion-item [disabled]="spinner == true" color="primary" button (click)="login()"> 
+                <ion-label class="ion-text-center">دخــول</ion-label>
+                <ion-spinner name="lines" color="light" *ngIf="spinner == true"></ion-spinner> 
+              </ion-item>
+            </ion-col>
+          </ion-row> 
+           <ion-row class="ion-justify-content-start">
+                <ion-button fill="clear" (click)="froget()">
+                  <ion-label><ion-text color="primary"><b>نسيت كلمة السر؟</b></ion-text></ion-label>
+                </ion-button>
+          </ion-row>
         </form> 
+        <ion-row class=" ion-justify-content-center"> 
+          <ion-col size="3" class="ion-text-center">
+            <ion-label><h3>أو</h3></ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item [disabled]="spinner == true" color="primary" button (click)="getInfo('google')"> 
+              <ion-label class="ion-text-center">google</ion-label>
+              <ion-icon name="logo-google" color="danger"></ion-icon>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item [disabled]="spinner == true" color="primary" button (click)="getInfo('apple')"> 
+              <ion-label class="ion-text-center">Apple</ion-label>
+              <ion-icon name="logo-apple" ></ion-icon>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-footer>
+          <ion-grid>
+            <ion-row class="ion-justify-content-center"> 
+              <ion-col size="12">
+                <ion-button fill="clear" (click)="signUp()">
+                  <ion-label><ion-text>ليس لديك حساب ؟ </ion-text>
+                  <ion-text color="success">انشاء حساب</ion-text>
+                </ion-label>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-footer>
          </ion-grid> 
         </ion-card>
       </ion-col>

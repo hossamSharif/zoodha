@@ -3,32 +3,85 @@
     <ion-buttons slot="end">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>
-      <ion-icon name="list-outline"></ion-icon>
-      تفاصيل
-    </ion-title>
+      <ion-title>
+        <ion-icon name="list-outline"></ion-icon>
+        تفاصيل
+      </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content >
   <ion-grid class="ion-no-margin  ion-no-padding"  dir="rtl" *ngIf="mzd"> 
     <ion-row class="ion-no-margin  ion-no-padding"> 
-      <ion-col size="12" class="ion-no-margin"> 
+      <ion-col size="12" class="ion-no-margin pos"> 
+        <div class="budgStatus" *ngIf="mzd">
+          <ion-badge *ngIf="mzd['currentStatus'] == 1" color="warning" slot="end" class="badge">
+            <ion-icon  name="ellipse" color="light"></ion-icon> 
+            <ion-text> مزاد قادم</ion-text>  
+            </ion-badge>
+            <ion-badge *ngIf="mzd['currentStatus'] == 3" color="light" slot="end" class="badge">
+              <ion-text> مزاد منتهي </ion-text> 
+                <ion-icon slot="end" name="ellipse" color="danger"></ion-icon> 
+              </ion-badge>
+              <ion-badge *ngIf="mzd['currentStatus']  == 2" color="success" slot="end" class="badge">
+                <ion-text> مزاد جاري</ion-text> 
+                  <ion-icon   name="ellipse" color="danger"></ion-icon> 
+              </ion-badge> 
+              <ion-badge color="light" *ngIf="mzd['userIn']" class="mgleft">
+                <ion-icon name="ribbon-outline"></ion-icon>
+                <ion-text> مشارك   </ion-text>
+              </ion-badge>  
+              <ion-badge color="light" *ngIf="mzd['userOut']" class="mgleft">
+                <ion-icon name="ribbon-outline" color="danger"></ion-icon>
+                <ion-text> ملغي   </ion-text>
+              </ion-badge>  
+        </div>
+         
         <img class="radus5 img"  [src]="mzd['imgs'][0]"/>   
       </ion-col>  
       <ion-col size="12"  class="borderbt">
-        <ion-card-header> 
-          <ion-card-title> {{ mzd['shortDescr'] }}  </ion-card-title>
+        <ion-card-header class="pb0"> 
+          <ion-card-title> {{ mzd['title'] }}  </ion-card-title>
+          <ion-label>
+            {{mzd['shortDescr']}}
+          </ion-label>
         </ion-card-header> 
         <ion-card-content>
-          {{mzd['descr']}}
+          <ion-label *ngIf="showMore == true">
+            {{mzd['descr']}}
+            <ion-text><ion-button fill="clear" size="small" (click)="showMore = false ">اقل</ion-button></ion-text>
+          </ion-label>
+          <ion-label *ngIf="showMore == false">{{tirmString(mzd['descr'] ,100)}}
+             <ion-text><ion-button fill="clear" size="small" (click)="showMore = true ">المزيد</ion-button></ion-text>
+           </ion-label>
         </ion-card-content>
       </ion-col> 
      </ion-row> 
 
-    <ion-row class="ion-no-padding"> 
+    
+    <ion-row class="ion-no-padding" *ngIf="mzd"> 
+      <ion-card class="w100" *ngIf="mzd['currentStatus'] != 1">
+        <ion-card-header class="pb0">
+          <ion-card-title>
+            <ion-icon name="bookmark-outline" color="primary"></ion-icon> 
+            المشاركين
+          </ion-card-title> 
+        </ion-card-header>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" >
+             <ion-card-content> 
+              <ion-label *ngFor="let term of mzd['terms']">
+                <ion-icon name="pin" color="primary"></ion-icon>
+                <ion-text>{{term.desc}}</ion-text><br>
+               </ion-label> 
+            </ion-card-content>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card> 
       <ion-card class="w100"> 
-        <ion-card-header>  
+        <ion-card-header class="pb0">  
             <ion-card-title>
              <ion-icon name="cash-outline" color="primary"></ion-icon> 
               الرسوم
@@ -39,7 +92,7 @@
               <ion-col size="4" class="ion-text-center">
                 <ion-card-content> 
                     <ion-text color="primary"><b>العربون</b> </ion-text><br> 
-                    <ion-text>  {{mzd['deposite']}} </ion-text>
+                    <ion-text>  {{mzd['deposit']}} </ion-text>
                     <!-- <ion-text> ر.س </ion-text>  -->
                   </ion-card-content>
               </ion-col>
@@ -61,28 +114,9 @@
             </ion-row>
           </ion-grid> 
       </ion-card> 
+   
       <ion-card class="w100">
-        <ion-card-header>
-          <ion-card-title>
-            <ion-icon name="bookmark-outline" color="primary"></ion-icon> 
-            بنود المزاد
-          </ion-card-title> 
-        </ion-card-header>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="12" >
-             <ion-card-content> 
-              <ion-label *ngFor="let term of mzd['terms']">
-                <ion-icon name="pin" color="primary"></ion-icon>
-                <ion-text>{{term.descr}}</ion-text><br>
-               </ion-label> 
-            </ion-card-content>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card> 
-      <ion-card class="w100">
-        <ion-card-header>  
+        <ion-card-header class="pb0">  
           <ion-card-title>
             <ion-icon name="calendar-outline" color="primary"></ion-icon>
           الجدول الزمني 
@@ -122,27 +156,64 @@
           </ion-row>
         </ion-grid>
       </ion-card>
+         <ion-card class="w100">
+        <ion-card-header class="pb0">
+          <ion-card-title>
+            <ion-icon name="bookmark-outline" color="primary"></ion-icon> 
+            بنود المزاد
+          </ion-card-title> 
+        </ion-card-header>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" >
+             <ion-card-content> 
+              <ion-label *ngFor="let term of terms">
+                <ion-icon name="pin" color="primary"></ion-icon>
+                <ion-text>{{term.desc}}</ion-text><br>
+               </ion-label> 
+            </ion-card-content>
+            </ion-col>
+          </ion-row>
+          <ion-item button (click)="viewMoreLess()" lines="none" class="lightItem lightBorder">
+            <h4 class="custH">
+             <ion-label *ngIf="view == 0">
+               <ion-note >المزيد</ion-note><br>
+               <ion-icon name="chevron-down-outline" color="primary"></ion-icon>
+             </ion-label>
+             <ion-label *ngIf="view == 1">
+               <ion-note >اقل</ion-note><br>
+               <ion-icon   name="chevron-up-outline" color="primary"></ion-icon> 
+             </ion-label> 
+            </h4> 
+         </ion-item> 
+        </ion-grid>
+      </ion-card> 
     </ion-row>
 
 </ion-grid>
 </ion-content>
-<ion-footer class="footer">
+<ion-footer class="footer"  *ngIf="mzd">
   <ion-grid dir="rtl">
-    <ion-row>
-      <ion-col size="6">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="6" *ngIf="mzd['currentStatus'] == 1 && !mzd['userIn']">
        <ion-button expand="block" (click)="subiscribe()"> 
         <h5>دخول المزاد</h5>
-        <ion-icon name="send-outline"  color="light" slot="end"></ion-icon>
-        
+        <ion-icon name="send-outline"  color="light" slot="end"></ion-icon> 
        </ion-button>
       </ion-col>
-      <ion-col size="6" class="ion-text-center">
+      <ion-col size="6"*ngIf="mzd['currentStatus'] == 1 && mzd['userIn'] == true">
+        <ion-button expand="block" (click)="cancelSubiscribtion()" color="danger"> 
+         <h5> إلغاء الإشتراك</h5>
+         <!-- <ion-icon name="send-outline"  color="light" slot="end"></ion-icon>  -->
+        </ion-button>
+       </ion-col>
+      <ion-col size="6" class="ion-text-center" *ngIf="mzd['currentStatus'] != 1">
         <h4 class="ion-no-margin">
         <ion-text color="primary">
             أعلي مزايدة
         </ion-text> <br>  
-        <ion-text> 3000 </ion-text>
-         <ion-text> ر.س </ion-text>
+        <ion-text> {{ mzd['fee'] + mzd['deposit'] }}  </ion-text>
+         <ion-text> ج.س</ion-text>
        </h4>  
       </ion-col> 
     </ion-row>

@@ -73,48 +73,61 @@ export class MzadDetailsPage implements OnInit {
   
 }
 
-mzd : any ;  
-
+showMore:boolean = false
+view:number ;
+mzd : any ;   
 USER_INFO : {
     _id: any ,
     firstName: any,
     lastName :any
 };
    
-      id:any
-
+  id:any 
+  terms: Array<any>=[];
   timeLeft :any = {da:"" ,hr:"",mn:"" ,sc:"" } 
   constructor(private api:SocketServiceService,private socket :SocketServiceService ,private route: ActivatedRoute,private storage: Storage ,private loadingController:LoadingController,private toast:ToastController,private actionSheetCtl:ActionSheetController ,private datePipe:DatePipe ,private rout : Router,private modalController:ModalController) {
+   
+   }
+
+   tirmString(string ,length){
+    return  string.substring(0, length) + '...'  ;
+   }
+
+ 
+   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (params && params.id) {
         this.id = JSON.parse(params.id);
-        this.getAuction(this.id)
-        
+        this.storage.get('user_info').then((response) => {
+          if (response) {
+            this.USER_INFO = response.user
+            console.log(this.USER_INFO) 
+            this.getAuction(this.id) 
+          }
+        });
+       
       }
     }); 
-   }
+  }
 
+ 
 
    getAuction(id){
     this.api.getAuction(this.id).subscribe(data =>{
       console.log(data)
       let res = data['auction'][0][0]
       this.mzd = res
-      console.log(this.mzd)
+      console.log('mzzzz',this.mzd)
       this.prepare()
     }, (err) => {
     console.log(err);
   })  
   }
   
-   prepare(){  
-    //view time قبل دقيقتين 
-     //use dateAgo pipe
-     this.timeLeft = this.endAfterounter() 
-
+   prepare(){   
+     this.timeLeft = this.endAfterounter()  
      if(this.mzd['currentStatus'] == 1 ){
-      this.mzd['timeLeft'] = this.startAfterounter( )
-      
+      this.mzd['timeLeft'] = this.startAfterounter( ) 
     }else if (this.mzd['currentStatus'] == 2){
       //edit here
       this.mzd['timeLeft'] = this.endAfterounter( )
@@ -124,6 +137,27 @@ USER_INFO : {
       this.mzd['timeLeft'] = this.endSinceAfterounter( )
 
     }  
+
+
+     // userIn
+     let fltuse:Array<any> =[]
+     fltuse = this.mzd.users.filter(x=>x.userId ==  this.USER_INFO._id)
+     console.log('fltuse' , fltuse )
+
+    if(fltuse.length> 0 && this.mzd.currentStatus < 3 && fltuse[0].cancel == 0){
+      this.mzd.userIn = true 
+     }else if(fltuse.length> 0 && fltuse[0].cancel == 1){
+      this.mzd.userOut = true 
+     }
+     else if(this.mzd.logs.length > 0 && fltuse.length> 0 && this.mzd.currentStatus == 3){
+      // userWin
+      let mx =  this.mzd.logs.reduce((acc, shot) => acc = acc > shot.pay ? acc : shot.pay, 0); 
+      let flt = this.mzd.logs.filter(x=>x.pay == mx)
+      console.log('userWin', mx , flt )
+      if(flt[0].userId == this.USER_INFO._id){
+        this.mzd.userWin = true
+      }
+     }
 
 
      let du = momentObj.duration(momentObj(this.mzd['end']).diff(momentObj(this.mzd['start']))); 
@@ -140,13 +174,48 @@ USER_INFO : {
        con = " , " 
      }
      this.mzd['duration'] = day + con + hr 
-   
+     console.log('length',this.mzd['terms'].length)
+     if(this.mzd['terms'].length > 3){
+      this.getTerms('less')
+    }else{
+      this.getTerms('more')
+    }
     console.log(this.mzd) 
   }
   
-  endAfterounter( ){ 
+
+  viewMoreLess(){
+    console.log(this.view)
+    if(this.view == 0){
+      this.getTerms('more')
+      this.view = 1
+    } else {
+      this.getTerms('less')
+      this.view = 0
+    }
+  }
+
+  getTerms(moreOrLess?){
+    let length
+    if(moreOrLess == 'less'){
+      length = 3
+    }else if(moreOrLess == 'more'){
+      length = this.mzd['terms'].length
+    } else{
+      length = this.mzd['terms'].length 
+    }  
+    this.terms = []
+    for (let index = 0; index < length; index++) {
+      const element = this.mzd['terms'][index];
+      this.terms.push(element)  
+    } 
+    this.view = 0    
+  }
+
+
+  endAfterounter(){ 
     let offset =  momentTz().utcOffset()
-    let newDate = momentObj( this.mzd['end']).add(); 
+    let newDate = momentObj(this.mzd['end']).add(); 
      console.log('init', this.mzd['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
     return new Observable<object>((observer: Observer<object>) => {
       setInterval(() => observer.next(
@@ -197,22 +266,14 @@ USER_INFO : {
 
 
 
-  ngOnInit() {
-    this.storage.get('user_info').then((response) => {
-      if (response) {
-        this.USER_INFO = response
-        console.log(this.USER_INFO) 
-      }
-    });
-  }
-
+ 
 
   async presentModal(id?, status?) {  
     const modal = await this.modalController.create({
       component: MzadSubescribePage ,
       componentProps: {
-        "item":"",
-        "status": ""
+        "mzd" : this.mzd ,
+        "USER_INFO": this.USER_INFO
       }
     });
     
@@ -227,17 +288,98 @@ USER_INFO : {
   }
 
     doAfterDissmiss(dataReturned){
-    this.presentToast("تم الإشتراك بنجاح , يمكنك المزايدة الأن" ,'success') 
-    this.socket.userJoiningAuction([this.USER_INFO._id,this.USER_INFO.firstName , this.mzad._id ])
-
-    let navigationExtras: NavigationExtras = {
-      queryParams: {
-        user_info: JSON.stringify(this.USER_INFO),
-        auction_id: JSON.stringify(this.mzad._id)
-      }
-    }; 
-    this.rout.navigate(['live-mzad'], navigationExtras);  
+     console.log(dataReturned , dataReturned.data , dataReturned.role)
+     if( dataReturned.role == 'done'){ 
+      this.rout.navigate(['tabs/home']);
+     // this.mzd = dataReturned.data
+     
+      // this.socket.userJoiningAuction([this.USER_INFO._id,this.USER_INFO.firstName , this.mzad._id ])
+      //push notification to aution's subiscribed users
+    
+      // let navigationExtras: NavigationExtras = {
+      //   queryParams: {
+      //     user_info: JSON.stringify(this.USER_INFO),
+      //     auction_id: JSON.stringify(this.mzad._id)
+      //   }
+      // }; 
+      //  this.rout.navigate(['live-mzad'], navigationExtras); 
+     } 
+      
    }
+
+   checkRemainTime(){
+    //offset between now and startdate auction
+      let newDate = momentObj(this.mzd['start']); 
+      let today = new Date() 
+      return momentObj(newDate).diff(momentObj(today));
+  }
+
+   validate(){
+     if(this.checkRemainTime() <= 60000){
+      console.log('this.checkRemainTime()',this.checkRemainTime())
+      this.presentToast('لا يمكنك الإشتراك , لقد بدأ المزاد بالفعل','danger')
+      return false
+      } else{ 
+      return true
+    }   
+      // validate if user not restircted
+      // validate if user not from staff
+       
+  }
+
+   prepareUserbj(){
+    let mzdTemp  = { 
+      _id : this.mzd['_id'] ,
+      user :[{
+        "userId": this.USER_INFO._id, 
+        "cancel": 1,
+        "cancelTime":new Date() ,
+        "reason": "i dont Know",
+        "cancelTransId": "",
+      }] 
+    } 
+    return mzdTemp
+   }
+
+   cancelSubiscribtion(){
+    // when user cancel subiscribe to auctions 
+    // user can only cancel subiscrbe befor auction start date(){ 
+    if(this.validate() == true){
+      this.presentLoadingWithOptions("جاري معالجة طلبك ..")
+     //api to add user to log of mzad
+      console.log('prepareUserbj',this.prepareUserbj())
+      this.api.cancelAuctionUsers(this.prepareUserbj()).subscribe(data =>{
+      console.log('auction update',data ,data['updatedAuctionUsers'])
+    
+      this.presentToast("تم إلغاء الإشتراك بنجاح " ,'success') 
+      //back to home page with new data
+      this.rout.navigate(['tabs/home']);
+    }, (err) => { 
+      this.loadingController.dismiss()
+      console.log(err.error); 
+      this.handleError(err.error.error) 
+   },()=>{
+    this.loadingController.dismiss()
+   }
+   )  
+     //api to add pay transaction + 
+     //
+     //socket emmit to tell others + push notification 
+    }
+    
+     
+  }
+  
+  handleError(err){
+   if(err == 'max users'){
+    this.presentToast('اكتمل العدد المطلوب , لا يمكنك المشاركة','danger')
+   }else{
+    this.presentToast('حدث خطأ ما الرجاء المحاولة مرة اخري','danger') 
+   }
+  }
+
+  
+    
 
    async presentLoadingWithOptions(msg?) {
     const loading = await this.loadingController.create({
@@ -269,6 +411,7 @@ USER_INFO : {
   }
 
    subiscribe(){
+    
     this.presentModal()
    }
 }

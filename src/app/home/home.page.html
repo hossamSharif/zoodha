@@ -114,8 +114,26 @@
         </ion-row>
       
         <ion-row>
-          <ion-col size="6"> 
-                  <img class="radus5 img" [src]="auct.imgs[0]"/>  
+          <ion-col size="6" class="pos">
+                 <div class="Status" *ngIf="auct.userIn" >
+                  <ion-badge color="light">
+                    <ion-icon color="success" name="ribbon-outline"></ion-icon>
+                    <ion-text> مشارك   </ion-text>
+                  </ion-badge> 
+                 </div>
+                 <div class="Status"  *ngIf="auct.userWin">
+                  <ion-badge color="light">
+                    <ion-icon name="ribbon-outline" color="warning"></ion-icon>
+                    <ion-text> فائز   </ion-text>
+                  </ion-badge> 
+                 </div>
+                 <div class="Status" *ngIf="auct.userOut">
+                  <ion-badge color="light">
+                    <ion-icon name="ribbon-outline" color="danger"></ion-icon>
+                    <ion-text> ملغي   </ion-text>
+                  </ion-badge> 
+                 </div>
+                <img class="radus5 img" [src]="auct.imgs[0]"/>  
           </ion-col>
           <ion-col size="6">
             <ion-grid   dir ="rtl" class="ion-no-padding"> 
@@ -190,7 +208,7 @@
           </ion-item>
           </ion-col>
           <ion-col size="4">
-            <ion-button expand="block" (click)="mazdDetails(auct._id)">
+            <ion-button expand="block" (click)="mazdDetails(auct)">
                <h5><b>التفاصيل</b></h5>
             </ion-button>
           </ion-col>

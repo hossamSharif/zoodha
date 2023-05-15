@@ -9,7 +9,25 @@
     border-bottom-width: .5px;
     border-color: var(--ion-color-light-shade);
 }
-
+.pb0{
+    padding-bottom: 0px;
+ }
+.budgStatus{
+ position: absolute;
+ float: right;
+ right: 1rem;
+ top:10px;
+}
+.mgleft{
+  margin-right: 2px;
+}
+.pos{
+ position: relative;
+}
+.custH{
+    text-align: center;
+    width: 100%;
+}
 .paddind{
     padding: 3px;
 }

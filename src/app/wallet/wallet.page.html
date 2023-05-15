@@ -13,10 +13,9 @@
       <h2 color="light"><b>الرصيــد</b></h2>
     </ion-title>
     <ion-title class="ion-text-center" color="light">
-      <h2 ><b>10000</b>
-        <ion-text>ر.س</ion-text>
-      </h2> 
-      
+      <h2 ><b>{{walletBalance}}</b>
+        <ion-text>ج.س </ion-text>
+      </h2>  
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -25,7 +24,7 @@
 <ion-content>
   <ion-grid class="ion-no-margin  ion-no-padding"  dir="rtl" > 
     <ion-row class="ion-no-padding">
-      <ion-card class="w100"> 
+      <!-- <ion-card class="w100"> 
         <ion-list>
           <ion-item class="w100">
             <ion-icon name="card-outline"  color="primary"></ion-icon> 
@@ -44,7 +43,7 @@
         </ion-list> 
        
          
-      </ion-card> 
+      </ion-card>  -->
       <ion-card class="w100"> 
         <ion-list>
           <ion-item class="w100">
@@ -54,19 +53,77 @@
               <ion-icon name="arrow-back-outline"></ion-icon>
             </ion-button> 
           </ion-item> 
-          <ion-item  lines="none"   class="ion-margin-top">
-            <ion-icon name="arrow-up-outline" color="danger"></ion-icon> 
-            <ion-label> رسوم مشاركة في مزاد رقم</ion-label>
-            <ion-badge slot="end" outline="true" color="danger"><b>-3000</b><ion-text>ر.س</ion-text></ion-badge>
-            <ion-icon slot="end" name="chevron-back-outline"></ion-icon> 
-           
-          </ion-item>
-           <ion-item lines="none"   class="ion-margin-bottom"  >
-            <ion-icon name="arrow-down-outline" color="success"></ion-icon> 
+
+          <ion-accordion-group>
+            <ion-accordion   *ngFor="let trans of transactions ; let i = index" [value]="i">
+              <ion-item slot="header" color="light">
+                  <ion-icon name="arrow-up-outline" color="danger" *ngIf="trans.typee == 1"></ion-icon> 
+                  <ion-icon name="arrow-down-outline" color="success" *ngIf="trans.typee == 2"></ion-icon> 
+                  <ion-label> {{trans.details}}</ion-label>
+                  <ion-badge slot="end" outline="true" color="danger" *ngIf="trans.typee == 1"><b>-{{trans.pay}}</b><ion-text> ج.س </ion-text></ion-badge>
+                  <ion-badge slot="end" outline="true" color="success" *ngIf="trans.typee == 2"><b>-{{trans.pay}}</b><ion-text> ج.س </ion-text></ion-badge>
+                
+              </ion-item>
+              <div class="ion-padding" slot="content">
+                <ion-grid>
+                  <ion-row class="ion-margin">
+                    <ion-col size="3">رقم العملية:</ion-col>
+                    <ion-col size="9" class="ion-text-end">{{trans._id}}</ion-col>
+                  </ion-row>
+                  <ion-row class="ion-margin">
+                    <ion-col size="3">التفاصيل:</ion-col>
+                    <ion-col size="9" class="ion-text-end">{{trans.details}}</ion-col>
+                  </ion-row>
+                  <ion-row class="ion-margin">
+                    <ion-col size="3">التاريخ</ion-col>
+                    <ion-col size="9"  class="ion-text-end">{{trans.createdAt | date:'EEE dd-MM-yyyy hh:mm a' : undefined  : 'ar'}}</ion-col>
+                  </ion-row> 
+                  <ion-row class="ion-margin"> 
+                    <ion-col size="3">نوع العملية</ion-col>
+                    <ion-col size="9"  class="ion-text-end">
+                      <ion-label  *ngIf="trans.typee == 1">سحب</ion-label>
+                      <ion-label  *ngIf="trans.typee == 2">ايداع</ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="ion-margin">
+                    <ion-col size="3"><ion-label>المبلغ</ion-label></ion-col>
+                    <ion-col size="9"  class="ion-text-end"><ion-label>{{trans.pay}} ج.س</ion-label></ion-col>
+                  </ion-row>
+                  <ion-row class="ion-margin">
+                    <ion-col size="3"> <ion-label>من حساب</ion-label>  </ion-col>
+                   
+                    <ion-col size="9"  class="ion-text-end">   <ion-label><ion-text>{{trans.fromAccountTitle}} </ion-text>,{{trans.fromAccount}}</ion-label></ion-col>
+                  </ion-row>
+                  <ion-row class="ion-margin">
+                    
+                    <ion-col size="3"> <ion-label>الي حساب</ion-label>  </ion-col>
+                    <ion-col size="9"  class="ion-text-end">  <ion-label><ion-text>{{trans.toAccountTitle}}  </ion-text>,{{trans.toAccount}}</ion-label> </ion-col>
+                  </ion-row>
+                  <ion-row class="ion-margin">
+                    <ion-col size="3"><ion-label>تعليق</ion-label>   </ion-col>
+                    <ion-col size="9"  class="ion-text-end">   <ion-label><ion-text>{{trans.toAccountTitle}}  </ion-text>,{{trans.toAccount}}</ion-label></ion-col>
+                  </ion-row>
+                </ion-grid>
+               
+              </div>
+            </ion-accordion>
+          
+          </ion-accordion-group>
+
+
+
+          <!-- <ion-item  lines="none"   class="ion-margin-top" *ngFor="let trans of transactions">
+            <ion-icon name="arrow-up-outline" color="danger" *ngIf="trans.currentStatus == 1"></ion-icon> 
+            <ion-icon name="arrow-down-outline" color="success" *ngIf="trans.currentStatus == 2"></ion-icon> 
+            <ion-label> {{trans.details}}</ion-label>
+            <ion-badge slot="end" outline="true" color="danger"><b>-{{trans.pay}}</b><ion-text> ج.س </ion-text></ion-badge>
+            <ion-icon slot="end" name="chevron-back-outline"></ion-icon>  
+          </ion-item> -->
+           <!-- <ion-item lines="none"   class="ion-margin-bottom"  > 
             <ion-label> شحن رصيد عن طريق مدي</ion-label>
             <ion-badge slot="end" outline="true" color="success"><b>+3000</b><ion-text>ر.س</ion-text></ion-badge>
             <ion-icon slot="end" name="chevron-back-outline"></ion-icon>  
-          </ion-item>
+          </ion-item> -->
         </ion-list> 
        
          
@@ -74,11 +131,11 @@
 
       </ion-row>
     </ion-grid>
-    <ion-fab slot="fixed" class="float">
+    <!-- <ion-fab slot="fixed" class="float">
       <ion-chip class="ion-padding" class="bg">
         <ion-label color="light">شحن المحفظة</ion-label> 
        <ion-icon name="add-circle"  color="light" class="f30" ></ion-icon>
        
      </ion-chip>
-   </ion-fab>
+   </ion-fab> -->
 </ion-content>
