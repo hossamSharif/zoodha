@@ -154,6 +154,13 @@ export class SocketServiceService {
       params=params.append('imei' , imei)
       return this.http.get(this.api+'users/loginphone/'+phone+'&'+imei)
     }
+
+    loginEmail(email , password){ 
+      let params = new HttpParams() 
+      params=params.append('email' , email)
+      params=params.append('password' , password)
+      return this.http.get(this.api+'users/loginemail/'+email+'&'+password)
+    }
     
     createUser(user){ 
       let params = new HttpParams() 

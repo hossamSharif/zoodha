@@ -71,6 +71,10 @@ const routes: Routes = [
   {
     path: 'change-phone',
     loadChildren: () => import('./change-phone/change-phone.module').then( m => m.ChangePhonePageModule)
+  },
+  {
+    path: 'terms',
+    loadChildren: () => import('./terms/terms.module').then( m => m.TermsPageModule)
   }
 ];
 @NgModule({

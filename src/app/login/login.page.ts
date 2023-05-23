@@ -12,6 +12,19 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  USER_INFO : { 
+    firstName:any, 
+    lastName:any, 
+    fullName:any,
+    type:any, 
+    phone :any,
+    contryCode :any,
+    password:any,
+    gender:any,
+    email:any,
+    userName:any,
+    imei:any,
+    birthDate:any};
 ///  mode ='phone'
   mode ='google'
   phone :any 
@@ -60,6 +73,12 @@ export class LoginPage implements OnInit {
       } else {
         this.loginPhone()
       }
+    }else if(this.mode == 'google'){
+      if (this.ionic2Form.valid == false) {
+        console.log('Please provide all the required values!') 
+      } else {
+        this.loginEmail()
+      }
     }
   }
  
@@ -69,6 +88,33 @@ export class LoginPage implements OnInit {
     return seq
    }
  
+   
+   loginEmail(){
+    this.spinner = true
+    this.api.loginEmail(this.email, this.password).subscribe(data => {
+      console.log(data)
+      let res = data 
+     // this.getsms('exist', res) // uncomment it after apply smsgetway 
+     // this.getVirfyCode('exist' , res) // comment it after apply smsgetway
+
+     let jsd = data['user']
+                this.api.loginEmit(jsd._id) 
+                this.USER_INFO =  data['user']
+                this.storage.set('user_info', this.USER_INFO).then((response) => {
+               
+                })
+                this.storage.set('token', jsd.token).then((response) => {
+                  this.rout.navigate(['tabs/home']); 
+                })  
+    }, (err) => {
+      console.log(err.error.error);
+      this.handleError(err.error.error)
+      this.spinner = false 
+    },()=>{
+      this.spinner = false // move this line to send sms function when you enable it
+    })
+   }
+
   loginPhone() {
     this.spinner = true
     this.api.loginPhone(this.phone, this.genrateime()).subscribe(data => {
@@ -170,9 +216,7 @@ export class LoginPage implements OnInit {
   //   console.log(data1,data2);
   // }
 
-  loginEmail(){
-    
-  }
+
 
   async presentToast(msg,color?) {
     const toast = await this.toast.create({
