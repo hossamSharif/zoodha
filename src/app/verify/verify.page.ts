@@ -115,8 +115,9 @@ export class VerifyPage implements OnInit {
               }else if(JSON.parse(params.type) == 'exist'){ 
                 let jsd = JSON.parse(params.data)
                 this.api.loginEmit(jsd._id) 
-                this.USER_INFO = JSON.parse(params.data)
-                this.storage.set('user_info', this.USER_INFO).then((response) => {
+                console.log('efsd',params.data)
+                this.USER_INFO =  jsd.user 
+                this.storage.set('user_info', jsd).then((response) => {
                
                 })
                 this.storage.set('token', jsd.token).then((response) => {

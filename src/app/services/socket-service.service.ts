@@ -12,8 +12,8 @@ import { map, switchMap, tap } from 'rxjs/operators';
 
 
 export class SocketServiceService { 
-  api = 'http://localhost:3000/'
- //  api ='https://coral-app-7hsef.ondigitalocean.app/'
+  //api = 'http://localhost:3000/'
+  api ='https://coral-app-pr5y9.ondigitalocean.app/'
     public message$: BehaviorSubject<string> = new BehaviorSubject('');
     public liveStremUserHadJoined: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
     public liveStremUserHadBidding: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
@@ -22,8 +22,8 @@ export class SocketServiceService {
     public liveStremUserFucosLostToBidding: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
     constructor(public http: HttpClient ) {}
   
-    socket = io('http://localhost:3000/',{ transports: ['websocket', 'polling', 'flashsocket'] });
-    // socket = io('https://coral-app-7hsef.ondigitalocean.app/',{ transports: ['websocket', 'polling', 'flashsocket'] });
+  //  socket = io('http://localhost:3000/',{ transports: ['websocket', 'polling', 'flashsocket'] });
+    socket = io('https://coral-app-pr5y9.ondigitalocean.app/',{ transports: ['websocket', 'polling', 'flashsocket'] });
   
     public sendMessage(message) {
       this.socket.emit('message', message);

@@ -22,6 +22,9 @@ export class LiveMzadPage implements OnInit {
     firstName: any,
     lastName :any
     };
+    errorLoad:boolean = false
+    roundsMode:any = true
+    availRounds = 0
      auction_id :any ;
      highestBidd:any = 0
      lastBidd4U:any = 0
@@ -68,11 +71,13 @@ constructor(private alertController :AlertController,private api:SocketServiceSe
 
     //notify other when some how add bidding (listing)
     this.socket.userBiddedInAuction().subscribe((logArr: Array<any>) => { 
-         console.log(logArr)
+        
          if(logArr.length>0){
+          console.log('jahsja',logArr)
+          this.mzd['logs'].push(logArr[0][0]) 
+          this.prepareAuc() 
           this.presentToast(logArr[1].firstName + " " + logArr[0][0].pay ,'success')
-          this.mzd['log']=logArr[0]
-           this.prepareAuc() 
+         
          }
     }) //notify other when some how fucos input and start writting bid price (listing)
 
@@ -96,8 +101,7 @@ constructor(private alertController :AlertController,private api:SocketServiceSe
 }
 
 ionViewDidEnter(){
-  //// 
-  //notify other when some how add bidding (listing)
+  ////  
   this.socket.auctionEndOntime().subscribe((ar: Array<any>) => { 
   console.log('here im',ar)
   this.presentToast('holla  auction end on time ' ,'success') 
@@ -108,6 +112,27 @@ ionViewDidEnter(){
 })
 }
  
+
+reload(){
+this.errorLoad = false
+this.mzd = undefined
+this.getAuction()
+}
+
+handleError(err){ 
+  this.errorLoad = true
+  // if (err.error == "No user with this phone found") {
+  //   console.log('no user was found') 
+  // // this.getsms('new',err) // uncomment it after apply smsgetway 
+  // // this.getVirfyCode('new' , err) // comment it after apply smsgetway 
+  // }else if(err.error == "another phone"){
+  //   // to apply imei check uncmment the line in zoodohapi/controller/user.j function : loginPhone
+  //   this.presentToast('seem you use another phone','danger') 
+  // } else{ 
+  //   this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+  //   console.log(err.kind)
+  // }
+}
 getAuction(){ 
     this.api.getAuction(this.auction_id).subscribe(data =>{
       console.log(data)
@@ -117,6 +142,7 @@ getAuction(){
       console.log('im here baby',this.mzd , 'users',this.users)
      this.prepareAuc()
     }, (err) => {
+    this.handleError(err.error.error)
     console.log(err);
   })  
  } 
@@ -125,8 +151,8 @@ prepareAuc(){
     this.timeLeft = this.endAfterounter() 
     //ordering log depend on date desc
     // this.mzd['logs']=this.mzd['logs'].sort((x, y) => +new Date(x.time) > +new Date(y.time));
-   if( this.mzd['logs'].length>0 ){ 
-    
+   if( this.mzd['logs'].length>0 ){  
+    this.emptyLog = false
     this.mzd['logs']=  this.mzd['logs'].sort(function (a, b) {
       var dateA = new Date(a.time);
       var dateB = new Date(b.time);
@@ -140,8 +166,7 @@ prepareAuc(){
     this.highestBidd =  this.mzd['logs'].reduce((acc, shot) => acc = acc > shot.pay ? acc : shot.pay, 0)
     console.log('highestBidd',this.highestBidd)
     //  last bidd for you
-    let flt :Array<any> = [] 
-    
+    let flt :Array<any> = []  
      flt = this.mzd['logs'].filter(x=>x._id == this.USER_INFO._id)
     if(flt.length > 0){
       this.lastBidd4U =  flt[0].pay
@@ -151,9 +176,12 @@ prepareAuc(){
     }
      
     // prepare users Log
-    if(this.mzd['logs'].length >2){
+    console.log('prepare users Log',this.mzd['logs'].length)
+    if(this.mzd['logs'].length > 2){
+      console.log('less')
       this.getUserinfoLog('less')
     }else{
+      console.log('more') 
       this.getUserinfoLog('more')
     }
 
@@ -170,8 +198,18 @@ prepareAuc(){
     } 
 
 
-   
-    
+    // rounds preabare
+   this.availRounds = this.mzd['rounds']
+   let flt : Array<any> = []
+   if(this.mzd['logs'].length>0){
+    flt =  this.mzd['logs'].filter(x=>x.userId == this.USER_INFO._id) 
+    this.availRounds = this.mzd['rounds'] - +flt.length
+    console.log('rounds preabare' , this.mzd['rounds'] , flt.length)
+    console.log('rounds preabare' , this.usersLogs )
+   } 
+  
+
+  
 } 
 
 onEndAuction(winnerId , orderId){
@@ -217,13 +255,14 @@ async presentAlert(stat? ,winId? ,orderId?) {
     header: 'تنبيه',
     subHeader:subHeader ,
     message:msg,
+    mode:'ios',
     buttons: btns,
     backdropDismiss:false
   });
 
   await alert.present();
   const { role } = await alert.onDidDismiss();
- // this.roleMessage = `Dismissed with role: ${role}`;
+ //  this.roleMessage = `Dismissed with role: ${role}`;
 }
 
 
@@ -234,7 +273,8 @@ goToOrderDetails(orederId){
       user_info: JSON.stringify(this.USER_INFO )
     }
   };
-  this.rout.navigate(['order-details'] , navigationExtras); 
+  this.alertController.dismiss()
+  this.rout.navigate(['order-details'] , navigationExtras);
 }
 
 goHome(){
@@ -255,6 +295,7 @@ getUserinfoLog(moreOrLess?){
   }
   console.log('length', length)
   this.usersLogs = []
+ 
   for (let index = 0; index < length; index++) {
     const element = this.mzd['logs'][index];
     console.log('element', element) 
@@ -268,8 +309,14 @@ getUserinfoLog(moreOrLess?){
         "lastHighestPay": +element.lastHighestPay,
         "userName" : flt[0]['userName'] 
      })
-    }  
+    } 
   } 
+
+  
+  
+
+
+
  // this.view = 0  
   // this.mzd['logs'].forEach(element => {
   //    let flt =  this.users.filter(x=>x._id == element.userId)[0].userName
@@ -353,11 +400,19 @@ memnto(newDate){
 
 
  
-validationPrice(type?){
-
+validationPrice(type?){ 
   let h = this.mzd['logs'].reduce((acc, shot) => acc = acc > shot.pay ? acc : shot.pay, 0)
-   // not more than oppenning price   
-   if( this.bidPrice <= this.mzd['productPrice'] - (0.3 * this.mzd['productPrice'])){
+   // not more than oppenning price 
+   if( this.availRounds == 0 ){
+    if(type == 'btn'){
+     this.showError = true
+     this.msgError = 'انتهي عدد محاولاتك'
+    }else{ 
+     this.presentToast('انتهي عدد محاولاتك', 'danger')
+     return true
+    }
+   }  
+   else if( this.bidPrice <= this.mzd['productPrice'] - (0.3 * this.mzd['productPrice'])){
      if(type == 'btn'){
       this.showError = true
       this.msgError = 'أقل من السعر الإفتتاحي'
@@ -429,8 +484,7 @@ bidChange(ev){
       this.bidPrice = h + 1
     } 
   } 
-
-  
+ 
   this.socket.userFucosBiddingInAuction([this.USER_INFO, this.mzd._id ])
  }
 
@@ -511,20 +565,29 @@ bidChange(ev){
         // console.log('im here baby',this.mzad)
       }, (err) => {
       console.log(err);
+      this.handelErrorBiding(err.error.error)
       })  
-      //
-
+      // 
         // add record to log 
         // animate input and highest bidding price
         // it done by addedd animation classes
         //show alert for other users using sockit 
-        // it done by subiscribe  in ng on it
-
-
+        // it done by subiscribe  in ng on it  
   } 
 }
 
-
+    handelErrorBiding(err){
+      // if (err.error == "No user with this phone found") {
+      //     console.log('no user was found')  
+      //   } else if (err.error == "another phone") { 
+      //     this.presentToast('seem you use another phone','danger') 
+      //   } else { 
+      //     this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+      //     console.log(err.kind)
+      //   } 
+        this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+    }
+ 
 
 prepareBidding(){ 
   let log =[{

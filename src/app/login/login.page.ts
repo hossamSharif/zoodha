@@ -25,8 +25,8 @@ export class LoginPage implements OnInit {
     userName:any,
     imei:any,
     birthDate:any};
-///  mode ='phone'
-  mode ='google'
+   mode ='phone'
+  // mode ='google'
   phone :any 
   password:any
   email:any
@@ -97,13 +97,13 @@ export class LoginPage implements OnInit {
      // this.getsms('exist', res) // uncomment it after apply smsgetway 
      // this.getVirfyCode('exist' , res) // comment it after apply smsgetway
 
-     let jsd = data['user']
-                this.api.loginEmit(jsd._id) 
+                let jsd = data['user']
+               // this.api.loginEmit(jsd._id) 
                 this.USER_INFO =  data['user']
-                this.storage.set('user_info', this.USER_INFO).then((response) => {
+                this.storage.set('user_info', data).then((response) => {
                
                 })
-                this.storage.set('token', jsd.token).then((response) => {
+                this.storage.set('token', data['token']).then((response) => {
                   this.rout.navigate(['tabs/home']); 
                 })  
     }, (err) => {
@@ -155,7 +155,7 @@ export class LoginPage implements OnInit {
       // to apply imei check uncmment the line in zoodohapi/controller/user.j function : loginPhone
       this.presentToast('seem you use another phone','danger') 
     } else{ 
-      this.presentToast('','danger')
+      this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
       console.log(err.kind)
     }
   }

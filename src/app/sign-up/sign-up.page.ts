@@ -124,9 +124,7 @@ export class SignUpPage implements OnInit {
   }
 
 
-  showTerms(){
-
-  }
+   
 
   agreeCheck(ev){
     console.log(ev.target.checked)
@@ -232,8 +230,8 @@ export class SignUpPage implements OnInit {
         }) 
       }, (err) => {
       console.log(err); 
-      this.spinner = true
-      this.handleError(err.error) 
+      this.spinner = false
+      this.handleError(err.error.error) 
     },()=>{
       this.spinner = false
     })
@@ -245,7 +243,7 @@ export class SignUpPage implements OnInit {
         this.presentToast('رقم الهاتف موجود مسبقا , قم بتسجيل الدخول', 'danger') 
         return false
        } else if (msg == "duplicate email"){ 
-        this.presentToast("البريد موجود مسبقا") 
+        this.presentToast("البريد موجود مسبقا" ,'danger') 
         return false
        }  
     }
@@ -262,7 +260,7 @@ export class SignUpPage implements OnInit {
      }
 
 
-async presentModal(id?, status?) { 
+async showTerms(id?, status?) { 
     
     const modal = await this.modalController.create({
       component: TermsPage ,
@@ -282,7 +280,9 @@ async presentModal(id?, status?) {
   }
 
   doAfterDissmiss(dataReturned){
-
+    if(dataReturned.data == "agree"){
+      this.agree = true
+    } 
   }
 
 

@@ -55,6 +55,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.storage.get('user_info').then((response) => {
       if (response) {
+        
         this.USER_INFO = response.user
         console.log('kkkkkkkkkk',this.USER_INFO) 
         this.getAllAuction()  
@@ -196,7 +197,7 @@ mazdDetails(auct){
    this.rout.navigate(['live-mzad'], navigationExtras); 
   } else if( auct.userWin == true ){ 
     // redirect to tabs/cart and pass _id to present details modal 
-  this.rout.navigate(['oreder-details'],navigationExtras);
+  this.rout.navigate(['order-details'],navigationExtras);
   }else if( auct.userOut == true && auct.currentStatus == 1){
     this.rout.navigate(['mazad-details'],navigationExtras);
   }else{

@@ -10,11 +10,43 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content> 
+<ion-content>
+  <ion-grid *ngIf="!mzd && errorLoad == false"  class="custGrid"> 
+    <ion-row class="ion-no-margin  ion-no-padding w100" >
+      <ion-col size="12" class="ion-text-center">
+        <!-- *ngIf="spinner == true" -->
+        <ion-spinner name="lines" color="dark" mode="ios"></ion-spinner> 
+      </ion-col>
+      <ion-col size="12">
+        <!-- *ngIf="spinner == true" --> 
+      </ion-col>
+    </ion-row> 
+  </ion-grid>
+
+  <ion-grid *ngIf="errorLoad == true" class="custGrid" > 
+    <ion-row class="ion-no-margin  ion-no-padding ion-justify-content-center w100" > 
+      <ion-col size="12" class="ion-text-center "> 
+        <h3>خطأ في التحميل</h3> 
+      </ion-col>
+      <ion-col size="6" class="ion-text-center">
+        <ion-button expand="block" (click)="reload()">
+          <h5>تحديث</h5>
+          <ion-icon name="refresh" color="light" slot="end"></ion-icon>
+        </ion-button>  
+      </ion-col>
+    </ion-row> 
+  </ion-grid>
+ 
+  
+
+
+
+
+
   <ion-grid class="ion-no-margin  ion-no-padding"  dir="rtl" >  
     <!--  -->
-    <!-- -->
-    <div class="bidAnim " *ngIf="showMe == true">
+    <!--animation of bidding  -->
+    <div class="bidAnim "*ngIf="showMe == true">
       <div class="childDiv animate__animated animate__fadeOutUp animate__delay-0s">
         <img class="bidImg" src="../../assets/imgs/bidprimary.png"/> 
         <h2 class="bidH">{{bidPrice}}</h2>
@@ -23,10 +55,10 @@
 
     <ion-row class="ion-no-margin  ion-no-padding po" *ngIf="mzd"> 
       <ion-col size="12" class="ion-no-margin imgContainer"> 
-        <img class="radus5 custImg" [src]="mzd['imgs'][0]"/>  
-      </ion-col> 
+        <!-- <img class="radus5 custImg" [src]="mzd['imgs'][0]"/>   -->
+      </ion-col>     
  
-      <div class="fixGadegt">
+      <div class="fixGadegt" style="background-color: #160a0a7d; height: 100%;">
         <ion-grid class="ion-no-margin pd10 " dir="rtl">
           <ion-row>
             <ion-col class="ion-text-center">
@@ -38,6 +70,7 @@
             </ion-col>
           </ion-row>
         </ion-grid>
+
 
         <ion-grid class="ion-no-margin  ion-no-padding " dir="rtl">
           <!-- <ion-row class="ion-no-margin  ion-no-padding"> 
@@ -53,13 +86,25 @@
           </ion-row> 
         </ion-grid>
       
-        <ion-grid class="ion-no-margin  ion-no-padding " dir="rtl">
+        <!-- <ion-grid class="ion-no-margin  ion-no-padding " dir="rtl">
           <ion-row>
             <ion-col class="ion-text-center">
               <ion-card-content class="ion-no-padding pd10">
                 <ion-text class="priceText"> {{lastBidd4U}} </ion-text> <br>
-                <!-- <ion-text  class="white"> ج.س</ion-text>  -->
+               
                 <ion-text class="white"><b>اخر مزايدة لك</b> </ion-text>
+              </ion-card-content>
+            </ion-col>
+          </ion-row> 
+        </ion-grid> -->
+
+        <ion-grid class="ion-no-margin  ion-no-padding " dir="rtl">
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <ion-card-content class="ion-no-padding pd10">
+                <ion-text class="priceText"> {{availRounds}} </ion-text> <br>
+                <!-- <ion-text  class="white"> ج.س</ion-text>  -->
+                <ion-text class="white"><b> مزايداتك المتبقية </b> </ion-text>
               </ion-card-content>
             </ion-col>
           </ion-row> 
@@ -80,7 +125,7 @@
       </div> 
     </ion-row> 
 
-
+   
 
     <ion-row class="ion-no-padding" *ngIf="mzd"> 
       <!-- <ion-col size="12" class="colSpic" *ngIf="mzd['end']"> -->
@@ -180,6 +225,8 @@
           </ion-row>
         </ion-grid>
       </ion-card>  -->
+
+      <!-- timing and mzd detail  -->
       <ion-col size="12">
         <ion-card-header class="pb0"> 
           <ion-card-title> {{ mzd['title'] }}  </ion-card-title>
@@ -194,7 +241,7 @@
             <ion-text><ion-button fill="clear" size="small" (click)="showMore = false ">اقل</ion-button></ion-text>
           </ion-label>
         </ion-card-header> 
-        
+        <!-- timing -->
         <ion-card class="cardStatus2" *ngIf="timeLeft | async as tm"> 
           <ion-grid>
             <ion-row> 
@@ -272,7 +319,7 @@
        </ion-badge>
       </ion-item>
 
-      <ion-item *ngIf="usersLogs.length > 2" button (click)="viewMoreLess()" lines="none" class="lightItem lightBorder">
+      <ion-item *ngIf="mzd['logs'].length > 2" button (click)="viewMoreLess()" lines="none" class="lightItem lightBorder">
          <h4 class="custH">
           <ion-label *ngIf="view == 0">
             <ion-note >المزيد</ion-note><br>
@@ -284,8 +331,11 @@
           </ion-label> 
          </h4> 
       </ion-item> 
+
     </ion-list>
     </ion-grid>
+
+
       <ion-grid *ngIf="emptyLog == true">
         <ion-row>
           <ion-col size="12"> 
@@ -307,6 +357,20 @@
               رسوم المشاركة
             </ion-card-title>
           </ion-card-header>
+          <ion-grid class="ion-no-margin  ion-no-padding ion-padding-bottom" dir="rtl">
+            <!-- <ion-row class="ion-no-margin  ion-no-padding">
+              <ion-col size="12" class="ion-text-center">
+                <ion-item>
+                  <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12" class="ion-text-center">
+                <ion-item>
+                  <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                </ion-item>
+              </ion-col>
+            </ion-row> -->
+          </ion-grid>
           <ion-grid class="ion-no-margin  ion-no-padding ion-padding-bottom" dir="rtl">
             <ion-row class="ion-no-margin  ion-no-padding"> 
               <ion-col size="4" class="ion-text-center">
@@ -378,7 +442,7 @@
 </ion-content>
 
 
-<ion-footer class="footer">
+<ion-footer class="footer" *ngIf="mzd">
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="8" class="flex">

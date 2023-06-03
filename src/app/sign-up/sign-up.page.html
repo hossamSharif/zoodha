@@ -60,7 +60,7 @@
           <form [formGroup]="ionicForm" (ngSubmit)="next()" novalidate> 
             <ion-list class="w100" *ngIf="USER_INFO" dir="rtl">  
               <ion-item>
-                <ion-label > الإسم الكامل:  </ion-label> 
+                <ion-label > اسم المستخدم :  </ion-label> 
                 <ion-input  formControlName="fullName" [(ngModel)]="USER_INFO.fullName" ></ion-input> 
                 <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.fullName.errors?.required"> الحقل مطلوب</ion-note>
                 <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.fullName.errors?.pattern"> حروف فقط </ion-note>
@@ -73,7 +73,8 @@
               </ion-item>
               <ion-item class="ion-margin-top" >
                 <ion-label>الجوال: </ion-label>  
-                <ion-input  formControlName="phone" [(ngModel)]="USER_INFO.phone"></ion-input> 
+                <ion-input dir="ltr" formControlName="phone" [(ngModel)]="USER_INFO.phone"> </ion-input> 
+                <ion-label slot="end" dir="rtl" class="ion-no-margin"><ion-text color="medium">966+</ion-text></ion-label>
               </ion-item>
               <ion-item>
                 <ion-label>تاريخ الميلاد: </ion-label> 
@@ -131,8 +132,8 @@
                   </ion-col>
                   <ion-col size="12">
                     <ion-item lines="none">
-                      <ion-checkbox formControlName="agree" [(ngModel)]="agree" (ionChange)="agreeCheck($event)"></ion-checkbox>
-                      <ion-label>    الموافقة علي الشروط  </ion-label> 
+                      <ion-checkbox  formControlName="agree" [(ngModel)]="agree" (ionChange)="agreeCheck($event)"></ion-checkbox>
+                      <ion-label class="ion-margin-start">    الموافقة علي الشروط  </ion-label> 
                       <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.agree.errors?.required"> يجب الموافقة علي الشروط والأحكام  </ion-note> 
                     </ion-item>
                   </ion-col> 

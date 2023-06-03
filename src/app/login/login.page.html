@@ -162,7 +162,7 @@
               <ion-label> <ion-text color="dark">رقم الجوال </ion-text></ion-label>
               <ion-item dir="ltr">  
                 <ion-input   formControlName="phone"  type="tel" placeholder="912238433"  [(ngModel)]="phone">
-                  <ion-label slot="start">+249</ion-label>
+                  <ion-label slot="start">+966</ion-label>
                 </ion-input>
                 <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.phone.errors?.pattern">ادخل ارقام فقط  </ion-note> 
                 <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.phone.errors?.required">رقم الجوال مطلوب </ion-note>
@@ -215,9 +215,9 @@
 
           <ion-row class="ion-margin">
             <ion-list class="w100"> 
-              <ion-item dir="ltr">  
-                <ion-label  position="floating"> <ion-text color="dark"> البريد الإلكتروني </ion-text></ion-label>
-                <ion-input   formControlName="email"  type="email" placeholder="example@info.com"  [(ngModel)]="email">
+              <ion-item>  
+                <!-- <ion-label  position="floating"> <ion-text color="dark"> </ion-text></ion-label> -->
+                <ion-input   formControlName="email"  type="email" placeholder="البريد الإلكتروني "  [(ngModel)]="email">
                  
                 </ion-input>
                 <ion-note slot="error" *ngIf="isSubmitted2 == true && error2Control.email.errors?.required"> الحقل مطلوب </ion-note> 
@@ -225,17 +225,16 @@
               </ion-item> 
 
               
-              <ion-item dir="ltr"> 
-                <ion-label position="floating"> <ion-text color="dark">كلمة المرور</ion-text></ion-label> 
-                <ion-input   formControlName="password" type="password" placeholder="*****"  [(ngModel)]="password">
-                 
+              <ion-item> 
+                <!-- <ion-label position="floating"> <ion-text color="dark"> </ion-text></ion-label>  -->
+                <ion-input   formControlName="password" type="password" placeholder="المرور كلمة"  [(ngModel)]="password">
                 </ion-input>
                 <ion-note slot="error" *ngIf="isSubmitted2 == true && error2Control.password.errors?.required"> الحقل مطلوب </ion-note> 
 
               </ion-item>
             </ion-list>
           </ion-row> 
-          <ion-row >
+          <ion-row>
             <ion-col size="12">
               <ion-item [disabled]="spinner == true" color="primary" button (click)="login()"> 
                 <ion-label class="ion-text-center">دخــول</ion-label>
