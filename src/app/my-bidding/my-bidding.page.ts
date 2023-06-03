@@ -13,13 +13,14 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./my-bidding.page.scss'],
 })
 export class MyBiddingPage implements OnInit {
+  errorLoad:boolean = false
   USER_INFO : {
     _id: any ,
     firstName: any,
     lastName :any
 };
   timeLeftArr :Array<Object> =[{da:String ,hr:String,mn:String ,sc:String }] 
-  auctionsArray:Array<any>=[]
+  auctionsArray:Array<any>=undefined
 
    slideOpts = {
     slidesPerView: 3,
@@ -45,6 +46,12 @@ export class MyBiddingPage implements OnInit {
    
    }
 
+   reload(){
+    this.errorLoad = false
+    this.auctionsArray = undefined
+    this.getAllAuction()
+    }
+
   getAllAuction(){
     this.api.getUserAuction(this.USER_INFO._id).subscribe(data =>{
       console.log(data)
@@ -54,6 +61,7 @@ export class MyBiddingPage implements OnInit {
       this.prepareAuc()
     }, (err) => {
     console.log(err);
+    this.errorLoad = true
   })  
   }
 
@@ -75,8 +83,15 @@ export class MyBiddingPage implements OnInit {
         }  
 
         // userIn
-         let fltuse:Array<any> =[]
-         fltuse = element.users.filter(x=>x.userId ==  this.USER_INFO._id)
+        let fltuse:Array<any> =[]
+        if( element.users  === Object){
+
+        }else if(element.users  === Array){
+          fltuse = element.users.filter(x=>x.userId ==  this.USER_INFO._id)
+        }
+         
+        
+       
          console.log('fltuse'+index, fltuse )
 
         if(fltuse.length> 0 && element.currentStatus < 3 && fltuse[0].cancel == 0){

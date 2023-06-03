@@ -72,7 +72,7 @@ export class MzadDetailsPage implements OnInit {
     "__v": 0
   
 }
-
+errorLoad:boolean = false
 showMore:boolean = false
 view:number ;
 mzd : any ;   
@@ -111,6 +111,11 @@ USER_INFO : {
   }
 
  
+  reload(){
+    this.errorLoad = false
+    this.mzd = undefined
+    this.getAuction(this.id)
+    }
 
    getAuction(id){
     this.api.getAuction(this.id).subscribe(data =>{
@@ -120,9 +125,12 @@ USER_INFO : {
       console.log('mzzzz',this.mzd)
       this.prepare()
     }, (err) => {
+      this.errorLoad = true
     console.log(err);
   })  
   }
+
+  
   
    prepare(){   
      this.timeLeft = this.endAfterounter()  

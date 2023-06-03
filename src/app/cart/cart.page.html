@@ -8,7 +8,34 @@
 </ion-header>
 
 <ion-content> 
-  <ion-grid> 
+  <ion-grid *ngIf="errorLoad == true" class="custGrid" > 
+    <ion-row class="ion-no-margin  ion-no-padding ion-justify-content-center w100" > 
+      <ion-col size="12" class="ion-text-center "> 
+        <h3>خطأ في التحميل</h3> 
+      </ion-col>
+      <ion-col size="6" class="ion-text-center">
+        <ion-button expand="block" (click)="reload()">
+          <h5>تحديث</h5>
+          <ion-icon name="refresh" color="light" slot="end"></ion-icon>
+        </ion-button>  
+      </ion-col>
+    </ion-row> 
+</ion-grid>
+
+
+<ion-grid *ngIf="!orders && errorLoad == false"  class="custGrid"> 
+  <ion-row class="ion-no-margin  ion-no-padding w100" >
+    <ion-col size="12" class="ion-text-center">
+      <!-- *ngIf="spinner == true" -->
+      <ion-spinner name="lines" color="dark" mode="ios"></ion-spinner> 
+    </ion-col>
+    <ion-col size="12">
+      <!-- *ngIf="spinner == true" --> 
+    </ion-col>
+  </ion-row> 
+</ion-grid>
+
+  <ion-grid *ngIf="orders"> 
     <ion-row class="ion-padding " *ngIf="orders.length > 0">  
       <ion-col size="12" class="radus5 borderlight w100 ion-margin-top" *ngFor ="let order of orders">
         <ion-grid class="ion-no-padding" dir="rtl"> 
@@ -91,11 +118,19 @@
           </ion-grid>
       </ion-col> 
     </ion-row>
-
-
-    <ion-row>
-      <!-- show empty here  -->
+    <ion-row class="ion-padding " *ngIf="orders.length == 0" class="custGrid">
+      <ion-col size="12" class="ion-text-center">
+        <!-- *ngIf="spinner == true" -->
+        <h3>
+          <ion-label>
+            ليس لديك طلبات بعد !
+          </ion-label>
+        </h3>
+      </ion-col>
     </ion-row>
+
+
+ 
   </ion-grid>
   
   </ion-content>

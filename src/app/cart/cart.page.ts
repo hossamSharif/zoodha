@@ -14,13 +14,15 @@ import { SocketServiceService } from '../services/socket-service.service';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
+
+  errorLoad:boolean = false
   USER_INFO : {
     _id: any ,
     firstName: any,
     lastName :any
 };
 
- orders:Array<any> = []
+ orders:Array<any> = undefined
  showEmpty : boolean = false
  showSkelton :boolean = false
  higtPayedPrie: any = 0
@@ -42,6 +44,12 @@ export class CartPage implements OnInit {
      });
   }
 
+
+  reload(){
+    this.errorLoad = false
+    this.orders = undefined
+    this.getOrders()
+    }
   getOrders(){ 
     this.showSkelton = true
     this.api.getUserOrder(this.USER_INFO._id).subscribe(data =>{
@@ -59,6 +67,7 @@ export class CartPage implements OnInit {
     //   console.log('im here baby',this.mzd , 'users',this.users)
     //  this.prepareAuc()
     }, (err) => {
+     this.errorLoad = true
     console.log(err);
   },()=>{
     this.showSkelton = false 

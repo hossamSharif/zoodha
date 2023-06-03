@@ -11,6 +11,8 @@ import { SocketServiceService } from '../services/socket-service.service';
   styleUrls: ['./wallet.page.scss'],
 })
 export class WalletPage implements OnInit {
+  errorLoadBalance:boolean = false
+  errorLoad:boolean = false
   USER_INFO : {
     _id: any ,
     firstName: any,
@@ -18,8 +20,8 @@ export class WalletPage implements OnInit {
     };
     showEmpty : boolean = false
     showSkelton :boolean = false
-    transactions:Array<any> = []
-    walletBalance:any
+    transactions:Array<any> = undefined
+    walletBalance:any = undefined
 
 
     constructor(private api:SocketServiceService,private socket :SocketServiceService ,private route: ActivatedRoute,private storage: Storage ,private loadingController:LoadingController,private toast:ToastController,private actionSheetCtl:ActionSheetController ,private datePipe:DatePipe ,private rout : Router,private modalController:ModalController) { 
@@ -34,21 +36,22 @@ export class WalletPage implements OnInit {
 
 
     getWalletBalance(){
-        this.showSkelton = true 
+        
         this.api.getBalance(this.USER_INFO._id).subscribe(data =>{
           console.log(data)
           let res = data['transaction'][0]
-          this.walletBalance = res.balance
+          this.walletBalance = +res.balance
           this.getTransactions()
         }, (err) => {
         console.log(err);
+        this.errorLoad = true
       } ,
       ()=>{ 
       })  
     }
     
     getTransactions(){
-      this.showSkelton = true 
+     
       this.api.getAllTransaction(this.USER_INFO._id).subscribe(data =>{
         console.log(data)
         let res = data['transaction'] 
@@ -56,11 +59,23 @@ export class WalletPage implements OnInit {
         
       }, (err) => {
       console.log(err);
+      this.errorLoad = true
+
     } ,
     ()=>{ 
     })  
   } 
 
+
+  reload(){
+    this.errorLoad = false
+    this.errorLoadBalance = false
+    this.transactions = undefined
+    this.walletBalance = undefined
+    this.getWalletBalance()
+    }
+
+     
 
   ngOnInit() {
 

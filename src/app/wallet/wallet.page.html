@@ -7,22 +7,52 @@
 </ion-header>
 
 
-<ion-header class="bgtool ">
-  <ion-toolbar dir="rtl"  class=" ion-margin-bottom ion-margin-top">
-    <ion-title class="ion-text-center" color="light">
-      <h2 color="light"><b>الرصيــد</b></h2>
-    </ion-title>
-    <ion-title class="ion-text-center" color="light">
-      <h2 ><b>{{walletBalance}}</b>
-        <ion-text>ج.س </ion-text>
-      </h2>  
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
 
-<ion-content>
-  <ion-grid class="ion-no-margin  ion-no-padding"  dir="rtl" > 
+
+<ion-content> 
+  <ion-grid *ngIf="errorLoad == true " class="custGrid" > 
+    <ion-row class="ion-no-margin  ion-no-padding ion-justify-content-center w100" > 
+      <ion-col size="12" class="ion-text-center "> 
+        <h3>خطأ في التحميل</h3> 
+      </ion-col>
+      <ion-col size="6" class="ion-text-center">
+        <ion-button expand="block" (click)="reload()">
+          <h5>تحديث</h5>
+          <ion-icon name="refresh" color="light" slot="end"></ion-icon>
+        </ion-button>  
+      </ion-col>
+    </ion-row> 
+  </ion-grid>
+ 
+    <ion-grid *ngIf="!transactions  && errorLoad == false "  class="custGrid"> 
+      <ion-row class="ion-no-margin  ion-no-padding w100" >
+        <ion-col size="12" class="ion-text-center">
+          <!-- *ngIf="spinner == true" -->
+          <ion-spinner name="lines" color="dark" mode="ios"></ion-spinner> 
+        </ion-col>
+        <ion-col size="12">
+          <!-- *ngIf="spinner == true" --> 
+        </ion-col>
+      </ion-row> 
+    </ion-grid>
+
+
+  <ion-grid class="ion-no-margin  ion-no-padding"  dir="rtl"  *ngIf="transactions ">
+    
+    <ion-header class="bgtool ">
+      <ion-toolbar dir="rtl"  class=" ion-margin-bottom ion-margin-top" >
+        <ion-title class="ion-text-center" color="light">
+          <h2 color="light"><b>الرصيــد</b></h2>
+        </ion-title>
+        <ion-title class="ion-text-center" color="light">
+          <h2 ><b>{{walletBalance}}</b>
+            <ion-text>ج.س </ion-text>
+          </h2>  
+        </ion-title>
+      </ion-toolbar> 
+    
+    </ion-header> 
     <ion-row class="ion-no-padding">
       <!-- <ion-card class="w100"> 
         <ion-list>
@@ -128,7 +158,6 @@
        
          
       </ion-card> 
-
       </ion-row>
     </ion-grid>
     <!-- <ion-fab slot="fixed" class="float">

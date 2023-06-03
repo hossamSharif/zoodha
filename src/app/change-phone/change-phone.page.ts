@@ -10,6 +10,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
   styleUrls: ['./change-phone.page.scss'],
 })
 export class ChangePhonePage implements OnInit {
+  errorLoad:boolean = false
   USER_INFO : { 
     firstName:any, 
     lastName:any, 
@@ -47,13 +48,19 @@ export class ChangePhonePage implements OnInit {
           this.oldPhone = this.USER_INFO.phone 
         }, (err) => {
         console.log(err);
+    this.errorLoad = true
+        
       })      
       }else{
         this.rout.navigate(['login']); 
       } 
     });
   }
-
+  reload(){
+    this.errorLoad = false
+    this.USER_INFO = undefined
+    this.getProfile()
+    }
 
   ngOnInit() {
     this.getProfile()

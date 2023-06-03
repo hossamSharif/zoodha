@@ -12,6 +12,7 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  errorLoad:boolean = false
   USER_INFO : {
     _id: any ,
     firstName: any,
@@ -76,8 +77,29 @@ export class HomePage implements OnInit {
       this.prepareAuc()
     }, (err) => {
     console.log(err);
+    this.handleError(err.error.error)
   })  
   }
+
+  reload(){
+    this.errorLoad = false
+    this.auctionsArray = undefined
+    this.getAllAuction()
+    }
+    handleError(err){ 
+      this.errorLoad = true
+      // if (err.error == "No user with this phone found") {
+      //   console.log('no user was found') 
+      // // this.getsms('new',err) // uncomment it after apply smsgetway 
+      // // this.getVirfyCode('new' , err) // comment it after apply smsgetway 
+      // }else if(err.error == "another phone"){
+      //   // to apply imei check uncmment the line in zoodohapi/controller/user.j function : loginPhone
+      //   this.presentToast('seem you use another phone','danger') 
+      // } else{ 
+      //   this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+      //   console.log(err.kind)
+      // }
+    }
 
   prepareAuc(){ 
     //set count down for auctions

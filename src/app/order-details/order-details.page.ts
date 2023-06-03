@@ -11,13 +11,15 @@ import { SocketServiceService } from '../services/socket-service.service';
   styleUrls: ['./order-details.page.scss'],
 })
 export class OrderDetailsPage implements OnInit {
+  errorLoad:boolean = false
   orderId:any
   USER_INFO : {
     _id: any ,
     firstName: any,
     lastName :any
     };
-    order:any
+
+    order:any = undefined
     higtPayedPrie: any = 0 
     showEmpty : boolean = false
     showSkelton :boolean = false
@@ -36,6 +38,12 @@ export class OrderDetailsPage implements OnInit {
     });  
   }
  
+
+  reload(){
+    this.errorLoad = false
+    this.order = undefined
+    this.getOrder()
+    }
   getOrder(){
     this.showSkelton = true 
     this.api.getOrder(this.orderId).subscribe(data =>{
@@ -46,6 +54,7 @@ export class OrderDetailsPage implements OnInit {
       this.preparOrders() 
     }, (err) => {
     console.log(err);
+    this.errorLoad = true
   } ,
   ()=>{
     this.showSkelton = false

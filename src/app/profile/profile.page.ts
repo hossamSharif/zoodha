@@ -12,6 +12,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 })
 
 export class ProfilePage implements OnInit {
+  errorLoad:boolean = false
   @ViewChild('popover') popover;
   USER_INFO : { 
     firstName:any, 
@@ -67,6 +68,7 @@ export class ProfilePage implements OnInit {
           console.log (this.USER_INFO)  
         }, (err) => {
         console.log(err);
+        this.errorLoad = true
       })      
       }else{
         this.rout.navigate(['login']); 
@@ -74,7 +76,12 @@ export class ProfilePage implements OnInit {
     });
   }
 
-   
+  reload(){
+    this.errorLoad = false
+    this.USER_INFO = undefined
+    this.getProfile()
+    }
+
   get errorControl() {
     return this.ionicForm.controls;
   }

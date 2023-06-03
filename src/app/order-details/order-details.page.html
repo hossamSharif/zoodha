@@ -54,6 +54,33 @@
       </ion-col> 
     </ion-row>
   </ion-grid> -->
+  <ion-grid *ngIf="errorLoad == true" class="custGrid" > 
+    <ion-row class="ion-no-margin  ion-no-padding ion-justify-content-center w100" > 
+      <ion-col size="12" class="ion-text-center "> 
+        <h3>خطأ في التحميل</h3> 
+      </ion-col>
+      <ion-col size="6" class="ion-text-center">
+        <ion-button expand="block" (click)="reload()">
+          <h5>تحديث</h5>
+          <ion-icon name="refresh" color="light" slot="end"></ion-icon>
+        </ion-button>  
+      </ion-col>
+    </ion-row> 
+</ion-grid>
+
+
+<ion-grid *ngIf="!order && errorLoad == false"  class="custGrid"> 
+  <ion-row class="ion-no-margin  ion-no-padding w100" >
+    <ion-col size="12" class="ion-text-center">
+      <!-- *ngIf="spinner == true" -->
+      <ion-spinner name="lines" color="dark" mode="ios"></ion-spinner> 
+    </ion-col>
+    <ion-col size="12">
+      <!-- *ngIf="spinner == true" --> 
+    </ion-col>
+  </ion-row> 
+</ion-grid>
+ 
   <ion-grid class="ion-no-margin  ion-no-padding"  dir="rtl" *ngIf="order">
     <ion-row class="ion-no-padding"> 
       <ion-card class="w100"> 
