@@ -54,7 +54,7 @@
       <ion-button slot="end" size="small" (click)="changePhone()">تغيير</ion-button>
     </ion-item>
     <ion-item>
-      <ion-label > الإسم الكامل:  </ion-label> 
+      <ion-label > الإسم:  </ion-label> 
       <ion-input  formControlName="fullName" [(ngModel)]="USER_INFO.fullName" ></ion-input> 
       <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.fullName.errors?.required"> الحقل مطلوب</ion-note>
       <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.fullName.errors?.pattern"> حروف فقط </ion-note>

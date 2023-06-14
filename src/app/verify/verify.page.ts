@@ -133,9 +133,9 @@ export class VerifyPage implements OnInit {
 
       inputChang(ev){
         console.log(ev.target.value)
-        if(ev.target.value.length == 4 && this.validate()==true){
-          this.confirmAccount()
-        }  
+        // if(ev.target.value.length == 4 && this.validate() == true){
+        //   this.confirmAccount()
+        // }  
       }
 
 

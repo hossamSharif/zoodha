@@ -25,8 +25,8 @@ export class LoginPage implements OnInit {
     userName:any,
     imei:any,
     birthDate:any};
-   mode ='phone'
-  // mode ='google'
+   //mode :any = 'phone'
+  mode :any ='google'
   phone :any 
   password:any
   email:any
@@ -47,7 +47,11 @@ export class LoginPage implements OnInit {
    }
 
   ngOnInit() {
-
+    this.storage.get('user_info').then((response) => {
+      if (response) { 
+        this.email = response.user.email      
+      }
+     });
   }
  
   get errorControl() {

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { ToastController, Platform, LoadingController } from '@ionic/angular';
+import { ToastController, Platform, LoadingController, ModalController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs'
 import { Router } from '@angular/router'; 
 import { SocketServiceService } from '../services/socket-service.service';
+import { ErrModalPage } from '../err-modal/err-modal.page';
  
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AuthServiceService {
     full_name:any,
      password:any
   };
-  constructor(private rout : Router ,private toast:ToastController ,private loadingController:LoadingController,private api:SocketServiceService,   private router: Router,private storage: Storage,private platform: Platform,public toastController: ToastController) { 
+  constructor(private modalController:ModalController ,private rout : Router ,private toast:ToastController ,private loadingController:LoadingController,private api:SocketServiceService,   private router: Router,private storage: Storage,private platform: Platform,public toastController: ToastController) { 
     this.platform.ready().then(() => {
       this.ifLoggedIn();
     });
@@ -35,6 +36,37 @@ export class AuthServiceService {
     });
     toast.present();
   }
+
+
+   async presentModal(msg?, status?) { 
+    
+    const modal = await this.modalController.create({
+      component: ErrModalPage ,
+      componentProps: {
+        "error":"",
+        "status": ""
+      }
+    });
+    
+    modal.onDidDismiss().then((dataReturned) => {
+      if (dataReturned !== null) {
+        console.log(dataReturned )
+        this.doAfterDissmiss(dataReturned)
+      }
+    });
+ 
+    return await modal.present(); 
+  }
+
+
+  reload(){
+    this.ifLoggedIn();
+  }
+
+  doAfterDissmiss(dataReturned){
+    this.reload()
+    // this.rout.navigate(['cart']);  
+   }
 
   async presentLoadingWithOptions(msg?,status?) {
     const loading = await this.loadingController.create({
@@ -56,12 +88,14 @@ export class AuthServiceService {
     this.storage.get('token').then((response) => { 
       if (response) {
         console.log('token',response) 
+        this.presentLoadingWithOptions()
         this.api.auth(response).subscribe(data =>{
           console.log('authservices',data)
           this.authState.next(true);
           this.rout.navigate(['tabs/home']);   
         }, (err) => {
         console.log(err);
+      this.presentModal()
       })      
       }else{
         this.rout.navigate(['login']); 

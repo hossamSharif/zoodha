@@ -75,7 +75,7 @@ export class MzadDetailsPage implements OnInit {
 errorLoad:boolean = false
 showMore:boolean = false
 view:number ;
-mzd : any ;   
+mzd : any  = undefined;   
 USER_INFO : {
     _id: any ,
     firstName: any,

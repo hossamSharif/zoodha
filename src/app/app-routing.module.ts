@@ -75,6 +75,10 @@ const routes: Routes = [
   {
     path: 'terms',
     loadChildren: () => import('./terms/terms.module').then( m => m.TermsPageModule)
+  },
+  {
+    path: 'err-modal',
+    loadChildren: () => import('./err-modal/err-modal.module').then( m => m.ErrModalPageModule)
   }
 ];
 @NgModule({

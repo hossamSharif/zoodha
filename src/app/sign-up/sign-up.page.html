@@ -36,7 +36,7 @@
      </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-grid class="custGrid ">
+  <ion-grid class="custGrid2 ">
     <ion-row class="ion-justify-content-center">
       <ion-col size="10" >
        <ion-card class="bordernon w100" >
@@ -107,8 +107,8 @@
                 <ion-label>كلمة المرور</ion-label> 
                 <ion-input formControlName="password" [(ngModel)]="USER_INFO.password" [type]="passType"></ion-input>
                 <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.password.errors?.required"> الحقل مطلوب </ion-note> 
-                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.password.errors?.length"> مكون من 8 رموز علي الأقل </ion-note> 
-                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.password.errors?.pattern"> يحوي حروف و رموز وارقام</ion-note> 
+                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.password.errors?.length"> مكون من 5 رموز علي الأقل </ion-note> 
+                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.password.errors?.pattern"> يحوي حرف كبير وصغير ورمز ورقم</ion-note> 
                 <ion-button  fill = "clear" (click)="showPass('pass')">
                   <ion-icon  *ngIf="show == false"  slot="end"   name="eye-off-outline" ></ion-icon>
                   <ion-icon *ngIf="show == true"   slot="end"   name="eye-outline" ></ion-icon>

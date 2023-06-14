@@ -104,7 +104,7 @@ ionViewDidEnter(){
   ////  
   this.socket.auctionEndOntime().subscribe((ar: Array<any>) => { 
   console.log('here im',ar)
-  this.presentToast('holla  auction end on time ' ,'success') 
+ // this.presentToast('holla  auction end on time ' ,'success') 
   if(ar.length>0){
     //this.presentToast('holla  auction end on time ' ,'success')
     this.onEndAuction(ar[1],ar[2]) 
@@ -133,6 +133,8 @@ handleError(err){
   //   console.log(err.kind)
   // }
 }
+
+
 getAuction(){ 
     this.api.getAuction(this.auction_id).subscribe(data =>{
       console.log(data)

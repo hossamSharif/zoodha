@@ -42,6 +42,21 @@ export class SignUpPage implements OnInit {
   code:any;
   orignalCode;
   outdateCode = false;
+//   Minimum eight characters, at least one letter and one number:
+
+// "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+// Minimum eight characters, at least one letter, one number and one special character:
+
+// "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+// Minimum eight characters, at least one uppercase letter, one lowercase letter and one number:
+
+// "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+// Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
+
+// "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+// Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character:
+
+// "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$"
   constructor(private modalController:ModalController,private formBuilder: FormBuilder,private toast:ToastController,private route: ActivatedRoute,private storage: Storage, private rout : Router ,private api:SocketServiceService) {
     this.ionic2Form = this.formBuilder.group({
       code: ['', [Validators.required, Validators.minLength(4),Validators.maxLength(4),Validators.pattern('^[0-9]+$')]],
@@ -54,8 +69,8 @@ export class SignUpPage implements OnInit {
       birth: ['',Validators.required],
       gender: [''],
       phone:['', [Validators.required, Validators.minLength(9),Validators.maxLength(9),Validators.pattern('^[0-9]+$')]],
-      password: ['', [Validators.required, Validators.minLength(5),Validators.pattern('[a-zA-Z][a-zA-Z ]+')]],
-      confirmPass: ['', [Validators.required, Validators.minLength(5),Validators.pattern('[a-zA-Z][a-zA-Z ]+')]],
+      password: ['', [Validators.required, Validators.minLength(5),Validators.pattern('^([^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$')]],
+      confirmPass: ['', [Validators.required, Validators.minLength(5),Validators.pattern('^([^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$')]],
       agree: ['', [Validators.required]]
     })
     //case signup with normal way , not using phone 

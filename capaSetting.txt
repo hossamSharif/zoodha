@@ -59,7 +59,7 @@ modify package.json
   d- npm cache clear --force
   c- npm install
   add plugin
-  npm i @capacitor/app @capacitor/haptics @capacitor/keyboard @capacitor/status-bar
+  npm i @capacitor/app@4 @capacitor/haptics@4 @capacitor/keyboard@4 @capacitor/status-bar@4
 
 
 1- ionic integrations enable capacitor 

@@ -82,23 +82,20 @@ export class MyBiddingPage implements OnInit {
           element.timeLeft = this.endSinceAfterounter(index) 
         }  
 
-        // userIn
-        let fltuse:Array<any> =[]
-        if( element.users  === Object){
-
-        }else if(element.users  === Array){
-          fltuse = element.users.filter(x=>x.userId ==  this.USER_INFO._id)
-        }
-         
+        
+       // users array will include only the current user and it represent as an object
+       let fltuse:any
+       fltuse = element.users 
+       console.log('fltuse'+index, fltuse.cancel)
         
        
-         console.log('fltuse'+index, fltuse )
+         
 
-        if(fltuse.length> 0 && element.currentStatus < 3 && fltuse[0].cancel == 0){
+        if( element.currentStatus < 3 && fltuse.cancel == 0){
           element.userIn = true 
-         }else if(fltuse.length> 0 && fltuse[0].cancel == 1){
+         }else if( fltuse.cancel == 1){
           element.userOut = true 
-         }else if(element.logs.length > 0 && fltuse.length> 0 && element.currentStatus == 3){
+         }else if( element.currentStatus == 3){
           // userWin
           let mx =  element.logs.reduce((acc, shot) => acc = acc > shot.pay ? acc : shot.pay, 0); 
           let flt = element.logs.filter(x=>x.pay == mx)
@@ -126,8 +123,6 @@ export class MyBiddingPage implements OnInit {
        }
        console.log(this.auctionsArray) 
   }
-
-  
 
   endAfterounter(index){ 
     let offset =  momentTz().utcOffset()

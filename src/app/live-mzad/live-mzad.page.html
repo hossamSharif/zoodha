@@ -55,10 +55,10 @@
 
     <ion-row class="ion-no-margin  ion-no-padding po" *ngIf="mzd"> 
       <ion-col size="12" class="ion-no-margin imgContainer"> 
-        <!-- <img class="radus5 custImg" [src]="mzd['imgs'][0]"/>   -->
+        <img class="radus5 custImg" [src]="mzd['imgs'][0]"/>  
       </ion-col>     
  
-      <div class="fixGadegt" style="background-color: #160a0a7d; height: 100%;">
+      <div class="fixGadegt" style="background-color: #190b0b27; height: 90%;">
         <ion-grid class="ion-no-margin pd10 " dir="rtl">
           <ion-row>
             <ion-col class="ion-text-center">
@@ -296,7 +296,7 @@
         </ion-avatar>
         <ion-grid>
           <ion-row>
-            <ion-col size="10">
+            <ion-col size="12">
               <ion-grid>
                 <ion-row>
                   <ion-col size="12">
@@ -306,7 +306,7 @@
                   </ion-col>
                   <ion-col size="12">
                     <ion-label> 
-                      <ion-text>{{log.time | dateAgo}}</ion-text> 
+                      <ion-text>{{log.time | dateAgo}} </ion-text> <ion-text>{{log.time | date:'EEE dd-MM' : undefined  : 'ar' }} </ion-text> 
                       </ion-label>
                   </ion-col> 
                 </ion-row>
@@ -465,10 +465,10 @@
           <h5>مزايدة</h5>
           <ion-icon name="hand-right-outline" color="light" slot="end"></ion-icon>
         </ion-button> 
-        <ion-button expand="block"  (click)="endAuction()">
+        <!-- <ion-button expand="block"  (click)="endAuction()">
           <h5>end it</h5>
           <ion-icon name="hand-right-outline" color="light" slot="end"></ion-icon>
-        </ion-button> 
+        </ion-button>  -->
       </ion-col>
       <!-- <ion-col size="6" class="ion-text-center">
         <h4 class="ion-no-margin">
