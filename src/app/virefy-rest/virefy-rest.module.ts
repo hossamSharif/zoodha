@@ -4,18 +4,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { NewPasswordPageRoutingModule } from './new-password-routing.module';
+import { VirefyRestPageRoutingModule } from './virefy-rest-routing.module';
 
-import { NewPasswordPage } from './new-password.page';
+import { VirefyRestPage } from './virefy-rest.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReactiveFormsModule,
-    NewPasswordPageRoutingModule
+    ReactiveFormsModule, 
+    VirefyRestPageRoutingModule
   ],
-  declarations: [NewPasswordPage]
+  declarations: [VirefyRestPage]
 })
-export class NewPasswordPageModule {}
+export class VirefyRestPageModule {}

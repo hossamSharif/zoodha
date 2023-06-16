@@ -79,6 +79,10 @@ const routes: Routes = [
   {
     path: 'err-modal',
     loadChildren: () => import('./err-modal/err-modal.module').then( m => m.ErrModalPageModule)
+  },
+  {
+    path: 'virefy-rest',
+    loadChildren: () => import('./virefy-rest/virefy-rest.module').then( m => m.VirefyRestPageModule)
   }
 ];
 @NgModule({

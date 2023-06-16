@@ -114,6 +114,8 @@ export class SignUpPage implements OnInit {
   ngOnInit() {
   
   }
+
+  
   showPass(type){
     if(type == 'pass'){
       if(this.show == true){

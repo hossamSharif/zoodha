@@ -168,6 +168,12 @@ export class SocketServiceService {
       return this.http.post(this.api+'users/create/', user)
     }
 
+    sendMail(user){ 
+      let params = new HttpParams() 
+      params=params.append('user' , user)
+      return this.http.post(this.api+'users/resetemail/', user)
+    }
+
     updateUser(user){ 
       let params = new HttpParams() 
       params=params.append('user' , user)
