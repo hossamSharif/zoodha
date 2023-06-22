@@ -138,9 +138,9 @@ handleError(err){
 getAuction(){ 
     this.api.getAuction(this.auction_id).subscribe(data =>{
       console.log(data)
-      let res = data['auction'][0][0]
-      this.mzd = data['auction'][0][0]
-      this.users = data['auction'][1]
+      let res = data['auction']
+      this.mzd = data['auction']
+      this.users = this.mzd['users']
       console.log('im here baby',this.mzd , 'users',this.users)
      this.prepareAuc()
     }, (err) => {
@@ -291,7 +291,7 @@ getUserinfoLog(moreOrLess?){
   }else if(moreOrLess == 'more'){
     length = this.mzd['logs'].length
     this.view = 1
-  } else{
+  } else {
     length = this.mzd['logs'].length 
     this.view = 3
   }
@@ -302,14 +302,19 @@ getUserinfoLog(moreOrLess?){
     const element = this.mzd['logs'][index];
     console.log('element', element) 
     let flt : Array<any> = [] 
-    flt =  this.users.filter(x=>x._id == element.userId) 
+    flt =  this.users.filter(x=>x.userId == element.userId) 
+    console.log('flt' , flt)
     if(flt.length>0){
       this.usersLogs.push({
         "userId": element.userId ,
         "time":  element.time,
         "pay" : +element.pay,
         "lastHighestPay": +element.lastHighestPay,
-        "userName" : flt[0]['userName'] 
+        "userName" : flt[0]['userName'] ,
+        "fullName" : flt[0]['fullName'] ,
+        "firstName" : flt[0]['firstName'] ,
+        "lastName" : flt[0]['lastName'] ,
+        "imgUrl" : flt[0]['imgUrl']  
      })
     } 
   } 
@@ -405,7 +410,11 @@ memnto(newDate){
 validationPrice(type?){ 
   let h = this.mzd['logs'].reduce((acc, shot) => acc = acc > shot.pay ? acc : shot.pay, 0)
    // not more than oppenning price 
-   if( this.availRounds == 0 ){
+   if(+this.bidPrice == 0 || this.bidPrice == null ){
+    this.showError = true
+    this.msgError = ' أقل مبلغ للمزايدة ' + this.highestBidd + 1
+   }
+   else if( this.availRounds == 0 ){
     if(type == 'btn'){
      this.showError = true
      this.msgError = 'انتهي عدد محاولاتك'
@@ -413,8 +422,7 @@ validationPrice(type?){
      this.presentToast('انتهي عدد محاولاتك', 'danger')
      return true
     }
-   }  
-   else if( this.bidPrice <= this.mzd['productPrice'] - (0.3 * this.mzd['productPrice'])){
+   }else if( this.bidPrice <= this.mzd['productPrice'] - (0.3 * this.mzd['productPrice'])){
      if(type == 'btn'){
       this.showError = true
       this.msgError = 'أقل من السعر الإفتتاحي'

@@ -292,7 +292,8 @@
       <ion-list  class="ion-no-padding">
       <ion-item *ngFor="let log of usersLogs">
         <ion-avatar>
-          <ion-img src="../../assets/imgs/bid.png"></ion-img>
+          <ion-img *ngIf="log.imgUrl == ''"  src="../../assets/imgs/bid.png"></ion-img>
+          <ion-img *ngIf="log.imgUrl.length>0"  [src]="log.imgUrl"></ion-img>
         </ion-avatar>
         <ion-grid>
           <ion-row>
@@ -301,7 +302,7 @@
                 <ion-row>
                   <ion-col size="12">
                    <ion-item lines="none">
-                    <ion-label>{{log.userName}}</ion-label>
+                    <ion-label>{{log.fullName}}</ion-label>
                    </ion-item>
                   </ion-col>
                   <ion-col size="12">
@@ -461,7 +462,7 @@
         <ion-note color="danger">{{msgError}}</ion-note>
       </ion-col> 
       <ion-col size="8">
-        <ion-button expand="block" [disabled]="showError ==true" (click)="bidding()">
+        <ion-button expand="block" [disabled]="showError == true" (click)="bidding()">
           <h5>مزايدة</h5>
           <ion-icon name="hand-right-outline" color="light" slot="end"></ion-icon>
         </ion-button> 
