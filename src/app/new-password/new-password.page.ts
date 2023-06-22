@@ -24,15 +24,16 @@ export class NewPasswordPage implements OnInit {
     email:any,
     userName:any,
     imei:any,
-    birthDate:any
+    birthDate:any,
+   logMethod:any,
+    imgUrl:any
   };
  
  
   spinner:boolean = false 
-  isSubmitted = false; 
-  
-  confirmPass:any = ""
-  
+  isSubmitted = false;  
+  confirmPass:any = "" 
+  password:any = ""
   passType = 'password'
   confType = 'password'
   show :boolean = false
@@ -44,9 +45,19 @@ export class NewPasswordPage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(5),Validators.pattern('^([^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$')]],
       confirmPass: ['', [Validators.required, Validators.minLength(5),Validators.pattern('^([^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$')]]
     })
+
+     this.route.queryParams.subscribe(params => {
+      if (params  && params.user_info) { 
+        
+        this.USER_INFO =   JSON.parse(params.user_info)   
+         //this.timerKiller() //enable time killer fuction when you want to release v1 
+      }
+    });  
+   
   }
 
   ngOnInit() {
+
   }
 
   newPassword(){
@@ -80,6 +91,81 @@ export class NewPasswordPage implements OnInit {
     } 
   }
 
+  update(){
+    if(this.validate() == true){
+      this.spinner = true
+      this.USER_INFO.logMethod = 1
+      this.USER_INFO.password = this.password
+      this.api.updatePass(this.USER_INFO).subscribe(data =>{
+        console.log('user was updated',data)
+        let res = data
+        console.log('user was created',res['token']) 
+        this.storage.set('token', res['token']).then((response) => {
+          this.rout.navigate(['tabs/home']); 
+        })  
+
+
+      }, (err) => {
+      console.log(); 
+      this.spinner = false
+      // this.handleError( err.error.error ) 
+      this.presentToast("حدث خطأ ما , حاول مرة اخري " ,  'danger') 
+    
+    },()=>{
+      this.spinner = false
+    })
+    }
+  }
+
+
+
+  handleError(msg){
+    if (msg == "duplicate phone") {   
+      this.presentToast('رقم الهاتف موجود مسبقا , قم بتسجيل الدخول', 'danger') 
+      return false
+     } else if (msg == "duplicate email"){ 
+      this.presentToast("البريد موجود مسبقا" ,  'danger') 
+      return false
+    } else if (msg == "duplicate email"){ 
+      this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+      return false
+    } 
+     else{
+      this.presentToast("حدث خطأ ما , حاول مرة اخري " ,  'danger') 
+      return false
+     } 
+  }
+
+
+
+  validate(){
+    this.isSubmitted = true; 
+    if (this.ionicForm.valid == false) {
+      console.log('Please provide all the required values!') 
+      return false
+    } else if(this.password.length>0 && this.password != this.confirmPass){
+      return false
+    } else if(this.USER_INFO.password.length > 0 && this.USER_INFO.password == this.password){
+      this.presentToast('لقد ادخلت كلمة مرورك القديمة , الرجاء ادخال كلمة مرور اخري') 
+      return false
+    } else {
+       return true
+    }  
+  }
   
+
+  async presentToast(msg,color?) {
+    const toast = await this.toast.create({
+      message: msg,
+      duration: 2000,
+      color:color,
+      cssClass:'cust_Toast',
+      mode:'ios',
+      position:'top' 
+    });
+    toast.present();
+  }
+
+
 
 }

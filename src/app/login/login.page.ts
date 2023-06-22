@@ -24,7 +24,10 @@ export class LoginPage implements OnInit {
     email:any,
     userName:any,
     imei:any,
-    birthDate:any};
+    birthDate:any,
+    logMethod:any
+    imgUrl:any
+  };
    //mode :any = 'phone'
   mode :any ='google'
   phone :any 
@@ -99,17 +102,16 @@ export class LoginPage implements OnInit {
       console.log(data)
       let res = data 
      // this.getsms('exist', res) // uncomment it after apply smsgetway 
-     // this.getVirfyCode('exist' , res) // comment it after apply smsgetway
-
+     // this.getVirfyCode('exist' , res) // comment it after apply smsgetway 
                 let jsd = data['user']
                // this.api.loginEmit(jsd._id) 
                 this.USER_INFO =  data['user']
                 this.storage.set('user_info', data).then((response) => {
-               
+                  this.storage.set('token', data['token']).then((response) => {
+                    this.rout.navigate(['tabs/home']); 
+                  }) 
                 })
-                this.storage.set('token', data['token']).then((response) => {
-                  this.rout.navigate(['tabs/home']); 
-                })  
+                
     }, (err) => {
       console.log(err.error.error);
       this.handleError(err.error.error)
@@ -152,13 +154,20 @@ export class LoginPage implements OnInit {
 
   handleError(err){
     if (err.error == "No user with this phone found") {
-      console.log('no user was found') 
-    // this.getsms('new',err) // uncomment it after apply smsgetway 
-     this.getVirfyCode('new' , err) // comment it after apply smsgetway 
+      console.log('no user was found')  
+    if(this.mode != 'phone'){
+      this.presentToast('خطأ في اسم المستخدم او كلمة المرور','danger')
+    }else{
+      // this.getsms('new',err) // uncomment it after apply smsgetway 
+      this.getVirfyCode('new' , err) // comment it after apply smsgetway  
+    }
     }else if(err.error == "another phone"){
       // to apply imei check uncmment the line in zoodohapi/controller/user.j function : loginPhone
-      this.presentToast('seem you use another phone','danger') 
-    } else{ 
+      this.presentToast('seem you use another mobile device','danger') 
+    }else if(!err){
+      this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+       
+    }else{ 
       this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
       console.log(err.kind)
     }

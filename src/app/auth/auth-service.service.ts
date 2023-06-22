@@ -12,11 +12,20 @@ import { ErrModalPage } from '../err-modal/err-modal.page';
 export class AuthServiceService {
   authState = new BehaviorSubject(false);
    USER_INFO : {
-    id: any ,
-    user_name: any,
-    store_id :any,
-    full_name:any,
-     password:any
+    firstName:any, 
+    lastName:any, 
+    fullName:any,
+    type:any, 
+    phone :any,
+    contryCode :any,
+    password:any,
+    gender:Number,
+    email:any,
+    userName:any,
+    imei:any,
+    birthDate:any,
+    logMethod:any,
+    imgUrl:any
   };
   constructor(private modalController:ModalController ,private rout : Router ,private toast:ToastController ,private loadingController:LoadingController,private api:SocketServiceService,   private router: Router,private storage: Storage,private platform: Platform,public toastController: ToastController) { 
     this.platform.ready().then(() => {

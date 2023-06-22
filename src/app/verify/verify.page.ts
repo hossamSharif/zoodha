@@ -22,7 +22,10 @@ export class VerifyPage implements OnInit {
     email:any,
     userName:any,
     imei:any,
-    birthDate:any};
+    birthDate:any,
+    logMethod:any,
+    imgUrl:any
+  };
     token:any
     code:any;
     orignalCode;
@@ -45,6 +48,8 @@ export class VerifyPage implements OnInit {
       userName:"",
       imei:"",
       birthDate:"",
+      logMethod:"",
+      imgUrl:""
     }
     this.route.queryParams.subscribe(params => {
       if (params && params.type) { 

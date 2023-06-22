@@ -25,7 +25,9 @@ export class SignUpPage implements OnInit {
     email:any,
     userName:any,
     imei:any,
-    birthDate:any
+    birthDate:any,
+    logMethod:any,
+    imgUrl:any
   };
   ionicForm: FormGroup;
   ionic2Form: FormGroup;
@@ -87,6 +89,8 @@ export class SignUpPage implements OnInit {
       userName:"",
       imei:"",
       birthDate:"",
+      logMethod:"",
+      imgUrl:""
     }
 
     this.route.queryParams.subscribe(params => {
@@ -104,6 +108,8 @@ export class SignUpPage implements OnInit {
           userName:"",
           imei:"",
           birthDate:"",
+          logMethod:"",
+          imgUrl:""
         }
       }else{
 

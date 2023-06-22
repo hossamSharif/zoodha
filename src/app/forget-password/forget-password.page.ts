@@ -36,11 +36,11 @@ export class ForgetPasswordPage implements OnInit {
         console.log('email was sent',res['digit']) 
         let navigationExtras: NavigationExtras = {
           queryParams: {
-            digit: JSON.stringify(res['digit']), 
-            user: JSON.stringify(this.user)
+            digit: JSON.stringify(res['digit']),
+            user_info:JSON.stringify(res['user'])
           }
         }; 
-        this.rout.navigate(['verify-reset'], navigationExtras);  
+        this.rout.navigate(['virefy-rest'], navigationExtras);  
       }, (err) => {
       console.log(err); 
       this.spinner = false
@@ -55,7 +55,12 @@ export class ForgetPasswordPage implements OnInit {
    if (msg == "email not found"){ 
       this.presentToast("البريد ليس موجود " ,'danger') 
       return false
-     } else {
+     }
+     else if(!msg){
+      this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+      return false
+    }
+     else {
       this.presentToast("حدث خطأ ما ,الرجاء المحاولة لاحقا    " ,'danger') 
       return false
      } 

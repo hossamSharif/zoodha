@@ -11,7 +11,7 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./virefy-rest.page.scss'],
 })
 export class VirefyRestPage implements OnInit {
-
+  
   USER_INFO : { 
     firstName:any, 
     lastName:any, 
@@ -24,13 +24,17 @@ export class VirefyRestPage implements OnInit {
     email:any,
     userName:any,
     imei:any,
-    birthDate:any};
+    birthDate:any,
+    logMethod:any,
+    imgUrl:any
+  };
+
     token:any
-    code:any;
-   
+    code:any; 
     phone:any
     ionicForm: FormGroup;
     spinner:boolean = false 
+    spinner2:boolean = false 
     isSubmitted = false;
     outdateCode = false;
     orignalCode;
@@ -44,8 +48,9 @@ export class VirefyRestPage implements OnInit {
 
     
     this.route.queryParams.subscribe(params => {
-      if (params && params.digit  && params.user) { 
+      if (params && params.digit  && params.user_info) { 
         this.orignalCode =   JSON.parse(params.digit)   
+        this.USER_INFO =   JSON.parse(params.user_info)   
          //this.timerKiller() //enable time killer fuction when you want to release v1 
       }
     });  
@@ -59,7 +64,7 @@ export class VirefyRestPage implements OnInit {
    
   }
      get errorControl() {
-                return this.ionicForm.controls;
+              return this.ionicForm.controls;
          }
 
       timerKiller(){
@@ -92,31 +97,32 @@ export class VirefyRestPage implements OnInit {
         console.log('confirm')
         if (this.validate() == true){
           this.spinner = true
-          // let navigationExtras: NavigationExtras = {
-          //   queryParams: {
-          //     digit: JSON.stringify(res['digit']), 
-          //     user: JSON.stringify(this.user)
-          //   }
-          // }; 
-          this.rout.navigate(['new-password']); 
+          let navigationExtras: NavigationExtras = {
+            queryParams: {
+              user_info: JSON.stringify(this.USER_INFO)
+            }
+          }; 
+          this.rout.navigate(['new-password'] , navigationExtras); 
           this.spinner = false
         } 
       }
 
 
       sendMail(){ 
-          this.spinner = true
+          this.spinner2 = true
+          this.user.email =this.USER_INFO.email;
           this.api.sendMail(this.user).subscribe(data =>{
-            console.log('user was created',data)
-            let res = data
-            console.log('email was sent',res['digit']) 
-           this.orignalCode = res['digit'] 
+          console.log('user was created',data)
+          let res = data
+           console.log('email was sent',res['digit']) 
+           this.orignalCode = res['digit']
+           this.presentToast('تم ارسال الرمز بنجاح' , 'success') 
           }, (err) => {
           console.log(err); 
-          this.spinner = false
+          this.spinner2 = false
           this.handleError(err.error.error) 
         },()=>{
-          this.spinner = false
+          this.spinner2 = false
         })
         }
        
@@ -125,7 +131,10 @@ export class VirefyRestPage implements OnInit {
         if (msg == "email not found"){ 
            this.presentToast("البريد ليس موجود " ,'danger') 
            return false
-          } else {
+          } else if(!msg){
+            this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+            return false
+          }else {
            this.presentToast("حدث خطأ ما ,الرجاء المحاولة لاحقا    " ,'danger') 
            return false
           } 

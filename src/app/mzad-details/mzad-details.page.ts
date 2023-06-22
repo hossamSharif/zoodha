@@ -120,7 +120,7 @@ USER_INFO : {
    getAuction(id){
     this.api.getAuction(this.id).subscribe(data =>{
       console.log(data)
-      let res = data['auction'][0][0]
+      let res = data['auction'][0]
       this.mzd = res
       console.log('mzzzz',this.mzd)
       this.prepare()

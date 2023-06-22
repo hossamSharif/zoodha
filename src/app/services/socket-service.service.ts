@@ -180,6 +180,14 @@ export class SocketServiceService {
       return this.http.post(this.api+'users/update/', user)
     }
 
+    updatePass(user){ 
+      let params = new HttpParams() 
+      params=params.append('user' , user)
+      return this.http.post(this.api+'users/updatepass/', user)
+    }
+
+    
+
     updatePhone(user){ 
       let params = new HttpParams() 
       params=params.append('user' , user)

@@ -1,5 +1,5 @@
 import { Component, OnInit ,ViewChild  } from '@angular/core';
-import {  Router } from '@angular/router'
+import {  NavigationExtras, Router } from '@angular/router'
 import { SocketServiceService } from '../services/socket-service.service';
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
@@ -19,27 +19,31 @@ export class ProfilePage implements OnInit {
     lastName:any, 
     fullName:any,
     type:any, 
-    phone :any,
+    phone :Number,
     contryCode :any,
     password:any,
-    gender:Number,
+    gender:any,
     email:any,
     userName:any,
     imei:any,
-    birthDate:any
+    birthDate:any,
+    logMethod:any,
+    imgUrl:any
   };
   ionicForm: FormGroup;
   spinner:boolean = false 
   isSubmitted = false;
   isOpen = false;
   constructor(private formBuilder: FormBuilder,private toast:ToastController,private api:SocketServiceService,private storage: Storage, private rout : Router ) {
+   
     this.ionicForm = this.formBuilder.group({
       firstName: [''],
       lastName: [''],
       fullName: ['', [Validators.required, Validators.minLength(4),Validators.pattern('[a-zA-Z][a-zA-Z ]+')]],
       email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
       birth: ['',Validators.required],
-      gender: [''],
+      gender: [0],
+      password:[''],
       phone:['', [Validators.required, Validators.minLength(9),Validators.maxLength(9),Validators.pattern('^[0-9]+$')]],
 
     })
@@ -48,9 +52,6 @@ export class ProfilePage implements OnInit {
   ngOnInit() {
     this.getProfile()
   }
-
-
-
 
   presentPopover(e: Event) {
     this.popover.event = e;
@@ -64,7 +65,7 @@ export class ProfilePage implements OnInit {
         console.log('token',response) 
         this.api.auth(response).subscribe(data =>{
          console.log('authservices',data)
-          this.USER_INFO = data['user']
+         this.USER_INFO = data['user']
           console.log (this.USER_INFO)  
         }, (err) => {
         console.log(err);
@@ -93,6 +94,7 @@ export class ProfilePage implements OnInit {
 
   genderChange(ev){
     console.log(ev)
+   // this.USER_INFO.gender = +ev.detail.value
   }
 
   validate(){
@@ -132,7 +134,13 @@ export class ProfilePage implements OnInit {
        } else if (msg == "duplicate email"){ 
         this.presentToast("البريد موجود مسبقا" ,  'danger') 
         return false
-       }  
+       } else if(!msg){
+        this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+        return false
+      } else {
+        this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+        return false
+      }  
     }
 
 
@@ -153,5 +161,16 @@ export class ProfilePage implements OnInit {
     console.log('asdhlaks')
     this.rout.navigate(['change-phone']); 
   }
+
+  changePass(){ 
+   console.log('asdhlaks')
+   let navigationExtras: NavigationExtras = {
+    queryParams: {
+      user_info: JSON.stringify(this.USER_INFO)
+    }
+  }; 
+    this.rout.navigate(['new-password'] ,navigationExtras); 
+   }
+
 
 }

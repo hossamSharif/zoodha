@@ -1,11 +1,9 @@
 <ion-header>
   <ion-toolbar color="primary" >
-    <ion-buttons slot="start">
-     <ion-button fill="clear" >
-       <ion-icon name="arrow-back-outline" color="light"></ion-icon>
-     </ion-button>
+    <ion-buttons slot="end">
+      <ion-back-button></ion-back-button>
     </ion-buttons>
-     <ion-title dir="rtl"> تأكيد الحساب</ion-title>
+     <ion-title dir="rtl"> تغيير كلمة المرور</ion-title>
    </ion-toolbar>
 </ion-header>
  
@@ -33,7 +31,7 @@
      <ion-card class="bordernon w100" >
       <ion-card-header>
         <ion-card-title class="ion-text-center">
-         <h3 ><b> تأكيد الجوال</b></h3> 
+         <h3 ><b> رمز التأكيد</b></h3> 
         </ion-card-title>
         <ion-card-subtitle class="ion-text-center">
            قمنا بإرسال بريد اليك         
@@ -71,8 +69,8 @@
           </ion-col>
         </ion-row>
         <ion-row class="ion-justify-content-start">
-          <ion-button  fill="clear"(click)="sendMail()">
-            <ion-label><ion-text color="primary"><b>إعادة إرسال الرمز</b></ion-text></ion-label>
+          <ion-button [disabled]="spinner2 == true" fill="clear"(click)="sendMail()"> 
+            <ion-label><ion-text color="primary"><b>إعادة إرسال الرمز</b></ion-text> <ion-spinner name="lines" color="light" *ngIf="spinner2 == true"></ion-spinner> </ion-label>
           </ion-button>
         </ion-row>  
          </form>

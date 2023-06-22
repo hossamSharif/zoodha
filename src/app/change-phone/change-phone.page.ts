@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
   templateUrl: './change-phone.page.html',
   styleUrls: ['./change-phone.page.scss'],
 })
+
 export class ChangePhonePage implements OnInit {
   errorLoad:boolean = false
   USER_INFO : { 
@@ -23,7 +24,9 @@ export class ChangePhonePage implements OnInit {
     email:any,
     userName:any,
     imei:any,
-    birthDate:any
+    birthDate:any,
+    logMethod:any,
+    imgUrl:any
   };
   oldPhone:any =""
   ionicForm: FormGroup;
@@ -113,7 +116,10 @@ export class ChangePhonePage implements OnInit {
        if (msg == "duplicate phone") {   
          this.presentToast('رقم الهاتف موجود مسبقا , قم بتسجيل الدخول', 'danger') 
          return false
-        } 
+        } else if(!msg){
+          this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+          return false
+        }
      }
   
    async presentToast(msg,color?) {

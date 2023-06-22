@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar dir="rtl">
+    <ion-buttons slot="end">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>
       <ion-icon name="person-outline"></ion-icon>
       الملف الشخصي   
@@ -66,7 +69,12 @@
       <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.email.errors?.required"> الحقل مطلوب </ion-note> 
       <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.email.errors?.pattern">    خطأ في صيغة البريد  </ion-note>
     </ion-item>
-    <ion-item>
+     <ion-item class="ion-margin-top" >
+      <ion-label>كلمة المرور: </ion-label>  
+       <ion-input readonly="true" type="password" formControlName="password" [(ngModel)]="USER_INFO.password"></ion-input> 
+       <ion-button slot="end" size="small" (click)="changePass()">تغيير</ion-button>
+     </ion-item>
+    <ion-item> 
       <ion-label>تاريخ الميلاد: </ion-label> 
       <ion-input  value="{{ USER_INFO.birthDate | date: 'dd MMM yyyy' }}" id="date" (click)="presentPopover($event)"></ion-input>
       <ion-popover #popover [isOpen]="isOpen" trigger="date">
@@ -81,13 +89,13 @@
             <ion-col size="6">
               <ion-item>
                 <ion-label>ذكـر</ion-label>
-                <ion-radio slot="start" value=0>  </ion-radio>
+                <ion-radio slot="start" value = 0>  </ion-radio>
               </ion-item> 
             </ion-col>
             <ion-col size="6">
               <ion-item>
                 <ion-label>انثي</ion-label>
-                <ion-radio slot="start" value=1></ion-radio> 
+                <ion-radio slot="start" value= 1></ion-radio> 
               </ion-item> 
             </ion-col>
           </ion-row>
