@@ -1,4 +1,59 @@
  
+ion-toolbar {
+  --background-color: transparent;
+  --ion-color-base: transparent !important;
+}
+    // ion-header{
+    //   .header::after {
+    //   }  
+    // }
+    .header-md::after { 
+      background-image: none;
+
+    }
+      .background-image {
+          // background-image: url('path/to/image');
+          background-size: cover;
+          height: 100%;
+          width: 100%;
+        }
+  
+      .product-card {
+        border-radius: 29px;
+        width: 110%;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        padding-right: 5px;
+        padding-left: 5px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.85));
+        position: relative;
+      }
+
+      .product-img {
+        width:100%; 
+        height:200px
+      }
+  
+      .product-details {
+        display: flex;
+        flex-direction: column;
+      }
+  
+      .product-details div {
+        font-weight: bold;
+      }
+  
+      .product-details .price {
+        margin-top: 10px;
+      }
+  
+  .product-details .rounded-button {
+    margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+
 .radus5{
     border-radius: 4%;
 }
@@ -18,6 +73,58 @@
 
 .mgt10{
     margin-top: 10px;
+}
+
+.f18{
+  font-size: 18px;
+    font-weight: bold;
+}
+
+.f20{
+  font-size: 20px;
+    font-weight: bold;
+}
+
+.segCont{
+height: 80px;
+
+}
+
+
+
+
+
+
+ion-segment {
+  --background: var(--ion-color-dark);
+    height: 60%;  
+    ion-segment-button {
+      color: var(--ion-color-light)!important ;  
+    }
+
+    .segment-button-checked {
+      color: var(--ion-color-light-shade) !important ;
+      font-size: x-large;
+      font-weight: bolder;
+     // background-color: #023b21de !important; 
+    
+    }
+}
+
+.bgContent{
+  --background: #cdd8e1 ;
+}
+
+
+.topSeg{
+ top:-16px ;
+ --indicator-height: 0px;
+}
+
+
+.f16{
+  font-size: 16px;
+    font-weight: bold;
 }
 
 .padding5{
@@ -55,9 +162,44 @@ padding-top: 5px;
     right: 3px;
     top: 3px;
    }
+   .Status2{
+      /* position: absolute; */
+      float: left;
+      right: 10px;
+      top: 10px;
+      margin-left: 5px;
+      margin-top: 5px;
+      border-style: solid;
+      border-radius: 30px;
+      background-color: var(--ion-color-dark);
+   } 
    .pos{
     position: relative;
    }
 
+ .trnsItem{
+  --ion-item-background: transparent;
+ }
+   //
+   .container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+  }
+  
+  .number {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #000;
+    color: #fff;
+    padding: 5px;
+  }
+  
+  .text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
  
 

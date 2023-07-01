@@ -14,6 +14,7 @@ import * as momentTz from 'moment-timezone';
   styleUrls: ['./mzad-details.page.scss'],
 })
 export class MzadDetailsPage implements OnInit {
+  style : any = 'style2'
   mzad = { 
     "_id": "06e6f08e85e942d290ec642c14614637",
     "title": "iphone pro",

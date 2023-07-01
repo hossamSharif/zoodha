@@ -22,6 +22,7 @@ export class LiveMzadPage implements OnInit {
     firstName: any,
     lastName :any
     };
+    style : any = 'style2'
     errorLoad:boolean = false
     roundsMode:any = true
     availRounds = 0

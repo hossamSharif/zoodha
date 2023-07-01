@@ -11,16 +11,37 @@ import { Storage } from '@ionic/storage';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit { 
+    mobSlideOpt={
+    zoom: false,
+   slidesPerView: 1.2,
+    spaceBetween: 10,
+    centeredSlides: true,
+    speed: 400
+  };
+  //style : any = 'style1'
+  style : any = 'style2'
   errorLoad:boolean = false
   USER_INFO : {
     _id: any ,
-    firstName: any,
-    lastName :any
+    firstName:any, 
+    lastName:any, 
+    fullName:any,
+    type:any, 
+    phone :any,
+    contryCode :any,
+    password:any,
+    gender:any,
+    email:any,
+    userName:any,
+    imei:any,
+    birthDate:any,
+    logMethod:any
+    imgUrl:any
 };
   timeLeftArr :Array<Object> =[{da:String ,hr:String,mn:String ,sc:String }] 
   auctionsArray:Array<any>=[]
-
+   segment:any = 'upcoming'
    slideOpts = {
     slidesPerView: 3,
     nitialSlide: 0
@@ -66,6 +87,10 @@ export class HomePage implements OnInit {
 
    ionViewWillEnter(){
    
+   }
+
+   segmentChange(ev){
+    console.log('sg' , ev)
    }
 
   getAllAuction(){

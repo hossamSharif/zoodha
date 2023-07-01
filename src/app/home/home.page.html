@@ -4,10 +4,18 @@
       <ion-icon name="home-outline"></ion-icon>
       الرئيسية
     </ion-title>
+    <ion-buttons slot="end" *ngIf= "USER_INFO"> 
+        <ion-avatar>
+          <ion-img *ngIf= "USER_INFO.imgUrl.lenght > 0" [src]= "USER_INFO.imgUrl"></ion-img> 
+          <ion-icon *ngIf= "USER_INFO.imgUrl.lenght == 0" name="home-outline"></ion-icon> 
+        </ion-avatar> 
+    </ion-buttons>
+    
+    
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content  *ngIf= "style == 'style1'">
   <ion-grid> 
     <ion-row class="ion-margin-top ion-justify-content-center">
       <!-- <ion-col size="10" class="ion-text-center">
@@ -116,11 +124,11 @@
   </ion-row> 
 </ion-grid>
 
-<ion-grid > 
+<ion-grid> 
   <ion-row class="ion-padding">
     <ion-col *ngFor="let auct of auctionsArray ; let i = index" size="12" class="radus5 borderlight w100 mgt10">
       <ion-grid class="ion-no-padding" dir="rtl"> 
-        <ion-row>
+       <ion-row>
           <ion-item class="w100" lines="none"> 
             <ion-badge *ngIf="auct.currentStatus == 1" color="warning" slot="end" class="badge">
             <ion-text> مزاد قادم</ion-text> 
@@ -136,7 +144,7 @@
               </ion-badge>
             <ion-label>{{auct.title}}</ion-label>
           </ion-item>
-        </ion-row>
+        </ion-row> 
       
         <ion-row>
           <ion-col size="6" class="pos">
@@ -237,11 +245,165 @@
                <h5><b>التفاصيل</b></h5>
             </ion-button>
           </ion-col>
-        </ion-row>
-
-        </ion-grid>
+        </ion-row> 
+      </ion-grid>
     </ion-col> 
   </ion-row>
 </ion-grid>
 
 </ion-content>
+
+<!-- style 2  -->
+<!-- <ion-header>
+  <ion-toolbar dir="rtl">
+    <ion-title>
+      <ion-icon name="home-outline"></ion-icon>
+      الرئيسية
+    </ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content *ngIf= "style == 'style2'" class=""> 
+  <ion-grid class="ion-no-padding ion-margin-top">
+    <ion-row class="segCont">
+      <ion-segment   value="upcoming" (ionChange)="segmentChange($event)" dir="rtl">
+        <ion-segment-button class="topSeg" value="upcoming">
+          <ion-label class="f20" >قادم</ion-label>
+        </ion-segment-button>
+        <ion-segment-button class="topSeg" value="live">
+          <ion-label  class="f20" >جاري</ion-label>
+        </ion-segment-button> 
+        <ion-segment-button class="topSeg" value="ended">
+          <ion-label  class="f20" > منتهي </ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-row>
+  </ion-grid>
+ 
+
+
+
+  <ion-grid *ngIf="errorLoad == true" class="custGrid" > 
+    <ion-row class="ion-no-margin  ion-no-padding ion-justify-content-center w100" > 
+      <ion-col size="12" class="ion-text-center "> 
+        <h3>خطأ في التحميل</h3> 
+      </ion-col>
+      <ion-col size="6" class="ion-text-center">
+        <ion-button expand="block" (click)="reload()">
+          <h5>تحديث</h5>
+          <ion-icon name="refresh" color="light" slot="end"></ion-icon>
+        </ion-button>  
+      </ion-col>
+    </ion-row> 
+</ion-grid>
+
+<ion-grid *ngIf="!auctionsArray && errorLoad == false"  class="custGrid"> 
+  <ion-row class="ion-no-margin  ion-no-padding w100" >
+    <ion-col size="12" class="ion-text-center">
+      <!-- *ngIf="spinner == true" -->
+      <ion-spinner name="lines" color="dark" mode="ios"></ion-spinner> 
+    </ion-col>
+    <ion-col size="12">
+      <!-- *ngIf="spinner == true" --> 
+    </ion-col>
+  </ion-row> 
+</ion-grid>
+
+  <!-- <div class="background-image"></div> -->
+  <ion-slides  [options]="mobSlideOpt">
+    
+      <ion-slide *ngFor="let auct of auctionsArray ; let i = index">
+        <ion-card class="product-card"  (click)="mazdDetails(auct)"> 
+          <ion-grid class="ion-no-padding">
+            <ion-row>
+              <ion-col size="12">
+                <div class="Status2" *ngIf="auct.userIn" > 
+                  <ion-chip color="light">
+                   <ion-icon color="success" name="ribbon-outline"></ion-icon>
+                   <ion-label>مشارك</ion-label>
+                 </ion-chip>
+                 </div>
+                 <div class="Status2"  *ngIf="auct.userWin">
+                  <ion-chip  color="light">
+                    <ion-icon name="ribbon-outline" color="warning"></ion-icon>
+                    <ion-label> فائز   </ion-label>
+                  </ion-chip > 
+                 </div>
+                 <div class="Status2" *ngIf="auct.userOut">
+                  <ion-chip  color="light">
+                    <ion-icon name="ribbon-outline" color="danger"></ion-icon>
+                    <ion-label> ملغي   </ion-label>
+                  </ion-chip > 
+                 </div>
+              </ion-col>
+
+              <ion-col size="12" class="pos"> 
+                <img class="product-img" [src]="auct.imgs[0]"/>  
+               </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+    
+
+          <!-- <img class="product-img" [src]="auct.imgs[0]" /> -->
+          <ion-card-header class="ion-no-margin ion-no-padding" dir="rtl"> 
+              <ion-item class="w100 trnsItem" lines="none"> 
+                <!-- <ion-badge *ngIf="auct.currentStatus == 1" color="warning" slot="end" class="badge">
+                <ion-text> مزاد قادم</ion-text> 
+                  <ion-icon slot="end" name="ellipse" color="danger"></ion-icon> 
+                </ion-badge>
+                <ion-badge *ngIf="auct.currentStatus == 3" color="light" slot="end" class="badge">
+                  <ion-text> مزاد منتهي </ion-text> 
+                    <ion-icon slot="end" name="ellipse" color="danger"></ion-icon> 
+                  </ion-badge>
+                  <ion-badge *ngIf="auct.currentStatus == 2" color="success" slot="end" class="badge">
+                    <ion-text> مزاد جاري</ion-text> 
+                      <ion-icon slot="end" name="ellipse" color="danger"></ion-icon> 
+                  </ion-badge> -->
+                <ion-label class="f18">{{auct.title}}</ion-label>
+              </ion-item> 
+          </ion-card-header>
+
+          <ion-card-content class="product-details ion-no-padding">
+            <ion-grid   dir ="rtl" class="ion-no-margin"> 
+              <ion-row   class="ion-text-start">
+                <ion-col size="6">
+                  <ion-label class="f16"> 
+                    <ion-text color="dark"><b> يبدأ من :</b></ion-text>
+                    <ion-text> {{auct.productPrice - (0.3 * auct.productPrice)}} </ion-text> 
+                  </ion-label>
+                </ion-col>
+                <ion-col size="6" class="ion-text-end">
+                  <ion-label class="f16"> 
+                    <ion-text color="dark"><b>العربون :</b></ion-text>
+                    <ion-text> {{auct.deposit}} </ion-text> 
+                  </ion-label> 
+                </ion-col>
+              </ion-row> 
+            </ion-grid> 
+            <ion-grid class="mgt10">
+              <ion-row class="ion-justify-content-center" dir="rtl">
+                <ion-label class="f16"> 
+                  <!-- <ion-text color="primary"><b> التاريخ : </b></ion-text>  -->
+                  <ion-text> {{auct.start | date:'EEE dd-MM-yyyy' : undefined  : 'ar'}} </ion-text>
+                  <!-- <ion-text> {{auct.start | date:'EEE dd-MM'}} </ion-text> -->
+                </ion-label>
+                <ion-label class="f16" dir="rtl">
+                  <ion-text color="dark" > &nbsp; {{auct.start | date:'hh:mm a': undefined  : 'ar'}}</ion-text>
+                 </ion-label>
+              </ion-row>
+              <ion-row  class="ion-justify-content-center">
+                <ion-label class="f16"> 
+                  <ion-text color="dark"><b>المدة :</b>  </ion-text>
+                  <ion-text>  {{auct.duration}} </ion-text>
+                </ion-label> 
+              </ion-row>
+            </ion-grid> 
+
+            <!-- <ion-button  fill="block">Buy Now</ion-button> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-slide> 
+  </ion-slides>
+</ion-content>
+

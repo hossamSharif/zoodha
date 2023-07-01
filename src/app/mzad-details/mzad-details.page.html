@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="style == 'style1'">
   <ion-toolbar dir="rtl">
     <ion-buttons slot="end">
       <ion-back-button></ion-back-button>
@@ -10,7 +10,19 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+
+<ion-header *ngIf= "style == 'style2' && mzd"  color="translucent" class="hedAfter">
+  <ion-toolbar dir="rtl" class="ion-text-center" color="translucent">
+    <ion-buttons slot="end" >
+      <ion-back-button ></ion-back-button>
+    </ion-buttons>
+      <ion-title >
+        {{ mzd['title'] }}
+      </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  *ngIf= "style == 'style1'" class="">
   <ion-grid *ngIf="errorLoad == true" class="custGrid" > 
     <ion-row class="ion-no-margin  ion-no-padding ion-justify-content-center w100" > 
       <ion-col size="12" class="ion-text-center "> 
@@ -23,7 +35,7 @@
         </ion-button>  
       </ion-col>
     </ion-row> 
-</ion-grid>
+  </ion-grid>
 
 <ion-grid *ngIf="!mzd && errorLoad == false"  class="custGrid"> 
   <ion-row class="ion-no-margin  ion-no-padding w100" >
@@ -220,7 +232,255 @@
   </ion-grid> 
 </ion-content>
 
-<ion-footer class="footer"  *ngIf="mzd">
+
+<ion-content  *ngIf= "style == 'style2'" class="bgContent">
+
+ <ion-grid *ngIf="errorLoad == true" class="custGrid" > 
+    <ion-row class="ion-no-margin  ion-no-padding ion-justify-content-center w100" > 
+      <ion-col size="12" class="ion-text-center "> 
+        <h3>خطأ في التحميل</h3> 
+      </ion-col>
+      <ion-col size="6" class="ion-text-center">
+        <ion-button expand="block" (click)="reload()">
+          <h5>تحديث</h5>
+          <ion-icon name="refresh" color="light" slot="end"></ion-icon>
+        </ion-button>  
+      </ion-col>
+    </ion-row> 
+</ion-grid>
+
+<ion-grid *ngIf="!mzd && errorLoad == false"  class="custGrid"> 
+  <ion-row class="ion-no-margin  ion-no-padding w100" >
+    <ion-col size="12" class="ion-text-center">
+      <!-- *ngIf="spinner == true" -->
+      <ion-spinner name="lines" color="dark" mode="ios"></ion-spinner> 
+    </ion-col>
+    <ion-col size="12">
+      <!-- *ngIf="spinner == true" --> 
+    </ion-col>
+  </ion-row> 
+</ion-grid>
+
+<ion-grid  class="roundedGrid ion-no-margin ion-padding-top w100"  dir="rtl" *ngIf="mzd"> 
+  <ion-row  class="roundedRow ion-no-margin ion-no-padding  w100" dir="rtl"> 
+    <ion-col size="7"  class="ion-padding-start"> 
+      <h3 class="col">     السعر الإفتتاحي    </h3> 
+    </ion-col>
+ 
+    <ion-col  size="5" class="ion-text-end ion-padding-end" > 
+      <h3 class="col">   {{mzd['productPrice'] - (0.3 * mzd['productPrice'])}} <ion-text>ر.س</ion-text>   </h3> 
+    </ion-col>
+  </ion-row> 
+
+  <ion-row>
+    <img class="radus5 img"  [src]="mzd['imgs'][0]"/>   
+  </ion-row>
+
+
+  <ion-row>
+  <ion-col size="12"  class="">
+    <ion-card-header class="pb0"> 
+      <ion-card-title> {{ mzd['title'] }}  </ion-card-title>
+      <ion-label>
+        {{mzd['shortDescr']}}
+      </ion-label>
+    </ion-card-header> 
+    <ion-card-content >
+      <ion-label *ngIf="showMore == true">
+        {{mzd['descr']}}
+        <ion-text><ion-button fill="clear" size="small" (click)="showMore = false ">اقل</ion-button></ion-text>
+      </ion-label>
+      <ion-label *ngIf="showMore == false">{{tirmString(mzd['descr'] ,20)}}
+         <ion-text><ion-button fill="clear" size="small" (click)="showMore = true ">المزيد</ion-button></ion-text>
+       </ion-label>
+    </ion-card-content>
+  </ion-col> 
+</ion-row> 
+</ion-grid>
+
+<ion-grid *ngIf="mzd"> 
+    <ion-row dir="rtl">  
+      <ion-col size="12" *ngIf="mzd['timeLeft'] | async as tm">
+        <h6 class="htx"> 
+          <!-- <ion-label><ion-text color="primary" class="paddind">
+            <b *ngIf="mzd.currentStatus == 1 ">  يبدأ بعد :</b>
+            <b *ngIf="mzd.currentStatus === 3 ">  إنتهي منذ :</b>
+            <b *ngIf="mzd.currentStatus === 2 ">  ينتهي بعد :</b>
+           </ion-text>
+          </ion-label> -->
+          <ion-label><ion-text class="paddindStyle2"><b>{{tm['da'] }}</b> </ion-text> :  </ion-label>
+          <ion-label><ion-text class="paddindStyle2"><b>{{tm['hr'] }}</b> </ion-text>  :  </ion-label>
+          <ion-label><ion-text class="paddindStyle2"><b>{{tm['mn'] }}</b> </ion-text>  :  </ion-label>
+          <ion-label><ion-text class="paddindStyle2"><b>{{tm['sc'] }}</b> </ion-text>  </ion-label>
+        </h6> 
+      </ion-col>
+    </ion-row>
+  
+
+  <ion-row class="ion-no-padding" *ngIf="mzd" dir="rtl"> 
+    <ion-card class="w100" *ngIf="mzd['currentStatus'] != 1">
+      <ion-card-header class="pb0">
+        <ion-card-title>
+          <ion-icon name="bookmark-outline" color="primary"></ion-icon> 
+          المشاركين
+        </ion-card-title> 
+      </ion-card-header>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" >
+           <ion-card-content> 
+            <ion-label *ngFor="let term of mzd['terms']">
+              <ion-icon name="pin" color="primary"></ion-icon>
+              <ion-text>{{term.desc}}</ion-text><br>
+             </ion-label> 
+          </ion-card-content>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card> 
+    <ion-card class="w100 detailCard"> 
+      <ion-card-header class="pb0">  
+          <ion-card-title color="light">
+           <ion-icon name="cash-outline" color="light"></ion-icon> 
+            الرسوم
+          </ion-card-title>
+        </ion-card-header>
+        <ion-grid class="ion-no-margin  ion-no-padding ion-padding-bottom" dir="rtl">
+          <ion-row class="ion-no-margin  ion-no-padding"> 
+            <ion-col size="4" class="ion-text-center">
+              <ion-card-content class="cardCont"> 
+                  <ion-text color="light"><b>العربون</b> </ion-text><br> 
+                  <ion-text>  {{mzd['deposit']}} </ion-text>
+                  <!-- <ion-text> ر.س </ion-text>  -->
+                </ion-card-content>
+            </ion-col>
+            <ion-col size="4" class="ion-text-center">
+              <ion-card-content class="cardCont">  
+                    <ion-text color="light"><b>رسوم دفتر </b> </ion-text><br> 
+                     <ion-text>    {{mzd['fee']}}</ion-text> 
+                     <!-- <ion-text>   ر.س </ion-text>   -->
+              </ion-card-content>
+            </ion-col>
+  
+            <ion-col size="4" class="ion-text-center totcol">
+              <ion-card-content class="cardCont"> 
+                <ion-text color="light"><b>المجموع </b>  </ion-text><br>
+                <ion-text>{{+mzd['deposit'] + +mzd['fee']}} </ion-text>
+                <!-- <ion-text>   ر.س </ion-text>  -->
+              </ion-card-content>
+            </ion-col>
+          </ion-row>
+        </ion-grid> 
+    </ion-card> 
+  
+    <ion-card class="w100 detailCard">
+      <ion-card-header class="pb0">  
+        <ion-card-title color ="light">
+          <ion-icon name="calendar-outline" color ="light"></ion-icon>
+        الجدول الزمني 
+        </ion-card-title>
+      </ion-card-header>
+      <ion-grid>
+        <ion-row>  
+          <ion-col size="12" *ngIf="mzd['timeLeft'] | async as tm">
+            <h6 class="htextStyle">
+               <!-- <ion-text>انتنهي :</ion-text>
+              <ion-text>بدأ منذ : </ion-text> -->
+              <ion-label><ion-text color="light" class="paddind">
+                <b *ngIf="mzd.currentStatus == 1 ">  يبدأ بعد  </b>
+                <b *ngIf="mzd.currentStatus === 3 ">  إنتهي منذ  </b>
+                <b *ngIf="mzd.currentStatus === 2 ">  ينتهي بعد  </b>
+               </ion-text>
+              </ion-label><br>
+              <ion-label><ion-text color="light" class="paddind"><b>{{tm['da'] }}</b> </ion-text>يوم : </ion-label>
+              <ion-label><ion-text color="light" class="paddind"><b>{{tm['hr'] }}</b> </ion-text>ساعة : </ion-label>
+              <ion-label><ion-text color="light" class="paddind"><b>{{tm['mn'] }}</b> </ion-text>دقيقة : </ion-label>
+              <ion-label><ion-text color="light" class="paddind"><b>{{tm['sc'] }}</b> </ion-text>ثانية </ion-label>
+            </h6> 
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-margin-top ion-padding-bottom"> 
+          <ion-col size="12" >
+            <ion-label class="htextStyle"> 
+              <ion-label><ion-text color="light" class="paddind"><b> التاريخ  </b> </ion-text></ion-label><br>
+              <ion-text class="paddind">{{mzd['start'] | date:'EEE dd-MM-yyyy' : undefined  : 'ar'}}</ion-text>    
+              <!-- <ion-text class="paddind" color="primary"> <b></b> </ion-text> -->
+              
+            </ion-label> 
+            <ion-label class="padding5">
+              <ion-text color="light" > {{mzd['start'] | date:'hh:mm a': undefined  : 'ar'}}</ion-text>
+             </ion-label>
+          </ion-col> 
+          
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+
+       <ion-card class="w100 detailCard"> 
+      <ion-card-header class="pb0">
+        <ion-card-title color="light">
+          <ion-icon name="bookmark-outline" color="light"></ion-icon> 
+          بنود المزاد
+        </ion-card-title> 
+      </ion-card-header>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" >
+           <ion-card-content class="cardCont">
+            <ion-label *ngFor="let term of terms">
+              <ion-icon name="pin" color="primary"></ion-icon>
+              <ion-text>{{term.desc}}</ion-text><br>
+             </ion-label> 
+          </ion-card-content>
+          </ion-col>
+        </ion-row>
+        <ion-item button (click)="viewMoreLess()" lines="none" class="lightItem lightBorder custItem">
+          <h4 class="custH">
+           <ion-label *ngIf="view == 0">
+             <ion-note >المزيد</ion-note><br>
+             <ion-icon name="chevron-down-outline" color="primary"></ion-icon>
+           </ion-label>
+           <ion-label *ngIf="view == 1">
+             <ion-note >اقل</ion-note><br>
+             <ion-icon   name="chevron-up-outline" color="primary"></ion-icon> 
+           </ion-label> 
+          </h4> 
+       </ion-item> 
+      </ion-grid>
+      </ion-card> 
+  </ion-row>
+</ion-grid>
+</ion-content>
+
+<ion-footer class="fotterStyle2"  *ngIf="mzd && style=='style2'">
+  <ion-grid dir="rtl">
+    <ion-row  >
+      <ion-col size="6" *ngIf="mzd['currentStatus'] == 1 && !mzd['userIn']">
+       <ion-button expand="block" fill="clear" color="dark" (click)="subiscribe()"  class="btStyle2"> 
+        <h5 class="bold">دخول المزاد</h5>
+        <ion-icon name="send-outline"  color="light" slot="end"></ion-icon> 
+       </ion-button>
+      </ion-col>
+      <ion-col size="6" *ngIf="mzd['currentStatus'] == 1 && mzd['userIn'] == true">
+        <ion-button  expand="block" fill="clear" color="danger"  (click)="cancelSubiscribtion()"  class="btStyle2"> 
+         <h5> إلغاء الإشتراك</h5>
+         <!-- <ion-icon name="send-outline"  color="light" slot="end"></ion-icon>  -->
+        </ion-button>
+       </ion-col>
+      <ion-col size="6" class="ion-text-center" *ngIf="mzd['currentStatus'] != 1">
+        <h4 class="ion-no-margin">
+        <ion-text color="primary">
+            أعلي مزايدة
+        </ion-text> <br>  
+        <ion-text> {{ mzd['fee'] + mzd['deposit'] }}  </ion-text>
+         <ion-text> ج.س</ion-text>
+       </h4>  
+      </ion-col> 
+    </ion-row>
+  </ion-grid>
+</ion-footer>
+
+<ion-footer class="footer"  *ngIf="mzd && style=='style1'">
   <ion-grid dir="rtl">
     <ion-row class="ion-justify-content-center">
       <ion-col size="6" *ngIf="mzd['currentStatus'] == 1 && !mzd['userIn']">
