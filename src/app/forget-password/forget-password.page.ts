@@ -10,7 +10,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
   styleUrls: ['./forget-password.page.scss'],
 })
 export class ForgetPasswordPage implements OnInit {
-
+  style:any = 'style2'
   spinner:boolean = false 
   ionicForm: FormGroup;
    user : { email:any  }

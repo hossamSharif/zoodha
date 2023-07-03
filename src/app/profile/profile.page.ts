@@ -12,6 +12,8 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 })
 
 export class ProfilePage implements OnInit {
+  style:any = 'style2'
+
   errorLoad:boolean = false
   @ViewChild('popover') popover;
   USER_INFO : { 

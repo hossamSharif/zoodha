@@ -10,7 +10,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content  *ngIf="style == 'style1'">
     <!-- <ion-grid class="ion-margin-bottom">
     <ion-row class="ion-justify-content-center"> 
       <ion-col size="8" class="ion-align-items-center">
@@ -126,4 +126,123 @@
   </ion-row> 
   </form>
   </ion-grid>
+</ion-content>
+
+
+<ion-content  *ngIf="style == 'style2'">
+  <!-- <ion-grid class="ion-margin-bottom">
+  <ion-row class="ion-justify-content-center"> 
+    <ion-col size="8" class="ion-align-items-center">
+      <ion-avatar> 
+        <ion-icon name="person-circle-outline" color="primary" class="custIcon"></ion-icon>
+      </ion-avatar>
+      <p>{{USER_INFO.fullName}}</p>
+    </ion-col>
+  </ion-row>
+</ion-grid> -->
+<ion-grid *ngIf="errorLoad == true" class="custGrid" > 
+  <ion-row class="ion-no-margin  ion-no-padding ion-justify-content-center w100" > 
+    <ion-col size="12" class="ion-text-center "> 
+      <h3>خطأ في التحميل</h3> 
+    </ion-col>
+    <ion-col size="6" class="ion-text-center">
+      <ion-button expand="block" (click)="reload()">
+        <h5>تحديث</h5>
+        <ion-icon name="refresh" color="light" slot="end"></ion-icon>
+      </ion-button>  
+    </ion-col>
+  </ion-row> 
+</ion-grid>
+
+
+<ion-grid *ngIf="!USER_INFO && errorLoad == false"  class="custGrid"> 
+<ion-row class="ion-no-margin  ion-no-padding w100" >
+  <ion-col size="12" class="ion-text-center">
+    <!-- *ngIf="spinner == true" -->
+    <ion-spinner name="lines" color="dark" mode="ios"></ion-spinner> 
+  </ion-col>
+  <ion-col size="12">
+    <!-- *ngIf="spinner == true" --> 
+  </ion-col>
+</ion-row> 
+</ion-grid>
+
+<ion-grid *ngIf="USER_INFO"> 
+<form [formGroup]="ionicForm" (ngSubmit)="update()" novalidate>
+<ion-list class="w100"  dir="rtl"> 
+  <ion-item    class="custInput mgt10" >
+   <ion-label>الجوال: </ion-label>  
+    <ion-input  readonly="true" formControlName="phone" [(ngModel)]="USER_INFO.phone"></ion-input> 
+    <ion-button color="dark" slot="end" size="small" (click)="changePhone()">تغيير</ion-button>
+  </ion-item>
+  <ion-item   class="custInput mgt10">
+    <ion-label > الإسم:  </ion-label> 
+    <ion-input  formControlName="fullName" [(ngModel)]="USER_INFO.fullName" ></ion-input> 
+    <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.fullName.errors?.required"> الحقل مطلوب</ion-note>
+    <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.fullName.errors?.pattern"> حروف فقط </ion-note>
+
+  </ion-item> 
+  <ion-item   class="custInput mgt10">
+    <ion-label>البريد الإلكتروني: </ion-label> 
+    <ion-input  formControlName="email" [(ngModel)]="USER_INFO.email" ></ion-input> 
+    <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.email.errors?.required"> الحقل مطلوب </ion-note> 
+    <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.email.errors?.pattern">    خطأ في صيغة البريد  </ion-note>
+  </ion-item>
+   <ion-item   class="custInput mgt10" >
+    <ion-label>كلمة المرور: </ion-label>  
+     <ion-input readonly="true" type="password" formControlName="password" [(ngModel)]="USER_INFO.password"></ion-input> 
+     <ion-button color="dark" slot="end" size="small" (click)="changePass()">تغيير</ion-button>
+   </ion-item>
+  <ion-item   class="custInput mgt10"> 
+    <ion-label>تاريخ الميلاد: </ion-label> 
+    <ion-input  value="{{ USER_INFO.birthDate | date: 'dd MMM yyyy' }}" id="date" (click)="presentPopover($event)"></ion-input>
+    <ion-popover #popover [isOpen]="isOpen" trigger="date">
+        <ng-template>
+            <ion-datetime max="2004-01-01T00:00:00"  min="1960-12-30T23:59:59" formControlName="birth" presentation="date" [(ngModel)]="USER_INFO.birthDate" locale="en-US" (ionChange)="dateChange($event)"></ion-datetime>
+        </ng-template>
+    </ion-popover>
+  </ion-item>
+  <ion-radio-group  formControlName="gender"  [(ngModel)]="USER_INFO.gender" (ionChange)="genderChange($event)">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item lines="none">
+              <ion-label>ذكـر</ion-label>
+              <ion-radio color="dark" slot="start" value = 0>  </ion-radio>
+            </ion-item> 
+          </ion-col>
+          <ion-col size="6">
+            <ion-item lines="none">
+              <ion-label>انثي</ion-label>
+              <ion-radio color="dark" slot="start" value= 1></ion-radio> 
+            </ion-item> 
+          </ion-col>
+        </ion-row>
+      </ion-grid> 
+  </ion-radio-group> 
+
+ 
+  <!-- <ion-item>
+    <ion-label position="floating">Password</ion-label> 
+    <ion-input [(ngModel)]="USER_INFO.password" type="password"></ion-input>
+    <ion-icon  slot="end"  name="eye-off-outline" ></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Confirm Password</ion-label> 
+    <ion-input [(ngModel)]="confirmPass" type="password"></ion-input>
+    <ion-icon  slot="end"   name="eye-off-outline" ></ion-icon>
+  </ion-item> -->
+  
+</ion-list>
+
+<ion-row class="ion-margin" dir="rtl">
+  <ion-col size="12">
+    <ion-item class="custItem" color="dark"  [disabled]="spinner == true" button (click)="update()">
+      <ion-label class="ion-text-center">حفــظ </ion-label>
+      <ion-spinner name="lines" color="light" *ngIf="spinner == true"></ion-spinner>  
+    </ion-item>
+  </ion-col>
+</ion-row> 
+</form>
+</ion-grid>
 </ion-content>

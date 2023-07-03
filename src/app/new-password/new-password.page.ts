@@ -11,7 +11,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 })
 export class NewPasswordPage implements OnInit {
   ionicForm: FormGroup;
-
+style:any = 'style2'
   USER_INFO : { 
     firstName:any, 
     lastName:any, 

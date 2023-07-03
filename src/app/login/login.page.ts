@@ -11,7 +11,9 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
+
 export class LoginPage implements OnInit {
+  style : any = 'style2'
   USER_INFO : { 
     firstName:any, 
     lastName:any, 

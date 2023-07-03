@@ -11,7 +11,7 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./virefy-rest.page.scss'],
 })
 export class VirefyRestPage implements OnInit {
-  
+  style:any = 'style2'
   USER_INFO : { 
     firstName:any, 
     lastName:any, 

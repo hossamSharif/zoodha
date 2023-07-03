@@ -1,4 +1,4 @@
-<ion-header>
+  <!-- <ion-header>
   <ion-toolbar color="primary">
    <ion-buttons slot="start">
     <ion-button fill="clear" >
@@ -7,9 +7,9 @@
    </ion-buttons>
     <ion-title dir="rtl"> إنشاء حساب </ion-title>
   </ion-toolbar> 
-</ion-header>
+</ion-header>   -->
 
-<ion-content>
+<ion-content  *ngIf=" style=='style1'">
   <ion-grid class="ion-no-padding">
     <ion-row>
       <ion-col size="12" class="head2 ion-text-center ">  
@@ -190,8 +190,8 @@
             </ion-row>
             <ion-row class="ion-margin" *ngIf="orignalCode"> 
               <ion-col> 
-                <ion-item>
-                  <ion-input class="custInput" formControlName="code" [(ngModel)]="code" ></ion-input>
+                <ion-item class="custInput" >
+                  <ion-input formControlName="code" [(ngModel)]="code" ></ion-input>
                     <ion-note slot="error" *ngIf="isSubmitted2 == true && errorControl2.code.errors?.pattern">ادخل ارقام فقط  </ion-note> 
                     <ion-note slot="error" *ngIf="isSubmitted2 == true && errorControl2.code.errors?.required">رمز التأكيد مطلوب </ion-note>
                     <ion-note slot="error" *ngIf="isSubmitted2 == true && (errorControl2.code.errors?.minlength || errorControl2.code.errors?.maxlength)">يجب ان يتكون من4 أرقام </ion-note> 
@@ -216,17 +216,7 @@
           </form>
         </ion-grid>
          
-          <ion-footer>
-            <ion-grid>
-              <ion-row class="ion-justify-content-center">
-                <ion-col size="12" class="ion-text-center">
-                  <ion-button fill="clear"  (click)="login()">
-                    <ion-label color="medium">هل لديك حساب? <ion-text color="dark"><strong> تسجيل دخول</strong> </ion-text></ion-label>
-                  </ion-button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-footer>
+       
         </ion-card>
       </ion-col>
       </ion-row>
@@ -234,4 +224,273 @@
   </ion-grid>
  
 </ion-content>
+
+
+<ion-content  *ngIf=" style=='style2'">
  
+  <ion-grid class="custGridStyl2">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="11" >
+       <ion-card class="roundedGrid w100" >
+        <ion-card-header *ngIf="!verficStep && !verficStep1">
+          <ion-card-title  >
+            <h3 class="ion-text-center"><b>إنشاء حساب</b></h3> 
+           </ion-card-title>
+        </ion-card-header>
+        <ion-card-header *ngIf="verficStep">
+          <ion-card-title class="ion-text-center">
+           <h3 ><b> تأكيد الجوال</b></h3> 
+          </ion-card-title>
+          <ion-card-subtitle class="ion-text-center">
+             تم إرسال رسالة نصية برمز تأكيد الي   
+          </ion-card-subtitle>
+          <ion-card-subtitle class="ion-text-center">
+            <ion-text *ngIf="USER_INFO.phone && orignalCode"> {{USER_INFO.phone}} - {{orignalCode}} </ion-text>
+          </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-header *ngIf="verficStep1">
+          <ion-card-title  >
+            <h3 class="ion-text-center"><b>  انشاء كلمة مرور</b></h3> 
+           </ion-card-title>
+        </ion-card-header>
+        <ion-grid >
+
+
+          <ion-row *ngIf="!verficStep && !verficStep1"  dir="rtl">
+            <form [formGroup]="ionicForm" (ngSubmit)="next()" novalidate> 
+            <ion-list class="w100" *ngIf="USER_INFO" dir="rtl">  
+              <ion-row>
+                <ion-col size="12">
+                  <ion-item class="custItem" [disabled]="spinner == true"  button (click)="getInfo('google')"> 
+                    <ion-label class="ion-text-center">google</ion-label>
+                    <ion-icon name="logo-google" color="danger"></ion-icon>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-item  class="custItem mgt10" [disabled]="spinner == true"  button (click)="getInfo('apple')"> 
+                    <ion-label class="ion-text-center">Apple</ion-label>
+                    <ion-icon name="logo-apple" ></ion-icon>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row class=" ion-justify-content-center"> 
+                <ion-col size="3" class="ion-text-center">
+                  <ion-label><h3>أو</h3></ion-label>
+                </ion-col>
+              </ion-row>
+
+
+
+              <ion-item class="custInput">
+                <ion-label > اسم المستخدم :  </ion-label> 
+                <ion-input  formControlName="fullName" [(ngModel)]="USER_INFO.fullName" ></ion-input> 
+                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.fullName.errors?.required"> الحقل مطلوب</ion-note>
+                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.fullName.errors?.pattern"> حروف فقط </ion-note>
+              </ion-item> 
+              <ion-item class="custInput mgt10">
+                <ion-label>البريد الإلكتروني: </ion-label> 
+                <ion-input formControlName="email" [(ngModel)]="USER_INFO.email" ></ion-input> 
+                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.email.errors?.required"> الحقل مطلوب </ion-note> 
+                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.email.errors?.pattern">    خطأ في صيغة البريد  </ion-note>
+              </ion-item>
+              <ion-item class="custInput mgt10" >
+                <ion-label>الجوال: </ion-label>  
+                <ion-input dir="ltr" formControlName="phone" [(ngModel)]="USER_INFO.phone"> </ion-input> 
+                <ion-label slot="end" dir="rtl" class="ion-no-margin"><ion-text color="medium">966+</ion-text></ion-label>
+              </ion-item>
+              <ion-item class="custInput mgt10">
+                <ion-label>تاريخ الميلاد: </ion-label> 
+                <ion-input  value="{{ USER_INFO.birthDate | date: 'dd MMM yyyy' }}" id="date" (click)="presentPopover($event)"></ion-input>
+                <ion-popover #popover [isOpen]="isOpen" trigger="date">
+                    <ng-template>
+                        <ion-datetime max="2004-01-01T00:00:00"  min="1960-12-30T23:59:59" formControlName="birth" presentation="date" [(ngModel)]="USER_INFO.birthDate" locale="en-US" (ionChange)="dateChange($event)"></ion-datetime>
+                    </ng-template>
+                </ion-popover>
+              </ion-item>
+              <ion-radio-group formControlName="gender"  [(ngModel)]="USER_INFO.gender" (ionChange)="genderChange($event)">
+                  <ion-grid>
+                    <ion-row>
+                      <ion-col size="6">
+                        <ion-item lines="none">
+                          <ion-label>ذكـر</ion-label>
+                          <ion-radio slot="start" value=0>  </ion-radio>
+                        </ion-item> 
+                      </ion-col>
+                      <ion-col size="6">
+                        <ion-item lines="none">
+                          <ion-label>انثي</ion-label>
+                          <ion-radio slot="start" value=1></ion-radio> 
+                        </ion-item> 
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid> 
+              </ion-radio-group>  
+            
+            </ion-list>
+        
+            <ion-row class="ion-margin" dir="rtl" >
+              <ion-col size="12" >
+                <ion-item class="custItem" color="dark"  button (click)="next()">
+                  <ion-label class="ion-text-center">
+                    <ion-text >التالي</ion-text> 
+                  </ion-label> 
+                </ion-item>
+              </ion-col>
+             
+
+              <ion-col size="12" *ngIf="verficStep">
+                <ion-item class="custItem" color="dark" [disabled]="spinner == true" button (click)="save()">
+                  <ion-label class="ion-text-center"> 
+                    <ion-text >حفــظ</ion-text>
+                  </ion-label>
+                  <ion-spinner name="lines" color="light" *ngIf="spinner == true"></ion-spinner>  
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </form>
+          </ion-row>
+          
+            
+            <ion-row *ngIf="verficStep1 " dir="rtl">
+              <form [formGroup]="ionic3Form" (ngSubmit)="next2()" novalidate>
+                 
+                <ion-item class="custInput mgt10">
+                  <ion-label>كلمة المرور</ion-label> 
+                  <ion-input formControlName="password" [(ngModel)]="USER_INFO.password" [type]="passType"></ion-input>
+                  <ion-note slot="error" *ngIf="isSubmitted3 == true && errorControl3.password.errors?.required"> الحقل مطلوب </ion-note> 
+                  <ion-note slot="error" *ngIf="isSubmitted3 == true && errorControl3.password.errors?.length"> مكون من 5 رموز علي الأقل </ion-note> 
+                  <ion-note slot="error" *ngIf="isSubmitted3 == true && errorControl3.password.errors?.pattern"> يحوي حرف كبير وصغير ورمز ورقم</ion-note> 
+                  <ion-button  fill = "clear" (click)="showPass('pass')">
+                    <ion-icon  *ngIf="show == false"  slot="end"   name="eye-off-outline" ></ion-icon>
+                    <ion-icon *ngIf="show == true"   slot="end"   name="eye-outline" ></ion-icon>
+                   </ion-button>
+                </ion-item>
+                <ion-item class="custInput mgt10">
+                  <ion-label>تأكيد كلمة المرور</ion-label> 
+                  <ion-input formControlName="confirmPass" [(ngModel)]="confirmPass"  [type]="confType"></ion-input>
+                  <ion-note slot="error" *ngIf="isSubmitted3 == true && USER_INFO.password.length > 0 && USER_INFO.password != confirmPass">  كلمة المرور غير مطابقة  </ion-note> 
+                  
+                 <ion-button  fill = "clear" (click)="showPass('confirm')">
+                  <ion-icon  *ngIf="showConf == false"  slot="end"   name="eye-off-outline" ></ion-icon>
+                  <ion-icon *ngIf="showConf == true"   slot="end"   name="eye-outline" ></ion-icon>
+                 </ion-button>
+                </ion-item>  
+    
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="12">
+                      <ion-item button lines="none" (click)="showTerms()"><ion-label>قراءة الشروط الأحكام</ion-label> </ion-item>
+                    </ion-col>
+                    <ion-col size="12">
+                      <ion-item lines="none">
+                        <ion-checkbox  formControlName="agree" [(ngModel)]="agree" (ionChange)="agreeCheck($event)"></ion-checkbox>
+                        <ion-label class="ion-margin-start">    الموافقة علي الشروط  </ion-label> 
+                        <ion-note slot="error" *ngIf="isSubmitted3 == true && errorControl3.agree.errors?.required"> يجب الموافقة علي الشروط والأحكام  </ion-note> 
+                      </ion-item>
+                    </ion-col> 
+                  </ion-row>
+                </ion-grid> 
+               
+                <ion-row class="ion-margin">
+                  <ion-col size="6">
+                    <ion-item class="custItem" color="dark"  button (click)="next2()">
+                      <ion-label class="ion-text-center">
+                        <ion-text >التالي</ion-text> 
+                      </ion-label> 
+                    </ion-item>
+                     
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-item class="custItem" fill="clear"  button (click)="back()">
+                      <ion-label class="ion-text-center">
+                        <ion-text >السابق</ion-text> 
+                      </ion-label> 
+                    </ion-item>  
+                  </ion-col>
+                </ion-row>
+                 
+              </form>
+            </ion-row>
+            
+
+            <ion-row *ngIf="verficStep" dir="rtl"> 
+              <form [formGroup]="ionic2Form" (ngSubmit)="save()" novalidate>
+                <ion-row class="ion-padding-start">
+                  <ion-label>أدخل رمز التأكيد</ion-label> 
+                </ion-row>
+                <ion-row class="ion-margin" *ngIf="orignalCode"> 
+                  <ion-col> 
+                    <ion-item>
+                      <ion-input class="custInput" formControlName="code" [(ngModel)]="code" ></ion-input>
+                        <ion-note slot="error" *ngIf="isSubmitted2 == true && errorControl2.code.errors?.pattern">ادخل ارقام فقط  </ion-note> 
+                        <ion-note slot="error" *ngIf="isSubmitted2 == true && errorControl2.code.errors?.required">رمز التأكيد مطلوب </ion-note>
+                        <ion-note slot="error" *ngIf="isSubmitted2 == true && (errorControl2.code.errors?.minlength || errorControl2.code.errors?.maxlength)">يجب ان يتكون من4 أرقام </ion-note> 
+                    </ion-item> 
+                  </ion-col> 
+                </ion-row> 
+               
+                <ion-row class="ion-margin" >
+                  <ion-col size="6">
+                    <ion-item class="custItem" color="dark" button  [disabled]="spinner == true"  (click)="save()">
+                      <ion-label class="ion-text-center">إرسال</ion-label> 
+                      <ion-spinner name="lines" color="light" *ngIf="spinner == true"></ion-spinner> 
+        
+                    </ion-item>
+                  
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-item class="custItem" fill="clear"  button (click)="back2()">
+                      <ion-label class="ion-text-center">
+                        <ion-text >السابق</ion-text> 
+                      </ion-label> 
+                    </ion-item> 
+                  </ion-col>
+                </ion-row>
+                <ion-row class="ion-justify-content-start">
+                  <ion-button  fill="clear"(click)="getsms()">
+                    <ion-label><ion-text color="dark"><b>إعادة إرسال الرمز</b></ion-text></ion-label>
+                  </ion-button>
+                </ion-row>  
+              </form>
+            </ion-row>
+          
+        </ion-grid>
+
+       
+
+
+       
+         
+       
+        </ion-card>
+      </ion-col>
+      </ion-row>
+      
+  </ion-grid>
+ 
+</ion-content>
+
+<ion-footer *ngIf=" style=='style1'">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" class="ion-text-center">
+        <ion-button fill="clear"  (click)="login()">
+          <ion-label color="medium">هل لديك حساب? <ion-text color="dark"><strong> تسجيل دخول</strong> </ion-text></ion-label>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>
+
+
+<ion-footer *ngIf=" style=='style2'">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" class="ion-text-center">
+        <ion-button fill="clear"  (click)="login()">
+          <ion-label color="medium">هل لديك حساب? <ion-text color="dark"><strong> تسجيل دخول</strong> </ion-text></ion-label>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

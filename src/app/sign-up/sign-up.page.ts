@@ -13,6 +13,8 @@ import { TermsPage } from '../terms/terms.page';
 export class SignUpPage implements OnInit {
   @ViewChild('popover') popover;
   verficStep:boolean 
+  verficStep1:boolean 
+  style : any = 'style2'
   USER_INFO : { 
     firstName:any, 
     lastName:any, 
@@ -31,9 +33,11 @@ export class SignUpPage implements OnInit {
   };
   ionicForm: FormGroup;
   ionic2Form: FormGroup;
+  ionic3Form: FormGroup;
   spinner:boolean = false 
   isSubmitted = false;
   isSubmitted2 = false;
+  isSubmitted3 = false;
   isOpen = false;
   confirmPass:any = ""
   agree:boolean = false
@@ -63,6 +67,12 @@ export class SignUpPage implements OnInit {
     this.ionic2Form = this.formBuilder.group({
       code: ['', [Validators.required, Validators.minLength(4),Validators.maxLength(4),Validators.pattern('^[0-9]+$')]],
    })
+
+   this.ionic3Form = this.formBuilder.group({
+    password: ['', [Validators.required, Validators.minLength(5),Validators.pattern('^([^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$')]],
+    confirmPass: ['', [Validators.required, Validators.minLength(5),Validators.pattern('^([^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$')]],
+    agree: ['', [Validators.required]]
+ })
     this.ionicForm = this.formBuilder.group({
       firstName: [''],
       lastName: [''],
@@ -70,10 +80,8 @@ export class SignUpPage implements OnInit {
       email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
       birth: ['',Validators.required],
       gender: [''],
-      phone:['', [Validators.required, Validators.minLength(9),Validators.maxLength(9),Validators.pattern('^[0-9]+$')]],
-      password: ['', [Validators.required, Validators.minLength(5),Validators.pattern('^([^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$')]],
-      confirmPass: ['', [Validators.required, Validators.minLength(5),Validators.pattern('^([^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$')]],
-      agree: ['', [Validators.required]]
+      phone:['', [Validators.required, Validators.minLength(9),Validators.maxLength(9),Validators.pattern('^[0-9]+$')]]
+      
     })
     //case signup with normal way , not using phone 
     this.USER_INFO = {
@@ -167,7 +175,10 @@ export class SignUpPage implements OnInit {
   get errorControl() {
     return this.ionicForm.controls;
   }
-
+  
+  get errorControl3() {
+    return this.ionic3Form.controls;
+  }
 
   get errorControl2() {
     return this.ionic2Form.controls;
@@ -222,6 +233,16 @@ export class SignUpPage implements OnInit {
   validate(){
     this.isSubmitted = true;
     if (this.ionicForm.valid == false) {
+      console.log('Please provide all the required values! 1') 
+      return false
+    }  else {
+       return true
+    }  
+  }
+
+  validate2(){
+    this.isSubmitted3 = true;
+    if (this.ionic3Form.valid == false) {
       console.log('Please provide all the required values!') 
       return false
     } else if(this.USER_INFO.password.length>0 && this.USER_INFO.password != this.confirmPass){
@@ -231,11 +252,32 @@ export class SignUpPage implements OnInit {
     }  
   }
 
-  
+
+  back(){
+    this.verficStep1 = false
+    this.verficStep = false
+    // this.ionic3Form.reset()
+    // this.ionicForm.reset()
+  }
+
+  back2(){
+    this.verficStep1 = true
+      this.verficStep = false
+    
+      // this.ionic3Form.reset() 
+  }
 
   next(){
     if(this.validate() == true){
+      this.verficStep1 = true
+      this.verficStep = false
+    } 
+   }
+
+   next2(){
+    if(this.validate2() == true){
       this.verficStep = true
+      this.verficStep1 = false
       this.orignalCode = this.getVirfyCode()
     } 
    }
