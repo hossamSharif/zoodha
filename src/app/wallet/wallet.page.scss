@@ -1,11 +1,26 @@
- 
+.header-md::after { 
+    background-image: none;
+  }
+  .centerDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 .custGrid{
     height: 100%;
     display: flex;
     align-items: center;
 }
+
 .f30{
     font-size: 30px;
+}
+.f40{
+    font-size: 40px;
+}
+
+.mgt50{
+    margin-top:50%;
 }
 .float{
     position: fixed;

@@ -50,15 +50,17 @@ export class CartPage implements OnInit {
     this.orders = undefined
     this.getOrders()
     }
-  getOrders(){ 
+
+    
+    getOrders(){ 
     this.showSkelton = true
     this.api.getUserOrder(this.USER_INFO._id).subscribe(data =>{
       console.log(data)
       let res = data['orders'] 
+      this.orders = res
       if(res.length == 0){
         this.showEmpty
-      }else{
-        this.orders = res
+      }else{ 
         this.preparOrders()
       }
      

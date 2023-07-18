@@ -40,7 +40,7 @@
                     <ion-label> 
                       <ion-note color="primary"><b>سعر المنتج :</b>  </ion-note>
                       <ion-note>  {{order.higtPayedPrie}}</ion-note>
-                      <ion-note>  ج.س</ion-note>
+                      <ion-note>  usd</ion-note>
                     </ion-label>
                   </ion-row>
                 </ion-grid>
@@ -141,7 +141,7 @@
                     <ion-label> <ion-note color="primary"><b>سعر المنتج :</b>  </ion-note>  </ion-label>
                     <ion-label slot="end">
                       <ion-note>  {{higtPayedPrie}}</ion-note>
-                      <ion-note>  ج.س</ion-note>
+                      <ion-note>  usd</ion-note>
                     </ion-label>
                   </ion-item>
               </ion-col> 
@@ -153,7 +153,7 @@
                   <ion-label slot="end">
                     
                     <ion-text> - {{order['auctions'][0].deposit}} </ion-text>
-                    <ion-text>  ج.س </ion-text>
+                    <ion-text>  usd </ion-text>
                   </ion-label>
                 </ion-item>
               </ion-col>
@@ -162,7 +162,7 @@
                     <ion-label><ion-text color="primary"><b> التوصيل</b> </ion-text>  </ion-label>
                     <ion-label slot="end">
                       <ion-note>  {{order.delivary}}</ion-note>
-                      <ion-note>  ج.س</ion-note>
+                      <ion-note>  usd</ion-note>
                     </ion-label>
                   </ion-item>
               </ion-col>
@@ -174,7 +174,7 @@
                   <ion-label slot="end">
                     <ion-text> - </ion-text>
                     <ion-text> {{order.discount}} </ion-text>
-                    <ion-text>  ج.س </ion-text>
+                    <ion-text>  usd </ion-text>
                   </ion-label>
                 </ion-item>
               </ion-col>
@@ -186,7 +186,7 @@
                   </ion-label>
                   <ion-label slot="end">
                     <ion-text>  {{ getNetTot() }}  </ion-text>
-                    <ion-text> ج.س</ion-text>
+                    <ion-text> usd</ion-text>
                   </ion-label>
                 </ion-item>
               </ion-col>
@@ -225,7 +225,7 @@
   <ion-grid dir="rtl"  *ngIf="order.currentStatus == 0"> 
     <ion-row>
       <ion-col size="6">
-       <ion-item  button   color="dark" class="custItem ion-text-center"  expand="block" type="outline" (click)="showActionPay()"> 
+       <ion-item  button   color="dark" class="custItem ion-text-center"  expand="block" type="outline" (click)="presentModal('','order')"> 
         <ion-label>دفــع </ion-label>
        </ion-item >
       </ion-col>

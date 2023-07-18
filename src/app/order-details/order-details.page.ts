@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { SocketServiceService } from '../services/socket-service.service';
+import { StripePaymentPage } from '../stripe-payment/stripe-payment.page';
 
 @Component({
   selector: 'app-order-details',
@@ -44,6 +45,8 @@ export class OrderDetailsPage implements OnInit {
     this.order = undefined
     this.getOrder()
     }
+
+
   getOrder(){
     this.showSkelton = true 
     this.api.getOrder(this.orderId).subscribe(data =>{
@@ -98,6 +101,53 @@ export class OrderDetailsPage implements OnInit {
 
   }
  
+
+
+  async presentModal(id?, status?) {   
+    const modal = await this.modalController.create({
+      component: StripePaymentPage ,
+      componentProps: {
+        "mzd" : this.order['auctions'][0],
+        "order" : this.order,
+        "status":status,
+        "USER_INFO": this.USER_INFO ,
+        "amount": this.getNetTot()
+      }
+    });
+    
+    modal.onDidDismiss().then((dataReturned) => {
+      if (dataReturned !== null) {
+        console.log(dataReturned )
+        this.doAfterDissmiss(dataReturned)
+      }
+    });
+  
+    return await modal.present(); 
+  
+ 
+}
+
+  doAfterDissmiss(dataReturned){
+   console.log(dataReturned , dataReturned.data , dataReturned.role)
+   if( dataReturned.role == 'done'){ 
+    this.rout.navigate(['tabs/cart']);
+   // this.mzd = dataReturned.data
+   
+    // this.socket.userJoiningAuction([this.USER_INFO._id,this.USER_INFO.firstName , this.mzad._id ])
+    //push notification to aution's subiscribed users
+  
+    // let navigationExtras: NavigationExtras = {
+    //   queryParams: {
+    //     user_info: JSON.stringify(this.USER_INFO),
+    //     auction_id: JSON.stringify(this.mzad._id)
+    //   }
+    // }; 
+    //  this.rout.navigate(['live-mzad'], navigationExtras); 
+   } 
+    
+  }
+
+
 
  async showActionPay(){
   await this.getWalletBalance()

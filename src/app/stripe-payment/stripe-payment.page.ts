@@ -34,6 +34,8 @@ export class StripePaymentPage implements OnInit {
   };
   data:any = {};
   amount:any 
+  status:any
+  order:any
  apis:any  ='https://coral-app-pr5y9.ondigitalocean.app/transactions/subescribestripe'
  trasaction : {_id:any,orderId:any , userId:any , auctId:any , currentStatus:0 ,typee:1 , pay:0 ,details , comment ,fromAccount:any,toAccount:any,fromAccountTitle:any,toAccountTitle:any}
   
@@ -59,8 +61,13 @@ export class StripePaymentPage implements OnInit {
   }
 
   ngOnInit() { 
-  console.log(this.mzd , this.USER_INFO , this.amount)
-  this.prepareTransaction()
+  console.log(this.mzd , this.USER_INFO , this.amount ,this.order,this.status)
+  if(this.status == "order"){
+    this.prepareOrder() 
+  }else{
+    this.prepareTransaction() 
+  }
+
   this.data = {
     name:this.USER_INFO.fullName ,
     email:this.USER_INFO.email ,
@@ -69,6 +76,7 @@ export class StripePaymentPage implements OnInit {
     transaction:this.trasaction 
   }
   console.log('data',this.data)
+  
   }
 
    prepareTransaction(){
@@ -83,6 +91,21 @@ export class StripePaymentPage implements OnInit {
       this.trasaction = {_id:"" , orderId:"" , auctId: this.mzd['_id'] , userId:this.USER_INFO._id ,currentStatus : 0 ,typee:1 , pay: this.amount ,details : details, comment:comment,fromAccount:fromAccount , toAccount:toAccount , fromAccountTitle:fromAccountTitle ,toAccountTitle:toAccountTitle}
      }
    }
+
+   prepareOrder(){
+    {
+      let details = "سداد فاتورة رقم " + " " + this.order['_id'] 
+        let fromAccount = this.USER_INFO._id
+        let toAccount = "310000205349900001" // رقم حساب الشركة
+        let fromAccountTitle = "حساب  : " + this.USER_INFO.firstName
+        let toAccountTitle = "شركة زوودها"
+        let comment = "سداد فاتورة رقم " + " " + this.order['_id'] + "من مزاد : " + this.order.auctions[0].title +  ","  + "رقم: " +this.order.auctions[0]._id
+  
+      this.trasaction = {_id:"" , orderId:"" , auctId: this.mzd['_id'] , userId:this.USER_INFO._id ,currentStatus : 0 ,typee:1 , pay: this.amount ,details : details, comment:comment,fromAccount:fromAccount , toAccount:toAccount , fromAccountTitle:fromAccountTitle ,toAccountTitle:toAccountTitle}
+     }
+   }
+
+
 
   prepareUserbj(resubiscr?){
     if(!resubiscr){
@@ -115,22 +138,53 @@ export class StripePaymentPage implements OnInit {
     
    }
 
+   prepareOrderbj(){
+     
+      let mzdTemp  = { 
+        _id:this.order['_id'],
+        auctId:this.mzd['_id'],
+         userId: this.USER_INFO._id,
+         currentStatus:1
+
+      } 
+      return mzdTemp
+    
+     
+    
+   }
+
   subescribe(){   
      this.presentLoadingWithOptions("جاري معالجة طلبك ..")
      //api to add user to log of mzad
       //console.log('prepareUserbj',this.prepareUserbj())
-      this.api.updateAuctionUsers(this.prepareUserbj()).subscribe(data =>{
-      console.log('auction update',data ,data['updatedAuctionUsers'])
-     // this.mzd['users'] = data['updatedAuctionUsers']['users']
-      console.log(this.mzd) 
-      this.presentToast("تم الإشتراك بنجاح " ,'success') 
-      //back to details page with new data
-      this.modalCtrl.dismiss(this.mzd , 'done')
-    }, (err) => { 
-      this.loadingController.dismiss()
-      console.log(err.error); 
-     // this.handleError(err.error.error) 
-   })  
+      if (this.status == 'order') {
+        this.api.updateOrderStatus(this.prepareOrderbj()).subscribe(data =>{
+          console.log('auction update',data ,data['updatedAuctionUsers'])
+         // this.mzd['users'] = data['updatedAuctionUsers']['users']
+          console.log(this.mzd) 
+          this.presentToast("تم الإشتراك بنجاح " ,'success') 
+          //back to details page with new data
+          this.modalCtrl.dismiss(this.mzd , 'done')
+        }, (err) => { 
+          this.loadingController.dismiss()
+          console.log(err.error); 
+         // this.handleError(err.error.error) 
+          }) 
+      } else {
+        this.api.updateAuctionUsers(this.prepareUserbj()).subscribe(data =>{
+          console.log('auction update',data ,data['updatedAuctionUsers'])
+         // this.mzd['users'] = data['updatedAuctionUsers']['users']
+          console.log(this.mzd) 
+          this.presentToast("تم الإشتراك بنجاح " ,'success') 
+          //back to details page with new data
+          this.modalCtrl.dismiss(this.mzd , 'done')
+        }, (err) => { 
+          this.loadingController.dismiss()
+          console.log(err.error); 
+         // this.handleError(err.error.error) 
+          }) 
+      }
+      
      //api to add pay transaction + 
      //
      //socket emmit to tell others + push notification 
@@ -140,6 +194,8 @@ export class StripePaymentPage implements OnInit {
    crateTrans(){    
       this.api.createTrans(this.trasaction).subscribe(data =>{ 
       console.log(data) 
+      //refine transactions
+      
       this.subescribe()
     }, (err) => { 
       this.loadingController.dismiss()

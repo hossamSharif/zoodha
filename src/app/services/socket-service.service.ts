@@ -136,6 +136,12 @@ export class SocketServiceService {
       return this.http.post(this.api+'auctions/updateAuctionUsers/', auction)
     }
 
+    updateOrderStatus(order){ 
+      let params = new HttpParams() 
+      params=params.append('order' , order)
+      return this.http.post(this.api+'orders/updateorderstatus/', order)
+    }
+
     createTrans(trasaction){ 
       let params = new HttpParams() 
       params=params.append('trasaction' , trasaction)
