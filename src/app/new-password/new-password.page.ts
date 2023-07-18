@@ -101,7 +101,10 @@ style:any = 'style2'
         let res = data
         console.log('user was created',res['token']) 
         this.storage.set('token', res['token']).then((response) => {
-          this.rout.navigate(['tabs/home']); 
+          if(response){
+            this.spinner=false
+            this.rout.navigate(['tabs/home']);  
+          }
         })  
 
 
@@ -112,7 +115,7 @@ style:any = 'style2'
       this.presentToast("حدث خطأ ما , حاول مرة اخري " ,  'danger') 
     
     },()=>{
-      this.spinner = false
+    
     })
     }
   }

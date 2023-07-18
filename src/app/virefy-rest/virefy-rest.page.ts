@@ -116,13 +116,14 @@ export class VirefyRestPage implements OnInit {
           let res = data
            console.log('email was sent',res['digit']) 
            this.orignalCode = res['digit']
+           this.spinner2 = false
            this.presentToast('تم ارسال الرمز بنجاح' , 'success') 
           }, (err) => {
           console.log(err); 
           this.spinner2 = false
           this.handleError(err.error.error) 
         },()=>{
-          this.spinner2 = false
+         
         })
         }
        

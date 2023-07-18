@@ -78,9 +78,21 @@ showMore:boolean = false
 view:number ;
 mzd : any  = undefined;   
 USER_INFO : {
-    _id: any ,
-    firstName: any,
-    lastName :any
+  _id:any,
+  firstName:any, 
+  lastName:any, 
+  fullName:any,
+  type:any, 
+  phone :any,
+  contryCode :any,
+  password:any,
+  gender:any,
+  email:any,
+  userName:any,
+  imei:any,
+  birthDate:any,
+  logMethod:any
+  imgUrl:any
 };
    
   id:any 
@@ -419,8 +431,14 @@ USER_INFO : {
     toast.present();
   }
 
-   subiscribe(){
-    
-    this.presentModal()
+   subiscribe(){ 
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        mzd: JSON.stringify(this.mzd),
+        user_info: JSON.stringify( this.USER_INFO), 
+      }
+    };
+    this.rout.navigate(['mzad-subescribe'], navigationExtras);
+    // this.presentModal()
    }
 }

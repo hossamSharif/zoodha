@@ -291,14 +291,18 @@ export class SignUpPage implements OnInit {
         console.log('user was created',res['token'])
          
         this.storage.set('token', res['token']).then((response) => {
-          this.rout.navigate(['tabs/home']); 
+          if(response){
+            this.spinner = false
+            this.rout.navigate(['tabs/home']);
+          }
+        
         }) 
       }, (err) => {
       console.log(err); 
       this.spinner = false
       this.handleError(err.error.error) 
     },()=>{
-      this.spinner = false
+     
     })
     }
   }

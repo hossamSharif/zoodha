@@ -83,6 +83,10 @@ const routes: Routes = [
   {
     path: 'virefy-rest',
     loadChildren: () => import('./virefy-rest/virefy-rest.module').then( m => m.VirefyRestPageModule)
+  },
+  {
+    path: 'stripe-payment',
+    loadChildren: () => import('./stripe-payment/stripe-payment.module').then( m => m.StripePaymentPageModule)
   }
 ];
 @NgModule({

@@ -116,23 +116,29 @@ export class VerifyPage implements OnInit {
                     phone:this.phone
                   }
                 };
+                this.spinner = false
                 this.rout.navigate(['sign-up'], navigationExtras);
               }else if(JSON.parse(params.type) == 'exist'){ 
+                this.spinner = true
                 let jsd = JSON.parse(params.data)
                 this.api.loginEmit(jsd._id) 
                 console.log('efsd',params.data)
                 this.USER_INFO =  jsd.user 
                 this.storage.set('user_info', jsd).then((response) => {
-               
+                  if(response){
+                     this.storage.set('token', jsd.token).then((response) => {
+                      this.spinner = false
+                     this.rout.navigate(['tabs/home']); 
+                  }) 
+                  }
+                 
                 })
-                this.storage.set('token', jsd.token).then((response) => {
-                  this.rout.navigate(['tabs/home']); 
-                }) 
+                
               } 
             } 
           }); 
 
-          this.spinner = false
+         
         } 
       }
 

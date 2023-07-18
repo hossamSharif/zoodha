@@ -41,12 +41,12 @@ export class ForgetPasswordPage implements OnInit {
           }
         }; 
         this.rout.navigate(['virefy-rest'], navigationExtras);  
+        this.spinner = false 
       }, (err) => {
       console.log(err); 
       this.spinner = false
       this.handleError(err.error.error) 
-    },()=>{
-      this.spinner = false
+    },()=>{ 
     })
     }
   }

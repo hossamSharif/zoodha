@@ -87,6 +87,13 @@ export class SocketServiceService {
     }
 
 
+   validateAuctionBeforeSubiscribtion (id){ 
+      console.log('this.auctionId from live service',  id)
+      let params = new HttpParams() 
+      params=params.append('id' , id)
+      return this.http.get(this.api+'auctions/validateauction/'+id)
+    }
+
     getUserAuction(userId){ 
       console.log('this.auctionId from live service',  userId)
       let params = new HttpParams() 
@@ -129,6 +136,12 @@ export class SocketServiceService {
       return this.http.post(this.api+'auctions/updateAuctionUsers/', auction)
     }
 
+    createTrans(trasaction){ 
+      let params = new HttpParams() 
+      params=params.append('trasaction' , trasaction)
+      return this.http.post(this.api+'transactions/createtransaction/', trasaction)
+    }
+
     cancelAuctionUsers(auction){ 
       let params = new HttpParams() 
       params=params.append('auction' , auction)
@@ -166,6 +179,13 @@ export class SocketServiceService {
       let params = new HttpParams() 
       params=params.append('user' , user)
       return this.http.post(this.api+'users/create/', user)
+    }
+
+    makePayment(info){ 
+      console.log('info',info)
+      let params = new HttpParams()  
+      params=params.append('info' , info)
+      return this.http.post(this.api+'transactions/subescribestripe/', info)
     }
 
     sendMail(user){ 

@@ -107,11 +107,17 @@ export class LoginPage implements OnInit {
      // this.getVirfyCode('exist' , res) // comment it after apply smsgetway 
                 let jsd = data['user']
                // this.api.loginEmit(jsd._id) 
+               
                 this.USER_INFO =  data['user']
                 this.storage.set('user_info', data).then((response) => {
+                  if(response){
                   this.storage.set('token', data['token']).then((response) => {
+                    if(response){
+                    this.spinner = false
                     this.rout.navigate(['tabs/home']); 
+                    }
                   }) 
+                }
                 })
                 
     }, (err) => {
@@ -119,7 +125,7 @@ export class LoginPage implements OnInit {
       this.handleError(err.error.error)
       this.spinner = false 
     },()=>{
-      this.spinner = false // move this line to send sms function when you enable it
+     
     })
    }
 
@@ -128,14 +134,15 @@ export class LoginPage implements OnInit {
     this.api.loginPhone(this.phone, this.genrateime()).subscribe(data => {
       console.log(data)
       let res = data 
-     // this.getsms('exist', res) // uncomment it after apply smsgetway 
+     // this.getsms('exist', res) // uncomment it after apply smsgetway
+     this.spinner = false 
       this.getVirfyCode('exist' , res) // comment it after apply smsgetway 
     }, (err) => {
       console.log(err.error.error);
       this.handleError(err.error.error)
       this.spinner = false 
     },()=>{
-      this.spinner = false // move this line to send sms function when you enable it
+       // move this line to send sms function when you enable it
     })
   }
 

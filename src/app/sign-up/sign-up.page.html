@@ -420,8 +420,8 @@
                 </ion-row>
                 <ion-row class="ion-margin" *ngIf="orignalCode"> 
                   <ion-col> 
-                    <ion-item>
-                      <ion-input class="custInput" formControlName="code" [(ngModel)]="code" ></ion-input>
+                    <ion-item  class="custInput">
+                      <ion-input class="ion-text-center" formControlName="code" [(ngModel)]="code" ></ion-input>
                         <ion-note slot="error" *ngIf="isSubmitted2 == true && errorControl2.code.errors?.pattern">ادخل ارقام فقط  </ion-note> 
                         <ion-note slot="error" *ngIf="isSubmitted2 == true && errorControl2.code.errors?.required">رمز التأكيد مطلوب </ion-note>
                         <ion-note slot="error" *ngIf="isSubmitted2 == true && (errorControl2.code.errors?.minlength || errorControl2.code.errors?.maxlength)">يجب ان يتكون من4 أرقام </ion-note> 

@@ -11,6 +11,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 })
 
 export class ChangePhonePage implements OnInit {
+  style:any ='style2'
   errorLoad:boolean = false
   USER_INFO : { 
     firstName:any, 
@@ -51,7 +52,7 @@ export class ChangePhonePage implements OnInit {
           this.oldPhone = this.USER_INFO.phone 
         }, (err) => {
         console.log(err);
-    this.errorLoad = true
+      this.errorLoad = true
         
       })      
       }else{

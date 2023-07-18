@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { SocketServiceService } from '../services/socket-service.service';
 import * as momentObj from 'moment';
 import * as momentTz from 'moment-timezone';
+import { StripePaymentPage } from '../stripe-payment/stripe-payment.page';
 @Component({
   selector: 'app-mzad-subescribe',
   templateUrl: './mzad-subescribe.page.html',
@@ -14,17 +15,36 @@ agreeTerms:boolean = false
 walletBalance : any 
 mzd : any ;   
 USER_INFO : {
-    _id: any ,
-    firstName: any,
-    lastName :any
+  _id:any,
+  firstName:any, 
+  lastName:any, 
+  fullName:any,
+  type:any, 
+  phone :any,
+  contryCode :any,
+  password:any,
+  gender:any,
+  email:any,
+  userName:any,
+  imei:any,
+  birthDate:any,
+  logMethod:any
+  imgUrl:any
 };
-  constructor(private api:SocketServiceService,private rout : Router,private loadingController:LoadingController , private toast:ToastController,private actionSheetCtl:ActionSheetController ,private modalController:ModalController) {
+  constructor(private route: ActivatedRoute ,private api:SocketServiceService,private rout : Router,private loadingController:LoadingController , private toast:ToastController,private actionSheetCtl:ActionSheetController ,private modalController:ModalController) {
 
-
+    this.route.queryParams.subscribe(params => {
+      if (params  && params.user_info && params.mzd) { 
+        
+        this.USER_INFO =   JSON.parse(params.user_info)   
+        this.mzd =   JSON.parse(params.mzd)   
+         //this.timerKiller() //enable time killer fuction when you want to release v1 
+      }
+    });  
    }
 
   ngOnInit() {
-    console.log(this.mzd , this.USER_INFO)
+   // console.log(this.mzd , this.USER_INFO)
   }
 
   
@@ -54,6 +74,8 @@ USER_INFO : {
     console.log(this.agreeTerms)
    } 
 
+
+   
 
     validate(){
       if(this.agreeTerms == false){
@@ -138,9 +160,7 @@ checkRemainTime(){
    //api to add pay transaction + 
    //
    //socket emmit to tell others + push notification 
-  }
-  
-   
+  }  
 }
 
 reSubiscribtion(){
@@ -171,6 +191,73 @@ reSubiscribtion(){
    
 }
 
+
+validateAuctionCondition(){ 
+  if(this.validate() == true){  
+    this.presentLoadingWithOptions("جاري التحقق ..") 
+    this.api.validateAuctionBeforeSubiscribtion(this.mzd['_id']).subscribe(data =>{
+    console.log('validateAuctionCondition',data)
+    if(data['success'] == true){
+      this.loadingController.dismiss()
+      this.presentModal()
+    }else{
+      this.handleError('err') 
+    } 
+  }, (err) => {  
+    this.loadingController.dismiss()
+    console.log(err.error); 
+    this.handleError(err.error.error) 
+   } 
+ )    
+  }
+    
+}
+// 
+
+ 
+
+//
+async presentModal(id?, status?) {   
+    const modal = await this.modalController.create({
+      component: StripePaymentPage ,
+      componentProps: {
+        "mzd" : this.mzd ,
+        "USER_INFO": this.USER_INFO ,
+        "amount": +this.mzd['fee'] + this.mzd['deposit']
+      }
+    });
+    
+    modal.onDidDismiss().then((dataReturned) => {
+      if (dataReturned !== null) {
+        console.log(dataReturned )
+        this.doAfterDissmiss(dataReturned)
+      }
+    });
+  
+    return await modal.present(); 
+  
+ 
+}
+
+  doAfterDissmiss(dataReturned){
+   console.log(dataReturned , dataReturned.data , dataReturned.role)
+   if( dataReturned.role == 'done'){ 
+    this.rout.navigate(['tabs/home']);
+   // this.mzd = dataReturned.data
+   
+    // this.socket.userJoiningAuction([this.USER_INFO._id,this.USER_INFO.firstName , this.mzad._id ])
+    //push notification to aution's subiscribed users
+  
+    // let navigationExtras: NavigationExtras = {
+    //   queryParams: {
+    //     user_info: JSON.stringify(this.USER_INFO),
+    //     auction_id: JSON.stringify(this.mzad._id)
+    //   }
+    // }; 
+    //  this.rout.navigate(['live-mzad'], navigationExtras); 
+   } 
+    
+  }
 
 
 handleError(err){

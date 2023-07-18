@@ -1,10 +1,8 @@
 <ion-header>
-  <ion-toolbar dir="rtl">
-    <ion-buttons slot="end"> 
-      <ion-button fill="clear" (click)="closeModal()"> 
-        <ion-icon name="close-circle-outline" color="danger"></ion-icon>
-      </ion-button>
-    </ion-buttons> 
+  <ion-toolbar dir="rtl"> 
+      <ion-buttons slot="end">
+        <ion-back-button></ion-back-button>
+      </ion-buttons> 
     <ion-title>الإشتراك في مزاد</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -96,9 +94,9 @@
   <ion-grid dir="rtl">
     <ion-row>
       <ion-col size="6">
-       <ion-button expand="block" type="outline" (click)="presentActionSheet()"> 
+       <ion-item button color="dark" class="custItem" expand="block" type="outline" (click)="validateAuctionCondition()"> 
         <h5>دفــع </h5>
-       </ion-button>
+       </ion-item >
       </ion-col>
       <ion-col size="6" class="ion-text-center">
         <h4 class="ion-no-margin">
@@ -106,7 +104,7 @@
             رسوم الإشتراك
         </ion-text> <br>  
         <ion-text>  {{mzd['fee'] + mzd['deposit']}}  </ion-text>
-        <ion-text> ج.س</ion-text>
+        <ion-text>usd</ion-text>
        </h4>  
       </ion-col> 
     </ion-row>
