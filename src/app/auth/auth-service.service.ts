@@ -59,7 +59,7 @@ export class AuthServiceService {
     
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned !== null) {
-        console.log(dataReturned )
+        //console.log(dataReturned )
         this.doAfterDissmiss(dataReturned)
       }
     });
@@ -89,21 +89,21 @@ export class AuthServiceService {
     });
     await loading.present();
     const { role, data } = await loading.onDidDismiss() 
-    console.log('Loading dismissed with role:', role);
+    //console.log('Loading dismissed with role:', role);
   }
 
   ifLoggedIn() { 
-    console.log('im here bro')
+    //console.log('im here bro')
     this.storage.get('token').then((response) => { 
       if (response) {
-        console.log('token',response) 
+        //console.log('token',response) 
         this.presentLoadingWithOptions()
         this.api.auth(response).subscribe(data =>{
-          console.log('authservices',data)
+          //console.log('authservices',data)
           this.authState.next(true);
           this.rout.navigate(['tabs/home']);   
         }, (err) => {
-        console.log(err);
+        //console.log(err);
       this.presentModal()
       })      
       }else{
@@ -115,9 +115,9 @@ export class AuthServiceService {
 
  async login(user) { 
    await   this.presentLoadingWithOptions('جاري تسجيل الدخول' , 'login')
-    console.log(user)
+    //console.log(user)
     // this.api.login(user).subscribe(data =>{
-    //   console.log('loogingksks',data)
+    //   //console.log('loogingksks',data)
      
     //   let res = data
     //   if(res['id'] != null){
@@ -128,7 +128,7 @@ export class AuthServiceService {
     //     password:res['password'],
     //     store_id:res['store_id'] 
     //   } 
-    //     console.log(  'sdlijlf' ,  this.USER_INFO)
+    //     //console.log(  'sdlijlf' ,  this.USER_INFO)
     //     this.storage.set('USER_INFO', this.USER_INFO).then((response) => {
     //     this.router.navigate(['folder/sales']);
     //     this.authState.next(true);
@@ -139,7 +139,7 @@ export class AuthServiceService {
     //     this.presentToast('خطأ في اسم المستخدم او كلمة المرور' ,'danger')
     //   }  
     // }, (err) => {
-    //    console.log(err);
+    //    //console.log(err);
     //    this.loadingController.dismiss()
     //    this.presentToast('خطأ في اسم المستخدم او كلمة المرور' ,'danger')
         

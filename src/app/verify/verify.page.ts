@@ -56,7 +56,7 @@ export class VerifyPage implements OnInit {
         if(JSON.parse(params.type) == 'new'){
            this.orignalCode = JSON.parse(params.code)
           this.phone = JSON.parse(params.phone)
-           console.log(JSON.parse(params.code))
+           //console.log(JSON.parse(params.code))
         }else if(JSON.parse(params.type) == 'exist'){
           let jsd = JSON.parse(params.data)
           this.orignalCode = jsd.code 
@@ -91,7 +91,7 @@ export class VerifyPage implements OnInit {
       validate(){
         this.isSubmitted = true;
         if (this.ionicForm.valid == false) {
-          console.log('Please provide all the required values!') 
+          //console.log('Please provide all the required values!') 
           return false
         } else if (this.outdateCode == true){ 
           this.presentToast(' انتهت المهلة ,إضغط إعادة ارسال للحصول علي رمز جديد' , 'danger')
@@ -105,7 +105,7 @@ export class VerifyPage implements OnInit {
       } 
 
       confirmAccount(){ 
-        console.log('confirm')
+        //console.log('confirm')
         if (this.validate() == true){
           this.spinner = true
           this.route.queryParams.subscribe(params => {
@@ -122,7 +122,7 @@ export class VerifyPage implements OnInit {
                 this.spinner = true
                 let jsd = JSON.parse(params.data)
                 this.api.loginEmit(jsd._id) 
-                console.log('efsd',params.data)
+                //console.log('efsd',params.data)
                 this.USER_INFO =  jsd.user 
                 this.storage.set('user_info', jsd).then((response) => {
                   if(response){
@@ -143,7 +143,7 @@ export class VerifyPage implements OnInit {
       }
 
       inputChang(ev){
-        console.log(ev.target.value)
+        //console.log(ev.target.value)
         // if(ev.target.value.length == 4 && this.validate() == true){
         //   this.confirmAccount()
         // }  
@@ -153,13 +153,13 @@ export class VerifyPage implements OnInit {
       getsms(){
       //   let seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1)
       //   this.api.sendsms(this.phone , seq).subscribe(data =>{
-      //     console.log('sms req',data)
+      //     //console.log('sms req',data)
       //     let res = data 
-      //     console.log('sms response',data)
+      //     //console.log('sms response',data)
       //     //add ionic plugin to detect the sms msg and get the use substring and procced the confirmation fuction auto
       //    // this.orignalCode = res 
       //   }, (err) => {
-      //   console.log(err); 
+      //   //console.log(err); 
       // })  
       }
  

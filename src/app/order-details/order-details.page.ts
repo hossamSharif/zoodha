@@ -29,11 +29,11 @@ export class OrderDetailsPage implements OnInit {
     trasaction : {_id:any,orderId:any , userId:any , auctId:any , currentStatus:0 ,typee:1 , pay:0 ,details , comment ,fromAccount:any,toAccount:any,fromAccountTitle:any,toAccountTitle:any}
   constructor(private api:SocketServiceService,private socket :SocketServiceService ,private route: ActivatedRoute,private storage: Storage ,private loadingController:LoadingController,private toast:ToastController,private actionSheetCtl:ActionSheetController ,private datePipe:DatePipe ,private rout : Router,private modalController:ModalController) { 
     this.route.queryParams.subscribe(params => {
-      console.log('params',params)
+      //console.log('params',params)
       if (params && params.id) {
         this.USER_INFO = JSON.parse(params.user_info);
         this.orderId = JSON.parse(params.id) 
-        console.log( this.orderId)
+        //console.log( this.orderId)
         this.getOrder()
       }
     });  
@@ -50,13 +50,13 @@ export class OrderDetailsPage implements OnInit {
   getOrder(){
     this.showSkelton = true 
     this.api.getOrder(this.orderId).subscribe(data =>{
-      console.log(data)
+      //console.log(data)
       let res = data['order'][0]
       this.order = res
-      console.log(this.order) 
+      //console.log(this.order) 
       this.preparOrders() 
     }, (err) => {
-    console.log(err);
+    //console.log(err);
     this.errorLoad = true
   } ,
   ()=>{
@@ -67,11 +67,11 @@ export class OrderDetailsPage implements OnInit {
  getWalletBalance(){
   this.showSkelton = true 
   this.api.getBalance(this.USER_INFO._id).subscribe(data =>{
-    console.log(data)
+    //console.log(data)
      let res = data['transaction'][0]
      this.walletBalance = res.balance
   }, (err) => {
-  console.log(err);
+  //console.log(err);
 } ,
 ()=>{ 
 })  
@@ -117,7 +117,7 @@ export class OrderDetailsPage implements OnInit {
     
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned !== null) {
-        console.log(dataReturned )
+        //console.log(dataReturned )
         this.doAfterDissmiss(dataReturned)
       }
     });
@@ -128,7 +128,7 @@ export class OrderDetailsPage implements OnInit {
 }
 
   doAfterDissmiss(dataReturned){
-   console.log(dataReturned , dataReturned.data , dataReturned.role)
+   //console.log(dataReturned , dataReturned.data , dataReturned.role)
    if( dataReturned.role == 'done'){ 
     this.rout.navigate(['tabs/cart']);
    // this.mzd = dataReturned.data
@@ -174,14 +174,14 @@ export class OrderDetailsPage implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
+          //console.log('Cancel clicked');
         }
       }]
     });
     await actionSheet.present();
 
     const { role, data } = await actionSheet.onDidDismiss();
-    console.log('onDidDismiss resolved with role and data', role, data);
+    //console.log('onDidDismiss resolved with role and data', role, data);
   }
 
   async presentActionSheetPick() {
@@ -202,14 +202,14 @@ export class OrderDetailsPage implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
+          //console.log('Cancel clicked');
         }
       }]
     });
     await actionSheet.present();
 
     const { role, data } = await actionSheet.onDidDismiss();
-    console.log('onDidDismiss resolved with role and data', role, data);
+    //console.log('onDidDismiss resolved with role and data', role, data);
   }
  
   validateBalance(){
@@ -246,10 +246,10 @@ export class OrderDetailsPage implements OnInit {
 
         this.trasaction = {_id:"" , orderId:this.order._id , auctId: this.order.auctId , userId:this.USER_INFO._id ,currentStatus : 0 ,typee:1 , pay: this.higtPayedPrie ,details : details, comment:comment,fromAccount:fromAccount , toAccount:toAccount , fromAccountTitle:fromAccountTitle ,toAccountTitle:toAccountTitle}
         this.api.createTransaction(this.trasaction).subscribe(data =>{
-        console.log(data)
+        //console.log(data)
         this.presentToast('تم سداد الفاتورة بنجاح' ,'success') 
         }, (err) => {
-        console.log(err);
+        //console.log(err);
       },
       ()=>{
       
@@ -281,7 +281,7 @@ async presentLoadingWithOptions(msg?) {
   });
   await loading.present();
   const { role, data } = await loading.onDidDismiss();
-  console.log('Loading dismissed with role:', role);
+  //console.log('Loading dismissed with role:', role);
 }
 
   async presentToast(msg,color?) {

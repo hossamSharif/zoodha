@@ -28,7 +28,7 @@ export class WalletPage implements OnInit {
       this.storage.get('user_info').then((response) => {
         if (response) {
           this.USER_INFO = response.user
-          console.log('kkkkkkkkkk',this.USER_INFO) 
+          //console.log('kkkkkkkkkk',this.USER_INFO) 
            this.getWalletBalance()
         }
        });
@@ -38,12 +38,12 @@ export class WalletPage implements OnInit {
     getWalletBalance(){
         
         this.api.getBalance(this.USER_INFO._id).subscribe(data =>{
-          console.log(data)
+          //console.log(data)
           let res = data['transaction'][0]
           this.walletBalance = +res.balance
           this.getTransactions()
         }, (err) => {
-        console.log(err);
+        //console.log(err);
         this.errorLoad = true
       } ,
       ()=>{ 
@@ -53,12 +53,12 @@ export class WalletPage implements OnInit {
     getTransactions(){
      
       this.api.getAllTransaction(this.USER_INFO._id).subscribe(data =>{
-        console.log(data)
+        //console.log(data)
         let res = data['transaction'] 
         this.transactions = res
         
       }, (err) => {
-      console.log(err);
+      //console.log(err);
       this.errorLoad = true
 
     } ,

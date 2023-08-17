@@ -41,17 +41,17 @@ export class ChangePhonePage implements OnInit {
 
 
   getProfile(){
-    console.log('im here bro')
+    //console.log('im here bro')
     this.storage.get('token').then((response) => { 
       if (response) {
-        console.log('token',response) 
+        //console.log('token',response) 
         this.api.auth(response).subscribe(data =>{
-         console.log('authservices',data)
+         //console.log('authservices',data)
           this.USER_INFO = data['user']
-          console.log (this.USER_INFO) 
+          //console.log (this.USER_INFO) 
           this.oldPhone = this.USER_INFO.phone 
         }, (err) => {
-        console.log(err);
+        //console.log(err);
       this.errorLoad = true
         
       })      
@@ -78,13 +78,13 @@ export class ChangePhonePage implements OnInit {
   validate(){
     this.isSubmitted = true;
     if (this.ionicForm.valid == false) {
-      console.log('Please provide all the required values!') 
+      //console.log('Please provide all the required values!') 
       return false
     }else if (this.USER_INFO.phone == this.oldPhone){ 
      this.presentToast('ادخلت نفس الرقم القديم , الرجاء ادخال رقم اخر', 'danger') 
      return false
     }else if(this.USER_INFO.phone[0] != 9 && +this.USER_INFO.phone[0] != 1) { 
-      console.log(this.USER_INFO.phone[0])
+      //console.log(this.USER_INFO.phone[0])
       this.presentToast('رقم الجوال غير صحيح' , 'danger') 
    } else{
      return true
@@ -94,9 +94,9 @@ export class ChangePhonePage implements OnInit {
    updatePhone(){
      if(this.validate() == true){
        this.api.updateUser(this.USER_INFO).subscribe(data =>{
-         console.log('user was updated',data)
+         //console.log('user was updated',data)
          let res = data
-         console.log('user was created',res['token']) 
+         //console.log('user was created',res['token']) 
          this.storage.set('token', res['token']).then((response) => {
           let navigationExtras: NavigationExtras = {
             queryParams: {
@@ -107,7 +107,7 @@ export class ChangePhonePage implements OnInit {
           this.rout.navigate(['verify'], navigationExtras); 
          })  
        }, (err) => {
-       console.log(); 
+       //console.log(); 
        this.handleError( err.error.error ) 
      })
      }

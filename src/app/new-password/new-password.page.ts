@@ -97,9 +97,9 @@ style:any = 'style2'
       this.USER_INFO.logMethod = 1
       this.USER_INFO.password = this.password
       this.api.updatePass(this.USER_INFO).subscribe(data =>{
-        console.log('user was updated',data)
+        //console.log('user was updated',data)
         let res = data
-        console.log('user was created',res['token']) 
+        //console.log('user was created',res['token']) 
         this.storage.set('token', res['token']).then((response) => {
           if(response){
             this.spinner=false
@@ -109,7 +109,7 @@ style:any = 'style2'
 
 
       }, (err) => {
-      console.log(); 
+      //console.log(); 
       this.spinner = false
       // this.handleError( err.error.error ) 
       this.presentToast("حدث خطأ ما , حاول مرة اخري " ,  'danger') 
@@ -144,7 +144,7 @@ style:any = 'style2'
   validate(){
     this.isSubmitted = true; 
     if (this.ionicForm.valid == false) {
-      console.log('Please provide all the required values!') 
+      //console.log('Please provide all the required values!') 
       return false
     } else if(this.password.length>0 && this.password != this.confirmPass){
       return false

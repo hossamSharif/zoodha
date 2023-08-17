@@ -1,0 +1,20 @@
+
+{
+
+"LOGIN":{
+"title":" login  " ,
+"or":"or" ,
+"placeholderEmail":"your email" ,
+"placeholderPassword":"  your pasword" ,
+"requirdFeild":"requird Feild" ,
+"emailError":"wrong email context" ,
+"loginButton":"  Login" ,
+"forgetPass":"Forget password ?" ,
+"youHaveAccount":" Don't have account ? " ,
+"signUp":"Create account" ,
+"errUserName":" wrong email or password" ,
+"errTry":"somthing went wrong , try again",
+"errPhone": "wrong phone number" 
+}
+
+}

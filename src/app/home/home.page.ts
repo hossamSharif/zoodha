@@ -62,12 +62,12 @@ export class HomePage implements OnInit {
       // import { timer } from 'rxjs';
       
       // const numbers = timer(3000, 1000);
-      // numbers.subscribe(x => console.log(x));
+      // numbers.subscribe(x => //console.log(x));
       // Emits one number after five seconds
       // import { timer } from 'rxjs';
       
       // const numbers = timer(5000);
-      // numbers.subscribe(x => console.log(x))
+      // numbers.subscribe(x => //console.log(x))
 
   constructor(private storage: Storage,private api:SocketServiceService,private datePipe:DatePipe ,private rout : Router ,private socket :SocketServiceService) {
     //  this.socket.getNewAuction()
@@ -79,7 +79,7 @@ export class HomePage implements OnInit {
       if (response) {
         
         this.USER_INFO = response.user
-        console.log('kkkkkkkkkk',this.USER_INFO) 
+        //console.log('kkkkkkkkkk',this.USER_INFO) 
         this.getAllAuction()  
       }
      });
@@ -90,18 +90,18 @@ export class HomePage implements OnInit {
    }
 
    segmentChange(ev){
-    console.log('sg' , ev)
+    //console.log('sg' , ev)
    }
 
   getAllAuction(){
     this.api.getAllAuction().subscribe(data =>{
-      console.log(data)
+      //console.log(data)
       let res = data['auctions'] 
       this.auctionsArray = res
-      console.log(this.auctionsArray)
+      //console.log(this.auctionsArray)
       this.prepareAuc()
     }, (err) => {
-    console.log(err);
+    //console.log(err);
     this.handleError(err.error.error)
   })  
   }
@@ -114,7 +114,7 @@ export class HomePage implements OnInit {
     handleError(err){ 
       this.errorLoad = true
       // if (err.error == "No user with this phone found") {
-      //   console.log('no user was found') 
+      //   //console.log('no user was found') 
       // // this.getsms('new',err) // uncomment it after apply smsgetway 
       // // this.getVirfyCode('new' , err) // comment it after apply smsgetway 
       // }else if(err.error == "another phone"){
@@ -122,7 +122,7 @@ export class HomePage implements OnInit {
       //   this.presentToast('seem you use another phone','danger') 
       // } else{ 
       //   this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
-      //   console.log(err.kind)
+      //   //console.log(err.kind)
       // }
     }
 
@@ -146,7 +146,7 @@ export class HomePage implements OnInit {
         // userIn
          let fltuse:Array<any> =[]
          fltuse = element.users.filter(x=>x.userId ==  this.USER_INFO._id)
-         console.log('fltuse'+index, fltuse )
+         //console.log('fltuse'+index, fltuse )
 
         if(fltuse.length> 0 && element.currentStatus < 3 && fltuse[0].cancel == 0){
           element.userIn = true 
@@ -156,7 +156,7 @@ export class HomePage implements OnInit {
           // userWin
           let mx =  element.logs.reduce((acc, shot) => acc = acc > shot.pay ? acc : shot.pay, 0); 
           let flt = element.logs.filter(x=>x.pay == mx)
-          console.log('userWin', mx , flt )
+          //console.log('userWin', mx , flt )
           if(flt[0].userId == this.USER_INFO._id){
            element.userWin = true
           }
@@ -178,7 +178,7 @@ export class HomePage implements OnInit {
         }
         element.duration = day + con + hr 
        }
-       console.log(this.auctionsArray) 
+       //console.log(this.auctionsArray) 
   }
 
   
@@ -186,7 +186,7 @@ export class HomePage implements OnInit {
   endAfterounter(index){ 
     let offset =  momentTz().utcOffset()
     let newDate = momentObj(this.auctionsArray[index]['end']).add(); 
-     console.log('init',this.auctionsArray[index]['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     //console.log('init',this.auctionsArray[index]['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
     return new Observable<object>((observer: Observer<object>) => {
       setInterval(() => observer.next(
         {da:this.memntoEnd(newDate).asDays().toFixed(0).toString(),hr: this.memntoEnd(newDate).hours().toString() ,mn:this.memntoEnd(newDate).minutes().toString(),sc:this.memntoEnd(newDate).seconds().toString()}
@@ -201,7 +201,7 @@ export class HomePage implements OnInit {
   startAfterounter(index){ 
     let offset =  momentTz().utcOffset()
     let newDate = momentObj(this.auctionsArray[index]['start']).add(); 
-     console.log(momentObj(),'init',this.auctionsArray[index]['start'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     //console.log(momentObj(),'init',this.auctionsArray[index]['start'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
      return new Observable<object>((observer: Observer<object>) => {
       setInterval(() => observer.next(
         {da:this.memntoStart(newDate).asDays().toFixed(0).toString(),hr: this.memntoStart(newDate).hours().toString() ,mn:this.memntoStart(newDate).minutes().toString(),sc:this.memntoStart(newDate).seconds().toString()}
@@ -217,7 +217,7 @@ export class HomePage implements OnInit {
   endSinceAfterounter(index){ 
     let offset =  momentTz().utcOffset()
     let newDate = momentObj(this.auctionsArray[index]['end']).add(); 
-     console.log(momentObj(),'init',this.auctionsArray[index]['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     //console.log(momentObj(),'init',this.auctionsArray[index]['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
      return new Observable<object>((observer: Observer<object>) => {
       setInterval(() => observer.next(
         {da:this.memnSinceEnd(newDate).asDays().toFixed(0).toString(),hr: this.memnSinceEnd(newDate).hours().toString() ,mn:this.memnSinceEnd(newDate).minutes().toString(),sc:this.memnSinceEnd(newDate).seconds().toString()}

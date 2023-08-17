@@ -87,6 +87,14 @@ const routes: Routes = [
   {
     path: 'stripe-payment',
     loadChildren: () => import('./stripe-payment/stripe-payment.module').then( m => m.StripePaymentPageModule)
+  },
+  {
+    path: 'pop-lang',
+    loadChildren: () => import('./pop-lang/pop-lang.module').then( m => m.PopLangPageModule)
+  },
+  {
+    path: 'curren-lang',
+    loadChildren: () => import('./curren-lang/curren-lang.module').then( m => m.CurrenLangPageModule)
   }
 ];
 @NgModule({

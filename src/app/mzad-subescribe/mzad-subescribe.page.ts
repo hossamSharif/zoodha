@@ -44,7 +44,7 @@ USER_INFO : {
    }
 
   ngOnInit() {
-   // console.log(this.mzd , this.USER_INFO)
+   // //console.log(this.mzd , this.USER_INFO)
   }
 
   
@@ -61,7 +61,7 @@ USER_INFO : {
     await loading.present();
   
     const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed with role:', role);
+    //console.log('Loading dismissed with role:', role);
   }
   
   async closeModal() { 
@@ -70,8 +70,8 @@ USER_INFO : {
     }
 
   agreeCheck(ev){
-    console.log(ev.target.value)
-    console.log(this.agreeTerms)
+    //console.log(ev.target.value)
+    //console.log(this.agreeTerms)
    } 
 
 
@@ -85,7 +85,7 @@ USER_INFO : {
         this.presentToast('رصيدك غير كافي , الرجاء شحن محفظتك','danger')
         return false
         }else if(this.checkRemainTime() <= 60000){
-        console.log('this.checkRemainTime()',this.checkRemainTime())
+        //console.log('this.checkRemainTime()',this.checkRemainTime())
         this.presentToast('لا يمكنك الإشتراك , لقد بدأ المزاد بالفعل','danger')
         return false
         } else{ 
@@ -141,17 +141,17 @@ checkRemainTime(){
   if(this.validate() == true){
     this.presentLoadingWithOptions("جاري معالجة طلبك ..")
    //api to add user to log of mzad
-    console.log('prepareUserbj',this.prepareUserbj())
+    //console.log('prepareUserbj',this.prepareUserbj())
     this.api.updateAuctionUsers(this.prepareUserbj()).subscribe(data =>{
-    console.log('auction update',data ,data['updatedAuctionUsers'])
+    //console.log('auction update',data ,data['updatedAuctionUsers'])
     this.mzd['users'] = data['updatedAuctionUsers']['users']
-    console.log(this.mzd) 
+    //console.log(this.mzd) 
     this.presentToast("تم الإشتراك بنجاح " ,'success') 
     //back to details page with new data
     this.modalController.dismiss(this.mzd , 'done')
   }, (err) => { 
     this.loadingController.dismiss()
-    console.log(err.error); 
+    //console.log(err.error); 
     this.handleError(err.error.error) 
  },()=>{
   this.loadingController.dismiss()
@@ -169,16 +169,16 @@ reSubiscribtion(){
   if(this.validate() == true){
     this.presentLoadingWithOptions("جاري معالجة طلبك ..")
    //api to add user to log of mzad
-    console.log('prepareUserbj',this.prepareUserbj('resubiscr'))
+    //console.log('prepareUserbj',this.prepareUserbj('resubiscr'))
     this.api.resubiscribeAuctionUsers(this.prepareUserbj('resubiscr')).subscribe(data =>{
-    console.log('auction update',data ,data['updatedAuctionUsers'])
+    //console.log('auction update',data ,data['updatedAuctionUsers'])
     
     this.presentToast("تم الإشتراك بنجاح " ,'success') 
     this.modalController.dismiss(this.mzd , 'done')
     this.rout.navigate(['tabs/home']);
   }, (err) => { 
     this.loadingController.dismiss()
-    console.log(err.error); 
+    //console.log(err.error); 
     this.handleError(err.error.error) 
  },()=>{
   this.loadingController.dismiss()
@@ -196,7 +196,7 @@ validateAuctionCondition(){
   if(this.validate() == true){  
     this.presentLoadingWithOptions("جاري التحقق ..") 
     this.api.validateAuctionBeforeSubiscribtion(this.mzd['_id']).subscribe(data =>{
-    console.log('validateAuctionCondition',data)
+    //console.log('validateAuctionCondition',data)
     if(data['success'] == true){
       this.loadingController.dismiss()
       this.presentModal()
@@ -205,7 +205,7 @@ validateAuctionCondition(){
     } 
   }, (err) => {  
     this.loadingController.dismiss()
-    console.log(err.error); 
+    //console.log(err.error); 
     this.handleError(err.error.error) 
    } 
  )    
@@ -229,7 +229,7 @@ async presentModal(id?, status?) {
     
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned !== null) {
-        console.log(dataReturned )
+        //console.log(dataReturned )
         this.doAfterDissmiss(dataReturned)
       }
     });
@@ -240,7 +240,7 @@ async presentModal(id?, status?) {
 }
 
   doAfterDissmiss(dataReturned){
-   console.log(dataReturned , dataReturned.data , dataReturned.role)
+   //console.log(dataReturned , dataReturned.data , dataReturned.role)
    if( dataReturned.role == 'done'){ 
     this.rout.navigate(['tabs/home']);
    // this.mzd = dataReturned.data
@@ -318,14 +318,14 @@ handleError(err){
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
+          //console.log('Cancel clicked');
         }
       }]
     });
     await actionSheet.present();
 
     const { role, data } = await actionSheet.onDidDismiss();
-    console.log('onDidDismiss resolved with role and data', role, data);
+    //console.log('onDidDismiss resolved with role and data', role, data);
   }
 
 

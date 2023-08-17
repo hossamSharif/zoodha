@@ -80,7 +80,7 @@ export class VirefyRestPage implements OnInit {
       validate(){
         this.isSubmitted = true;
         if (this.ionicForm.valid == false) {
-          console.log('Please provide all the required values!') 
+          //console.log('Please provide all the required values!') 
           return false
         } else if (this.outdateCode == true){ 
           this.presentToast(' انتهت المهلة ,إضغط إعادة ارسال للحصول علي رمز جديد' , 'danger')
@@ -94,7 +94,7 @@ export class VirefyRestPage implements OnInit {
       } 
 
       confirmAccount(){ 
-        console.log('confirm')
+        //console.log('confirm')
         if (this.validate() == true){
           this.spinner = true
           let navigationExtras: NavigationExtras = {
@@ -112,14 +112,14 @@ export class VirefyRestPage implements OnInit {
           this.spinner2 = true
           this.user.email =this.USER_INFO.email;
           this.api.sendMail(this.user).subscribe(data =>{
-          console.log('user was created',data)
+          //console.log('user was created',data)
           let res = data
-           console.log('email was sent',res['digit']) 
+           //console.log('email was sent',res['digit']) 
            this.orignalCode = res['digit']
            this.spinner2 = false
            this.presentToast('تم ارسال الرمز بنجاح' , 'success') 
           }, (err) => {
-          console.log(err); 
+          //console.log(err); 
           this.spinner2 = false
           this.handleError(err.error.error) 
         },()=>{
@@ -142,7 +142,7 @@ export class VirefyRestPage implements OnInit {
        }
 
       inputChang(ev){
-        console.log(ev.target.value)
+        //console.log(ev.target.value)
         // if(ev.target.value.length == 4 && this.validate() == true){
         //   this.confirmAccount()
         // }  
@@ -152,13 +152,13 @@ export class VirefyRestPage implements OnInit {
       getsms(){
       //   let seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1)
       //   this.api.sendsms(this.phone , seq).subscribe(data =>{
-      //     console.log('sms req',data)
+      //     //console.log('sms req',data)
       //     let res = data 
-      //     console.log('sms response',data)
+      //     //console.log('sms response',data)
       //     //add ionic plugin to detect the sms msg and get the use substring and procced the confirmation fuction auto
       //    // this.orignalCode = res 
       //   }, (err) => {
-      //   console.log(err); 
+      //   //console.log(err); 
       // })  
       }
  

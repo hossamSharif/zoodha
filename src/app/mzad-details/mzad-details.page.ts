@@ -114,7 +114,7 @@ USER_INFO : {
         this.storage.get('user_info').then((response) => {
           if (response) {
             this.USER_INFO = response.user
-            console.log(this.USER_INFO) 
+            //console.log(this.USER_INFO) 
             this.getAuction(this.id) 
           }
         });
@@ -132,14 +132,14 @@ USER_INFO : {
 
    getAuction(id){
     this.api.getAuction(this.id).subscribe(data =>{
-      console.log(data)
+      //console.log(data)
       let res = data['auction']
       this.mzd = res
-      console.log('mzzzz',this.mzd)
+      //console.log('mzzzz',this.mzd)
       this.prepare()
     }, (err) => {
       this.errorLoad = true
-    console.log(err);
+    //console.log(err);
   })  
   }
 
@@ -161,7 +161,7 @@ USER_INFO : {
      // userIn
      let fltuse:Array<any> =[]
      fltuse = this.mzd.users.filter(x=>x.userId ==  this.USER_INFO._id)
-     console.log('fltuse' , fltuse )
+     //console.log('fltuse' , fltuse )
 
     if(fltuse.length> 0 && this.mzd.currentStatus < 3 && fltuse[0].cancel == 0){
       this.mzd.userIn = true 
@@ -172,7 +172,7 @@ USER_INFO : {
       // userWin
       let mx =  this.mzd.logs.reduce((acc, shot) => acc = acc > shot.pay ? acc : shot.pay, 0); 
       let flt = this.mzd.logs.filter(x=>x.pay == mx)
-      console.log('userWin', mx , flt )
+      //console.log('userWin', mx , flt )
       if(flt[0].userId == this.USER_INFO._id){
         this.mzd.userWin = true
       }
@@ -193,20 +193,20 @@ USER_INFO : {
        con = " , " 
      }
      this.mzd['duration'] = day + con + hr 
-     console.log('length',this.mzd['terms'].length)
+     //console.log('length',this.mzd['terms'].length)
      if(this.mzd['terms'].length > 3){
       this.getTerms('less')
     }else{
       this.getTerms('more')
     }
-    console.log(this.mzd) 
+    //console.log(this.mzd) 
   }
   
 
 
 
   viewMoreLess(){
-    console.log(this.view)
+    //console.log(this.view)
     if(this.view == 0){
       this.getTerms('more')
       this.view = 1
@@ -237,7 +237,7 @@ USER_INFO : {
   endAfterounter(){ 
     let offset =  momentTz().utcOffset()
     let newDate = momentObj(this.mzd['end']).add(); 
-     console.log('init', this.mzd['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     //console.log('init', this.mzd['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
     return new Observable<object>((observer: Observer<object>) => {
       setInterval(() => observer.next(
         {da:this.memntoEnd(newDate).asDays().toFixed(0).toString(),hr: this.memntoEnd(newDate).hours().toString() ,mn:this.memntoEnd(newDate).minutes().toString(),sc:this.memntoEnd(newDate).seconds().toString()}
@@ -253,7 +253,7 @@ USER_INFO : {
   startAfterounter( ){ 
     let offset =  momentTz().utcOffset()
     let newDate = momentObj( this.mzd['start']).add(); 
-     console.log(momentObj(),'init', this.mzd['start'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     //console.log(momentObj(),'init', this.mzd['start'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
      return new Observable<object>((observer: Observer<object>) => {
       setInterval(() => observer.next(
         {da:this.memntoStart(newDate).asDays().toFixed(0).toString(),hr: this.memntoStart(newDate).hours().toString() ,mn:this.memntoStart(newDate).minutes().toString(),sc:this.memntoStart(newDate).seconds().toString()}
@@ -272,7 +272,7 @@ USER_INFO : {
   endSinceAfterounter( ){ 
     let offset =  momentTz().utcOffset()
     let newDate = momentObj( this.mzd['end']).add(); 
-     console.log(momentObj(),'init', this.mzd['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     //console.log(momentObj(),'init', this.mzd['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
      return new Observable<object>((observer: Observer<object>) => {
       setInterval(() => observer.next(
         {da:this.memnSinceEnd(newDate).asDays().toFixed(0).toString(),hr: this.memnSinceEnd(newDate).hours().toString() ,mn:this.memnSinceEnd(newDate).minutes().toString(),sc:this.memnSinceEnd(newDate).seconds().toString()}
@@ -300,7 +300,7 @@ USER_INFO : {
     
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned !== null) {
-        console.log(dataReturned )
+        //console.log(dataReturned )
         this.doAfterDissmiss(dataReturned)
       }
     });
@@ -309,7 +309,7 @@ USER_INFO : {
   }
 
     doAfterDissmiss(dataReturned){
-     console.log(dataReturned , dataReturned.data , dataReturned.role)
+     //console.log(dataReturned , dataReturned.data , dataReturned.role)
      if( dataReturned.role == 'done'){ 
       this.rout.navigate(['tabs/home']);
      // this.mzd = dataReturned.data
@@ -337,7 +337,7 @@ USER_INFO : {
 
    validate(){
      if(this.checkRemainTime() <= 60000){
-      console.log('this.checkRemainTime()',this.checkRemainTime())
+      //console.log('this.checkRemainTime()',this.checkRemainTime())
       this.presentToast('لا يمكنك الإشتراك , لقد بدأ المزاد بالفعل','danger')
       return false
       } else{ 
@@ -368,16 +368,16 @@ USER_INFO : {
     if(this.validate() == true){
       this.presentLoadingWithOptions("جاري معالجة طلبك ..")
      //api to add user to log of mzad
-      console.log('prepareUserbj',this.prepareUserbj())
+      //console.log('prepareUserbj',this.prepareUserbj())
       this.api.cancelAuctionUsers(this.prepareUserbj()).subscribe(data =>{
-      console.log('auction update',data ,data['updatedAuctionUsers'])
+      //console.log('auction update',data ,data['updatedAuctionUsers'])
     
       this.presentToast("تم إلغاء الإشتراك بنجاح " ,'success') 
       //back to home page with new data
       this.rout.navigate(['tabs/home']);
     }, (err) => { 
       this.loadingController.dismiss()
-      console.log(err.error); 
+      //console.log(err.error); 
       this.handleError(err.error.error) 
    },()=>{
     this.loadingController.dismiss()
@@ -415,7 +415,7 @@ USER_INFO : {
     await loading.present();
   
     const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed with role:', role);
+    //console.log('Loading dismissed with role:', role);
   }
   
 

@@ -36,7 +36,7 @@ export class MyBiddingPage implements OnInit {
     this.storage.get('user_info').then((response) => {
       if (response) {
         this.USER_INFO = response.user
-        console.log('kkkkkkkkkk',this.USER_INFO) 
+        //console.log('kkkkkkkkkk',this.USER_INFO) 
         this.getAllAuction()  
       }
      });
@@ -54,13 +54,13 @@ export class MyBiddingPage implements OnInit {
 
   getAllAuction(){
     this.api.getUserAuction(this.USER_INFO._id).subscribe(data =>{
-      console.log(data)
+      //console.log(data)
       let res = data['auctions'] 
       this.auctionsArray = res
-      console.log(this.auctionsArray)
+      //console.log(this.auctionsArray)
       this.prepareAuc()
     }, (err) => {
-    console.log(err);
+    //console.log(err);
     this.errorLoad = true
   })  
   }
@@ -86,7 +86,7 @@ export class MyBiddingPage implements OnInit {
        // users array will include only the current user and it represent as an object
        let fltuse:any
        fltuse = element.users 
-       console.log('fltuse'+index, fltuse.cancel)
+       //console.log('fltuse'+index, fltuse.cancel)
         
        
          
@@ -99,7 +99,7 @@ export class MyBiddingPage implements OnInit {
           // userWin
           let mx =  element.logs.reduce((acc, shot) => acc = acc > shot.pay ? acc : shot.pay, 0); 
           let flt = element.logs.filter(x=>x.pay == mx)
-          console.log('userWin', mx , flt )
+          //console.log('userWin', mx , flt )
           if(flt[0].userId == this.USER_INFO._id){
            element.userWin = true
           }
@@ -121,13 +121,13 @@ export class MyBiddingPage implements OnInit {
         }
         element.duration = day + con + hr 
        }
-       console.log(this.auctionsArray) 
+       //console.log(this.auctionsArray) 
   }
 
   endAfterounter(index){ 
     let offset =  momentTz().utcOffset()
     let newDate = momentObj(this.auctionsArray[index]['end']).add(); 
-     console.log('init',this.auctionsArray[index]['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     //console.log('init',this.auctionsArray[index]['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
     return new Observable<object>((observer: Observer<object>) => {
       setInterval(() => observer.next(
         {da:this.memntoEnd(newDate).asDays().toFixed(0).toString(),hr: this.memntoEnd(newDate).hours().toString() ,mn:this.memntoEnd(newDate).minutes().toString(),sc:this.memntoEnd(newDate).seconds().toString()}
@@ -142,7 +142,7 @@ export class MyBiddingPage implements OnInit {
   startAfterounter(index){ 
     let offset =  momentTz().utcOffset()
     let newDate = momentObj(this.auctionsArray[index]['start']).add(); 
-     console.log(momentObj(),'init',this.auctionsArray[index]['start'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     //console.log(momentObj(),'init',this.auctionsArray[index]['start'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
      return new Observable<object>((observer: Observer<object>) => {
       setInterval(() => observer.next(
         {da:this.memntoStart(newDate).asDays().toFixed(0).toString(),hr: this.memntoStart(newDate).hours().toString() ,mn:this.memntoStart(newDate).minutes().toString(),sc:this.memntoStart(newDate).seconds().toString()}
@@ -158,7 +158,7 @@ export class MyBiddingPage implements OnInit {
   endSinceAfterounter(index){ 
     let offset =  momentTz().utcOffset()
     let newDate = momentObj(this.auctionsArray[index]['end']).add(); 
-     console.log(momentObj(),'init',this.auctionsArray[index]['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+     //console.log(momentObj(),'init',this.auctionsArray[index]['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
      return new Observable<object>((observer: Observer<object>) => {
       setInterval(() => observer.next(
         {da:this.memnSinceEnd(newDate).asDays().toFixed(0).toString(),hr: this.memnSinceEnd(newDate).hours().toString() ,mn:this.memnSinceEnd(newDate).minutes().toString(),sc:this.memnSinceEnd(newDate).seconds().toString()}

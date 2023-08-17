@@ -38,7 +38,7 @@ export class CartPage implements OnInit {
     this.storage.get('user_info').then((response) => {
       if (response) {
         this.USER_INFO = response.user
-        console.log('kkkkkkkkkk',this.USER_INFO) 
+        //console.log('kkkkkkkkkk',this.USER_INFO) 
         this.getOrders()  
       }
      });
@@ -55,7 +55,7 @@ export class CartPage implements OnInit {
     getOrders(){ 
     this.showSkelton = true
     this.api.getUserOrder(this.USER_INFO._id).subscribe(data =>{
-      console.log(data)
+      //console.log(data)
       let res = data['orders'] 
       this.orders = res
       if(res.length == 0){
@@ -66,11 +66,11 @@ export class CartPage implements OnInit {
      
     //   this.mzd = data['auction'][0][0]
     //   this.users = data['auction'][1]
-    //   console.log('im here baby',this.mzd , 'users',this.users)
+    //   //console.log('im here baby',this.mzd , 'users',this.users)
     //  this.prepareAuc()
     }, (err) => {
      this.errorLoad = true
-    console.log(err);
+    //console.log(err);
   },()=>{
     this.showSkelton = false 
   })  
@@ -107,7 +107,7 @@ export class CartPage implements OnInit {
     
   //   modal.onDidDismiss().then((dataReturned) => {
   //     if (dataReturned !== null) {
-  //       console.log(dataReturned )
+  //       //console.log(dataReturned )
   //       this.doAfterDissmiss(dataReturned)
   //     }
   //   });
@@ -132,7 +132,7 @@ export class CartPage implements OnInit {
     });
     await loading.present(); 
     const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed with role:', role);
+    //console.log('Loading dismissed with role:', role);
   }
   
 

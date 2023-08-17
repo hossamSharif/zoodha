@@ -158,7 +158,7 @@ export class SignUpPage implements OnInit {
    
 
   agreeCheck(ev){
-    console.log(ev.target.checked)
+    //console.log(ev.target.checked)
   }
 
   presentPopover(e: Event) {
@@ -169,7 +169,7 @@ export class SignUpPage implements OnInit {
 
   }
   genderChange(ev){
-    console.log(ev)
+    //console.log(ev)
   }
 
   get errorControl() {
@@ -185,7 +185,7 @@ export class SignUpPage implements OnInit {
   }
 
   dateChange(ev){
-    console.log(ev.target.value)
+    //console.log(ev.target.value)
     this.isOpen = false
    }
 
@@ -203,13 +203,13 @@ export class SignUpPage implements OnInit {
     getsms(){
       //   let seq = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1)
       //   this.api.sendsms(this.phone , seq).subscribe(data =>{
-      //     console.log('sms req',data)
+      //     //console.log('sms req',data)
       //     let res = data 
-      //     console.log('sms response',data)
+      //     //console.log('sms response',data)
       //     //add ionic plugin to detect the sms msg and get the use substring and procced the confirmation fuction auto
       //    // this.orignalCode = res 
       //   }, (err) => {
-      //   console.log(err); 
+      //   //console.log(err); 
       // })  
       }
 
@@ -217,7 +217,7 @@ export class SignUpPage implements OnInit {
       validateCode(){
         this.isSubmitted2 = true;
         if (this.ionic2Form.valid == false) {
-          console.log('Please provide all the required values!') 
+          //console.log('Please provide all the required values!') 
           return false
         } else if (this.outdateCode == true){ 
           this.presentToast(' انتهت المهلة ,إضغط إعادة ارسال للحصول علي رمز جديد' , 'danger')
@@ -233,7 +233,7 @@ export class SignUpPage implements OnInit {
   validate(){
     this.isSubmitted = true;
     if (this.ionicForm.valid == false) {
-      console.log('Please provide all the required values! 1') 
+      //console.log('Please provide all the required values! 1') 
       return false
     }  else {
        return true
@@ -243,7 +243,7 @@ export class SignUpPage implements OnInit {
   validate2(){
     this.isSubmitted3 = true;
     if (this.ionic3Form.valid == false) {
-      console.log('Please provide all the required values!') 
+      //console.log('Please provide all the required values!') 
       return false
     } else if(this.USER_INFO.password.length>0 && this.USER_INFO.password != this.confirmPass){
       return false
@@ -286,9 +286,9 @@ export class SignUpPage implements OnInit {
     if(this.validateCode() == true){
       this.spinner = true
       this.api.createUser(this.USER_INFO).subscribe(data =>{
-        console.log('user was created',data)
+        //console.log('user was created',data)
         let res = data
-        console.log('user was created',res['token'])
+        //console.log('user was created',res['token'])
          
         this.storage.set('token', res['token']).then((response) => {
           if(response){
@@ -298,7 +298,7 @@ export class SignUpPage implements OnInit {
         
         }) 
       }, (err) => {
-      console.log(err); 
+      //console.log(err); 
       this.spinner = false
       this.handleError(err.error.error) 
     },()=>{
@@ -340,7 +340,7 @@ async showTerms(id?, status?) {
     
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned !== null) {
-        console.log('https://www.digitalocean.com/',dataReturned )
+        //console.log('https://www.digitalocean.com/',dataReturned )
         this.doAfterDissmiss(dataReturned)
       }
     });
@@ -372,7 +372,7 @@ async showTerms(id?, status?) {
   }
 
   changePhone(){
-    console.log('asdhlaks')
+    //console.log('asdhlaks')
     this.rout.navigate(['login']); 
   }
 

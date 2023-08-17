@@ -44,11 +44,11 @@ export class LiveMzadPage implements OnInit {
       //time$ = timer(0, 1000).pipe(map(() => new Date()));
 constructor(private alertController :AlertController,private api:SocketServiceService,private socket :SocketServiceService ,private route: ActivatedRoute,private loadingController:LoadingController,private toast:ToastController,private actionSheetCtl:ActionSheetController ,private datePipe:DatePipe ,private rout : Router,private modalController:ModalController) {  
   this.route.queryParams.subscribe(params => {
-          console.log('params',params)
+          //console.log('params',params)
           if (params && params.id) {
             this.USER_INFO = JSON.parse(params.user_info);
             this.auction_id = JSON.parse(params.id) 
-            console.log( this.auction_id)
+            //console.log( this.auction_id)
             this.getAuction()
           }
         });  
@@ -63,7 +63,7 @@ constructor(private alertController :AlertController,private api:SocketServiceSe
   ngOnInit() { 
     //notify other when some how join live stream 
     this.socket.userJoinedAuction().subscribe((UserHadJoined: Array<any>) => { 
-         console.log(UserHadJoined)
+         //console.log(UserHadJoined)
          if(UserHadJoined.length>0){
           this.presentToast(UserHadJoined[1] +"  إنضم" ,'success')
           //change user status from offline to online 
@@ -74,7 +74,7 @@ constructor(private alertController :AlertController,private api:SocketServiceSe
     this.socket.userBiddedInAuction().subscribe((logArr: Array<any>) => { 
         
          if(logArr.length>0){
-          console.log('jahsja',logArr)
+          //console.log('jahsja',logArr)
           this.mzd['logs'].push(logArr[0][0]) 
           this.prepareAuc() 
           this.presentToast(logArr[1].firstName + " " + logArr[0][0].pay ,'success')
@@ -84,7 +84,7 @@ constructor(private alertController :AlertController,private api:SocketServiceSe
 
 
     this.socket.userFucosedBiddedInAuction().subscribe((logArr: Array<any>) => { 
-         console.log(logArr)
+         //console.log(logArr)
          if(logArr.length>0){
         // this.presentToast(logArr[0].firstName  ,'success') 
          }
@@ -92,7 +92,7 @@ constructor(private alertController :AlertController,private api:SocketServiceSe
   //notify other when some how fucos input and start writting bid price (listing)
 
      this.socket.userFucosedLostBiddedInAuction().subscribe((logArr: Array<any>) => { 
-      console.log(logArr)
+      //console.log(logArr)
       if(logArr.length>0){
      // this.presentToast(logArr[0].firstName  ,'danger') 
       }
@@ -104,7 +104,7 @@ constructor(private alertController :AlertController,private api:SocketServiceSe
 ionViewDidEnter(){
   ////  
   this.socket.auctionEndOntime().subscribe((ar: Array<any>) => { 
-  console.log('here im',ar)
+  //console.log('here im',ar)
  // this.presentToast('holla  auction end on time ' ,'success') 
   if(ar.length>0){
     //this.presentToast('holla  auction end on time ' ,'success')
@@ -123,7 +123,7 @@ this.getAuction()
 handleError(err){ 
   this.errorLoad = true
   // if (err.error == "No user with this phone found") {
-  //   console.log('no user was found') 
+  //   //console.log('no user was found') 
   // // this.getsms('new',err) // uncomment it after apply smsgetway 
   // // this.getVirfyCode('new' , err) // comment it after apply smsgetway 
   // }else if(err.error == "another phone"){
@@ -131,22 +131,22 @@ handleError(err){
   //   this.presentToast('seem you use another phone','danger') 
   // } else{ 
   //   this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
-  //   console.log(err.kind)
+  //   //console.log(err.kind)
   // }
 }
 
 
 getAuction(){ 
     this.api.getAuction(this.auction_id).subscribe(data =>{
-      console.log(data)
+      //console.log(data)
       let res = data['auction']
       this.mzd = data['auction']
       this.users = this.mzd['users']
-      console.log('im here baby',this.mzd , 'users',this.users)
+      //console.log('im here baby',this.mzd , 'users',this.users)
      this.prepareAuc()
     }, (err) => {
     this.handleError(err.error.error)
-    console.log(err);
+    //console.log(err);
   })  
  } 
 
@@ -161,30 +161,30 @@ prepareAuc(){
       var dateB = new Date(b.time);
       return dateA < dateB ? 1 : -1; // ? -1 : 1 for ascending/increasing order
     });
-    console.log('sorting',  this.mzd['logs']) 
+    //console.log('sorting',  this.mzd['logs']) 
     //view time قبل دقيقتين 
      //use dateAgo pipe
     
      //get heigt price
     this.highestBidd =  this.mzd['logs'].reduce((acc, shot) => acc = acc > shot.pay ? acc : shot.pay, 0)
-    console.log('highestBidd',this.highestBidd)
+    //console.log('highestBidd',this.highestBidd)
     //  last bidd for you
     let flt :Array<any> = []  
      flt = this.mzd['logs'].filter(x=>x._id == this.USER_INFO._id)
     if(flt.length > 0){
       this.lastBidd4U =  flt[0].pay
-      console.log('pay' , this.lastBidd4U)
+      //console.log('pay' , this.lastBidd4U)
     }else{
       this.lastBidd4U = 0
     }
      
     // prepare users Log
-    console.log('prepare users Log',this.mzd['logs'].length)
+    //console.log('prepare users Log',this.mzd['logs'].length)
     if(this.mzd['logs'].length > 2){
-      console.log('less')
+      //console.log('less')
       this.getUserinfoLog('less')
     }else{
-      console.log('more') 
+      //console.log('more') 
       this.getUserinfoLog('more')
     }
 
@@ -207,8 +207,8 @@ prepareAuc(){
    if(this.mzd['logs'].length>0){
     flt =  this.mzd['logs'].filter(x=>x.userId == this.USER_INFO._id) 
     this.availRounds = this.mzd['rounds'] - +flt.length
-    console.log('rounds preabare' , this.mzd['rounds'] , flt.length)
-    console.log('rounds preabare' , this.usersLogs )
+    //console.log('rounds preabare' , this.mzd['rounds'] , flt.length)
+    //console.log('rounds preabare' , this.usersLogs )
    } 
   
 
@@ -296,15 +296,15 @@ getUserinfoLog(moreOrLess?){
     length = this.mzd['logs'].length 
     this.view = 3
   }
-  console.log('length', length)
+  //console.log('length', length)
   this.usersLogs = []
  
   for (let index = 0; index < length; index++) {
     const element = this.mzd['logs'][index];
-    console.log('element', element) 
+    //console.log('element', element) 
     let flt : Array<any> = [] 
     flt =  this.users.filter(x=>x.userId == element.userId) 
-    console.log('flt' , flt)
+    //console.log('flt' , flt)
     if(flt.length>0){
       this.usersLogs.push({
         "userId": element.userId ,
@@ -355,14 +355,14 @@ getTerms(moreOrLess?){
   
   for (let index = 0; index < length; index++) {
     const element = this.mzd['terms'][index];
-    console.log('element', element)  
+    //console.log('element', element)  
       this.termsArr.push(element) 
   } 
 
 }
 
 viewMoreLess(){
-  console.log(this.view)
+  //console.log(this.view)
   if(this.view == 0){
     this.getUserinfoLog('more')
     this.view = 1
@@ -373,7 +373,7 @@ viewMoreLess(){
 }
 
 viewMoreLessTerms(){
-  console.log(this.view)
+  //console.log(this.view)
   if(this.viewTerms == 0){
     this.getTerms('more')
     this.viewTerms = 1
@@ -386,7 +386,7 @@ viewMoreLessTerms(){
 startAfterounter(startDate){ 
   setInterval(function() {
     const timeLeft =  momentObj.duration(momentObj(startDate).diff(momentObj())); // get difference between now and timestamp
-    console.log('days',timeLeft.days(),'hours',timeLeft.hours() , 'min',timeLeft.minutes() , 'econd',timeLeft.seconds());
+    //console.log('days',timeLeft.days(),'hours',timeLeft.hours() , 'min',timeLeft.minutes() , 'econd',timeLeft.seconds());
     return timeLeft
 }, 1000);
 }
@@ -394,7 +394,7 @@ startAfterounter(startDate){
 endAfterounter(){ 
   let offset =  momentTz().utcOffset()
   let newDate = momentObj(this.mzd['end']).add(); 
-   console.log('init',this.mzd['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
+   //console.log('init',this.mzd['end'],'sdfs',offset,'newDate',momentObj(newDate).format('YYYY-MM-DDTHH:mm:ss.SSSSZ') )
   return new Observable<object>((observer: Observer<object>) => {
     setInterval(() => observer.next(
       {da:this.memnto(newDate).days().toString(),hr: this.memnto(newDate).hours().toString() ,mn:this.memnto(newDate).minutes().toString(),sc:this.memnto(newDate).seconds().toString()}
@@ -459,7 +459,7 @@ validationPrice(type?){
 }
 
 bidChange(ev){
-  console.log(ev)
+  //console.log(ev)
   this.validationPrice('btn') 
 }
 
@@ -485,7 +485,7 @@ bidChange(ev){
 
  focusBidding(ev){
   let h = this.mzd['logs'].reduce((acc, shot) => acc = acc > shot.pay ? acc : shot.pay, 0)
-  console.log (ev.target.value , 'h',h)
+  //console.log (ev.target.value , 'h',h)
   if(h == 0 && ev.target.value==0){
     this.bidPrice = (+this.mzd['productPrice'] - (0.3 * +this.mzd['productPrice'])) + 1
   }else{
@@ -500,7 +500,7 @@ bidChange(ev){
  }
 
  unCheckFocus(){
-  console.log ('unCheckFocus')
+  //console.log ('unCheckFocus')
   this.socket.userFucosLostBiddingInAuction([this.USER_INFO, this.mzd._id ])
   //  show indicator loader jst like typing...  
  }
@@ -511,9 +511,9 @@ bidChange(ev){
       _id : this.mzd['_id'] ,
       auction : this.mzd
     }
-    console.log('auction',arr) 
+    //console.log('auction',arr) 
     this.api.endAuctionOntime(arr).subscribe(data =>{
-    console.log('auction update',data) 
+    //console.log('auction update',data) 
        
    // نهاي المزاد دالة في الباكند بتنهي المزاد 
    // وتعمل بوش نوتيف بإستخدام السوكيت لكل المساخدمين المتصيلين 
@@ -527,7 +527,7 @@ bidChange(ev){
    // صفحة الأوردرات تعامل معاملة السلة 
    // تبرمج بإستخدام behavior subject 
     }, (err) => {
-    console.log(err);
+    //console.log(err);
     })  
    
  
@@ -562,9 +562,9 @@ bidChange(ev){
       // }
 
         this.api.updateAuctionsLog(arr).subscribe(data =>{
-        console.log('auction update',data) 
+        //console.log('auction update',data) 
         this.mzd = data['updatedLogAuction']
-        console.log(this.mzd)
+        //console.log(this.mzd)
         // update log and hiegst price and
         this.prepareAuc()
         // animate heighst price and hand bidding
@@ -573,9 +573,9 @@ bidChange(ev){
         this.prepareBidding()  
         // let res = data['auction'][0]
         // this.mzad = res
-        // console.log('im here baby',this.mzad)
+        // //console.log('im here baby',this.mzad)
       }, (err) => {
-      console.log(err);
+      //console.log(err);
       this.handelErrorBiding(err.error.error)
       })  
       // 
@@ -589,12 +589,12 @@ bidChange(ev){
 
     handelErrorBiding(err){
       // if (err.error == "No user with this phone found") {
-      //     console.log('no user was found')  
+      //     //console.log('no user was found')  
       //   } else if (err.error == "another phone") { 
       //     this.presentToast('seem you use another phone','danger') 
       //   } else { 
       //     this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
-      //     console.log(err.kind)
+      //     //console.log(err.kind)
       //   } 
         this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
     }
@@ -635,7 +635,7 @@ async presentToast(msg,color?) {
   let time = momentTz().tz('Africa/Cairo').format('HH:mm:ss z')
   let off =  momentTz(new Date()).utcOffset()
   let local = momentTz.tz.guess(this.mzd['end'])
-  console.log('time' , time , 'offset' ,off ,'local' ,local)  
+  //console.log('time' , time , 'offset' ,off ,'local' ,local)  
 }
 
 updateAuction(){
@@ -652,9 +652,9 @@ updateAuction(){
   // })
    
    this.api.updateAuctions(this.mzd[0]).subscribe(data =>{
-   console.log('auction update',data)
+   //console.log('auction update',data)
    this.mzd = data['updatedLogAuction']
-   console.log(this.mzd)
+   //console.log(this.mzd)
    // update log and hiegst price and
    // animate heighst price and hand bidding
    //alert others by new price using socket.io for room
@@ -662,9 +662,9 @@ updateAuction(){
    
    // let res = data['auction'][0]
    // this.mzad = res
-   // console.log('im here baby',this.mzad)
+   // //console.log('im here baby',this.mzad)
  }, (err) => {
- console.log(err);
+ //console.log(err);
 })  
 
 }
@@ -687,9 +687,9 @@ updateTerms(){
       } 
 
       this.api.updateAuctionsLog(arr).subscribe(data =>{
-        console.log('auction update',data) 
+        //console.log('auction update',data) 
         // this.mzd = data['updatedLogAuction']
-        // console.log(this.mzd)
+        // //console.log(this.mzd)
       })
 }
 

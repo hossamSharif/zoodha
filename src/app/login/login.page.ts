@@ -6,6 +6,8 @@ import { ToastController } from '@ionic/angular';
 import { of, forkJoin } from 'rxjs';
 import { switchMap ,map,catchError  } from 'rxjs/operators';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+ 
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -40,7 +42,7 @@ export class LoginPage implements OnInit {
   spinner:boolean =false
   isSubmitted = false;
   isSubmitted2 = false;
-  constructor(private formBuilder: FormBuilder,private toast:ToastController,private storage: Storage, private rout : Router ,private api:SocketServiceService) {
+  constructor(private translate: TranslateService,private formBuilder: FormBuilder,private toast:ToastController,private storage: Storage, private rout : Router ,private api:SocketServiceService) {
     this.ionicForm = this.formBuilder.group({
       phone: ['', [Validators.required, Validators.minLength(9),Validators.maxLength(9),Validators.pattern('^[0-9]+$')]],
    })
@@ -75,16 +77,16 @@ export class LoginPage implements OnInit {
     if(this.mode == 'phone'){
       this.isSubmitted = true;
       if (this.ionicForm.valid == false) {
-        console.log('Please provide all the required values!') 
+        //console.log('Please provide all the required values!') 
       } else if(this.phone[0] != 9 && +this.phone[0] != 1) { 
-         console.log(this.phone[0])
-         this.presentToast('رقم الجوال غير صحيح' , 'danger') 
+         //console.log(this.phone[0])
+         this.presentToast(this.translate.instant('LOGIN.errPhone') , 'danger') 
       } else {
         this.loginPhone()
       }
     }else if(this.mode == 'google'){
       if (this.ionic2Form.valid == false) {
-        console.log('Please provide all the required values!') 
+        //console.log('Please provide all the required values!') 
       } else {
         this.loginEmail()
       }
@@ -101,7 +103,7 @@ export class LoginPage implements OnInit {
    loginEmail(){
     this.spinner = true
     this.api.loginEmail(this.email, this.password).subscribe(data => {
-      console.log(data)
+      //console.log(data)
       let res = data 
      // this.getsms('exist', res) // uncomment it after apply smsgetway 
      // this.getVirfyCode('exist' , res) // comment it after apply smsgetway 
@@ -121,7 +123,7 @@ export class LoginPage implements OnInit {
                 })
                 
     }, (err) => {
-      console.log(err.error.error);
+      //console.log(err.error.error);
       this.handleError(err.error.error)
       this.spinner = false 
     },()=>{
@@ -132,13 +134,13 @@ export class LoginPage implements OnInit {
   loginPhone() {
     this.spinner = true
     this.api.loginPhone(this.phone, this.genrateime()).subscribe(data => {
-      console.log(data)
+      //console.log(data)
       let res = data 
      // this.getsms('exist', res) // uncomment it after apply smsgetway
      this.spinner = false 
       this.getVirfyCode('exist' , res) // comment it after apply smsgetway 
     }, (err) => {
-      console.log(err.error.error);
+      //console.log(err.error.error);
       this.handleError(err.error.error)
       this.spinner = false 
     },()=>{
@@ -148,7 +150,7 @@ export class LoginPage implements OnInit {
 
   getsms(type,resdata){  
     this.api.sendsms(this.phone, resdata['code']).subscribe(data => {
-      console.log('sms req', data)
+      //console.log('sms req', data)
       let res = data
       if (type == 'new') {
         this.getVirfyCode('new' , resdata) 
@@ -156,16 +158,16 @@ export class LoginPage implements OnInit {
         this.getVirfyCode('exist' , resdata) 
       }
     }, (err) => {
-      console.log(err);
+      //console.log(err);
       this.presentToast('Sms getway down','danger') 
     })
   }
 
   handleError(err){
     if (err.error == "No user with this phone found") {
-      console.log('no user was found')  
+      //console.log('no user was found')  
     if(this.mode != 'phone'){
-      this.presentToast('خطأ في اسم المستخدم او كلمة المرور','danger')
+      this.presentToast(this.translate.instant('LOGIN.errUserName'),'danger')
     }else{
       // this.getsms('new',err) // uncomment it after apply smsgetway 
       this.getVirfyCode('new' , err) // comment it after apply smsgetway  
@@ -174,11 +176,11 @@ export class LoginPage implements OnInit {
       // to apply imei check uncmment the line in zoodohapi/controller/user.j function : loginPhone
       this.presentToast('seem you use another mobile device','danger') 
     }else if(!err){
-      this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+      this.presentToast(this.translate.instant('LOGIN.errTry'),'danger')
        
     }else{ 
-      this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
-      console.log(err.kind)
+      this.presentToast(this.translate.instant('LOGIN.errTry'),'danger')
+      //console.log(err.kind)
     }
   }
 
@@ -209,7 +211,7 @@ export class LoginPage implements OnInit {
   //       return data;          // <-- return `data`
   //     }),
   //     catchError((error) => {
-  //       console.log("error");
+  //       //console.log("error");
   //       this.handleError(error.error.error)
   //       return of(error);     // <-- remember you must return an observable from `catchError` operator
   //     })
@@ -220,7 +222,7 @@ export class LoginPage implements OnInit {
   //       return data;          // <-- return `data`
   //     }),
   //     catchError((error) => {
-  //       console.log("error");
+  //       //console.log("error");
   //       return of(error);     // <-- remember you must return an observable from `catchError` operator
   //     })
   //   );
@@ -235,7 +237,7 @@ export class LoginPage implements OnInit {
   // }
 
   // handl1(data1,data2){
-  //   console.log(data1,data2);
+  //   //console.log(data1,data2);
   // }
 
 

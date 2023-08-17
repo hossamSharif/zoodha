@@ -61,7 +61,7 @@ export class StripePaymentPage implements OnInit {
   }
 
   ngOnInit() { 
-  console.log(this.mzd , this.USER_INFO , this.amount ,this.order,this.status)
+  //console.log(this.mzd , this.USER_INFO , this.amount ,this.order,this.status)
   if(this.status == "order"){
     this.prepareOrder() 
   }else{
@@ -75,7 +75,7 @@ export class StripePaymentPage implements OnInit {
     currency:'usd',
     transaction:this.trasaction 
   }
-  console.log('data',this.data)
+  //console.log('data',this.data)
   
   }
 
@@ -148,39 +148,36 @@ export class StripePaymentPage implements OnInit {
 
       } 
       return mzdTemp
-    
-     
-    
    }
 
   subescribe(){   
      this.presentLoadingWithOptions("جاري معالجة طلبك ..")
      //api to add user to log of mzad
-      //console.log('prepareUserbj',this.prepareUserbj())
+      ////console.log('prepareUserbj',this.prepareUserbj())
       if (this.status == 'order') {
         this.api.updateOrderStatus(this.prepareOrderbj()).subscribe(data =>{
-          console.log('auction update',data ,data['updatedAuctionUsers'])
+          //console.log('auction update',data ,data['updatedAuctionUsers'])
          // this.mzd['users'] = data['updatedAuctionUsers']['users']
-          console.log(this.mzd) 
+          //console.log(this.mzd) 
           this.presentToast("تم الإشتراك بنجاح " ,'success') 
           //back to details page with new data
           this.modalCtrl.dismiss(this.mzd , 'done')
         }, (err) => { 
           this.loadingController.dismiss()
-          console.log(err.error); 
+          //console.log(err.error); 
          // this.handleError(err.error.error) 
           }) 
       } else {
         this.api.updateAuctionUsers(this.prepareUserbj()).subscribe(data =>{
-          console.log('auction update',data ,data['updatedAuctionUsers'])
+          //console.log('auction update',data ,data['updatedAuctionUsers'])
          // this.mzd['users'] = data['updatedAuctionUsers']['users']
-          console.log(this.mzd) 
+          //console.log(this.mzd) 
           this.presentToast("تم الإشتراك بنجاح " ,'success') 
           //back to details page with new data
           this.modalCtrl.dismiss(this.mzd , 'done')
         }, (err) => { 
           this.loadingController.dismiss()
-          console.log(err.error); 
+          //console.log(err.error); 
          // this.handleError(err.error.error) 
           }) 
       }
@@ -193,13 +190,13 @@ export class StripePaymentPage implements OnInit {
 
    crateTrans(){    
       this.api.createTrans(this.trasaction).subscribe(data =>{ 
-      console.log(data) 
+      //console.log(data) 
       //refine transactions
       
       this.subescribe()
     }, (err) => { 
       this.loadingController.dismiss()
-      console.log(err.error);  
+      //console.log(err.error);  
    })  
      
    
@@ -209,7 +206,7 @@ export class StripePaymentPage implements OnInit {
     try {
        // be able to get event of PaymentSheet
    Stripe.addListener(PaymentSheetEventsEnum.Completed, () => {
-    console.log('PaymentSheetEventsEnum.Completed');
+    //console.log('PaymentSheetEventsEnum.Completed');
   });
   
   // const data = new HttpParams({
@@ -229,7 +226,7 @@ export class StripePaymentPage implements OnInit {
    let  customer  :any
  
   const res = await data$.subscribe(data =>{
-    console.log('serv',data)
+    //console.log('serv',data)
     paymentIntent = data['paymentIntent']
     ephemeralKey = data['ephemeralKey']
     customer= data['customer'] 
@@ -251,10 +248,10 @@ export class StripePaymentPage implements OnInit {
 
      //api to add user to log of mzad
      this.crateTrans()
-    console.log('Happy path' ,result.paymentResult )
+    //console.log('Happy path' ,result.paymentResult )
   }
     } catch (error) {
-      console.log('err',error)
+      //console.log('err',error)
     }
   }
 
@@ -272,7 +269,7 @@ export class StripePaymentPage implements OnInit {
     
   //     // be able to get event of Apple Pay
   //     Stripe.addListener(ApplePayEventsEnum.Completed, () => {
-  //       console.log('ApplePayEventsEnum.Completed');
+  //       //console.log('ApplePayEventsEnum.Completed');
   //     });
       
   //     // Connect to your backend endpoint, and get paymentIntent.
@@ -312,7 +309,7 @@ export class StripePaymentPage implements OnInit {
   //     }
    
   //   } catch (error) {
-  //     console.log('err',error)
+  //     //console.log('err',error)
   //   }
   // }
     // Check to be able to use Apple Pay on device
@@ -321,7 +318,7 @@ export class StripePaymentPage implements OnInit {
     async PaymentFlowSheet(){
     try{
       Stripe.addListener(PaymentFlowEventsEnum.Completed, () => {
-        console.log('PaymentFlowEventsEnum.Completed');
+        //console.log('PaymentFlowEventsEnum.Completed');
       });
       
       // Connect to your backend endpoint, and get every key.
@@ -353,7 +350,7 @@ export class StripePaymentPage implements OnInit {
     
       // Present PaymentFlow. **Not completed yet.**
       const presentResult = await Stripe.presentPaymentFlow();
-      console.log(presentResult); // { cardNumber: "●●●● ●●●● ●●●● ****" }
+      //console.log(presentResult); // { cardNumber: "●●●● ●●●● ●●●● ****" }
     
       // Confirm PaymentFlow. Completed.
       const confirmResult = await Stripe.confirmPaymentFlow();
@@ -361,7 +358,7 @@ export class StripePaymentPage implements OnInit {
         // Happy path
       }
       } catch (error) {
-        console.log('err',error)
+        //console.log('err',error)
       }
     }
  
@@ -380,7 +377,7 @@ export class StripePaymentPage implements OnInit {
       await loading.present();
     
       const { role, data } = await loading.onDidDismiss();
-      console.log('Loading dismissed with role:', role);
+      //console.log('Loading dismissed with role:', role);
     }
 
     async presentToast(msg,color?) {
@@ -400,15 +397,15 @@ export class StripePaymentPage implements OnInit {
   //   let info =
   //   {amount: 100,currency: "usd", token: token}
   //   this.api.makePayment(info).subscribe(data =>{
-  //     console.log('user was created',data)
+  //     //console.log('user was created',data)
   //     let res = data
-  //    // console.log('user was created',res['token'])
+  //    // //console.log('user was created',res['token'])
        
   //     // this.storage.set('token', res['token']).then((response) => {
   //     //   this.rout.navigate(['tabs/home']); 
   //     // }) 
   //   }, (err) => {
-  //   console.log(err); 
+  //   //console.log(err); 
   //   // this.spinner = false
   //   // this.handleError(err.error.error) 
   // },()=>{
@@ -437,7 +434,7 @@ export class StripePaymentPage implements OnInit {
   //   };
 
   //   this.card = elements.create('card', { style: style });
-  //   console.log(this.card);
+  //   //console.log(this.card);
   //   this.card.mount('#card-element');
 
   //   this.card.addEventListener('change', event => {
@@ -452,14 +449,14 @@ export class StripePaymentPage implements OnInit {
   //   var form = document.getElementById('payment-form');
   //   form.addEventListener('submit', event => {
   //     event.preventDefault();
-  //     console.log(event)
+  //     //console.log(event)
 
   //     this.stripe.createSource(this.card).then(result => {
   //       if (result.error) {
   //         var errorElement = document.getElementById('card-errors');
   //         errorElement.textContent = result.error.message;
   //       } else {
-  //         console.log(result.source.id);
+  //         //console.log(result.source.id);
   //         this.makePayment(result.source.id);
   //       }
   //     });

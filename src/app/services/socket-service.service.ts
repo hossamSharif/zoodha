@@ -40,7 +40,7 @@ export class SocketServiceService {
 
 
    sendsms(phone,code){ 
-      console.log('msg',  phone ,code)
+      //console.log('msg',  phone ,code)
       let msg = 'your verify code is : '+code
       let senderId ='Farhatna'
       phone = '249'+phone
@@ -48,35 +48,35 @@ export class SocketServiceService {
     }
 
     getAuction(id){ 
-      console.log('this.auctionId from live service',  id)
+      //console.log('this.auctionId from live service',  id)
       let params = new HttpParams() 
       params=params.append('id' , id)
       return this.http.get(this.api+'auctions/'+id)
     }
     
     getOrder(id){ 
-      console.log('this.auctionId from live service',  id)
+      //console.log('this.auctionId from live service',  id)
       let params = new HttpParams() 
       params=params.append('id' , id)
       return this.http.get(this.api+'orders/'+id)
     }
 
     getUserOrder(userId){ 
-      console.log('this.auctionId from live service',  userId)
+      //console.log('this.auctionId from live service',  userId)
       let params = new HttpParams() 
       params=params.append('userId' , userId)
       return this.http.get(this.api+'orders/all/'+userId)
     }
 
     getBalance(userId){ 
-      console.log('this.auctionId from live service',  userId)
+      //console.log('this.auctionId from live service',  userId)
       let params = new HttpParams() 
       params=params.append('userId' , userId)
       return this.http.get(this.api+'transactions/balance/'+userId)
     }
 
     getAllTransaction(userId){ 
-      console.log('this.auctionId from live service',  userId)
+      //console.log('this.auctionId from live service',  userId)
       let params = new HttpParams() 
       params=params.append('userId' , userId)
       return this.http.get(this.api+'transactions/all/'+userId)
@@ -88,14 +88,14 @@ export class SocketServiceService {
 
 
    validateAuctionBeforeSubiscribtion (id){ 
-      console.log('this.auctionId from live service',  id)
+      //console.log('this.auctionId from live service',  id)
       let params = new HttpParams() 
       params=params.append('id' , id)
       return this.http.get(this.api+'auctions/validateauction/'+id)
     }
 
     getUserAuction(userId){ 
-      console.log('this.auctionId from live service',  userId)
+      //console.log('this.auctionId from live service',  userId)
       let params = new HttpParams() 
       params=params.append('userId' , userId)
       return this.http.get(this.api+'auctions/userauction/'+userId)
@@ -103,7 +103,7 @@ export class SocketServiceService {
 
     getNewAuction(){
       this.socket.on('create', function(room) {
-        console.log('room created aknolage'+room)
+        //console.log('room created aknolage'+room)
        // socket.join(room);
       }); 
     }
@@ -188,7 +188,7 @@ export class SocketServiceService {
     }
 
     makePayment(info){ 
-      console.log('info',info)
+      //console.log('info',info)
       let params = new HttpParams()  
       params=params.append('info' , info)
       return this.http.post(this.api+'transactions/subescribestripe/', info)
@@ -234,13 +234,13 @@ export class SocketServiceService {
      }
 
    userJoiningAuction(auctionRoom){ 
-      console.log(auctionRoom)
+      //console.log(auctionRoom)
       this.socket.emit('joiningAuction', auctionRoom )
     }
 
     userJoinedAuction = () =>{
       this.socket.on('userJoindAuction', (auctionRoom) => { 
-        console.log(auctionRoom)
+        //console.log(auctionRoom)
          this.liveStremUserHadJoined.next(auctionRoom)
         });
       return this.liveStremUserHadJoined.asObservable(); 
@@ -250,13 +250,13 @@ export class SocketServiceService {
     ///bidding proccess
 
     userBiddingInAuction(auctionRoom){ 
-      console.log(auctionRoom)
+      //console.log(auctionRoom)
       this.socket.emit('biddingInAuction', auctionRoom )
     }
 
     userBiddedInAuction = () =>{
       this.socket.on('userBiddedInAuction', (auctionRoom) => { 
-        console.log(auctionRoom)
+        //console.log(auctionRoom)
          this.liveStremUserHadBidding.next(auctionRoom)
         }); 
       return this.liveStremUserHadBidding.asObservable(); 
@@ -265,7 +265,7 @@ export class SocketServiceService {
 
     auctionEndOntime = () =>{
       this.socket.on('auctionEndOntime', (ar) => { 
-        console.log('auctionEndOntime' ,ar)
+        //console.log('auctionEndOntime' ,ar)
          this.liveStremAuctionHadEndOnTime.next(ar)
         }); 
       return this.liveStremAuctionHadEndOnTime.asObservable(); 
@@ -273,13 +273,13 @@ export class SocketServiceService {
 
     //fucos to bidding 
     userFucosBiddingInAuction(auctionRoom){ 
-      console.log(auctionRoom)
+      //console.log(auctionRoom)
       this.socket.emit('fucosBiddingInAuction', auctionRoom )
     }
     
     userFucosedBiddedInAuction = () =>{
       this.socket.on('userFucosedBiddedInAuction', (auctionRoom) => { 
-        console.log(auctionRoom)
+        //console.log(auctionRoom)
          this.liveStremUserFucosToBidding.next(auctionRoom)
         });
       return this.liveStremUserFucosToBidding.asObservable(); 
@@ -287,13 +287,13 @@ export class SocketServiceService {
 
     //lost fucos to bidding 
     userFucosLostBiddingInAuction(auctionRoom){ 
-      console.log(auctionRoom)
+      //console.log(auctionRoom)
       this.socket.emit('fucosLostBiddingInAuction', auctionRoom )
     }
     
     userFucosedLostBiddedInAuction = () =>{
       this.socket.on('userFucosedlostBiddedInAuction', (auctionRoom) => { 
-        console.log(auctionRoom)
+        //console.log(auctionRoom)
          this.liveStremUserFucosLostToBidding.next(auctionRoom)
         });
       return this.liveStremUserFucosLostToBidding.asObservable(); 

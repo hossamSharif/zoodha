@@ -3,6 +3,10 @@
     display: flex;
     align-items: center;
 }
+.header-md::after { 
+    background-image: none;
+
+  }
 .radus5{
     border-radius: 4%;
 }

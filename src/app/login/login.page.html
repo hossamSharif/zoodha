@@ -454,7 +454,7 @@
        <ion-card class="roundedGrid w100" >
         <ion-card-header>
           <ion-card-title  >
-           <h3 class="ion-text-center"><b>تسجيل دخول</b></h3> 
+           <h3 class="ion-text-center"><b>  {{'LOGIN.title' | translate}} </b></h3> 
           </ion-card-title>
         </ion-card-header>
         <ion-row>
@@ -473,7 +473,7 @@
         </ion-row>
         <ion-row class=" ion-justify-content-center"> 
           <ion-col size="3" class="ion-text-center">
-            <ion-label><h3>أو</h3></ion-label>
+            <ion-label><h3> {{'LOGIN.or' | translate}}</h3></ion-label>
           </ion-col>
         </ion-row>
 
@@ -484,19 +484,19 @@
             <ion-list class="w100"> 
               <ion-item  class="custInput">  
                 <!-- <ion-label  position="floating"> <ion-text color="dark"> </ion-text></ion-label> -->
-                <ion-input   formControlName="email"  type="email" placeholder="البريد الإلكتروني "  [(ngModel)]="email">
+                <ion-input   formControlName="email"  type="email" placeholder=" 'LOGIN.placeholderEmail' | translate   "  [(ngModel)]="email">
                  
                 </ion-input>
-                <ion-note slot="error" *ngIf="isSubmitted2 == true && error2Control.email.errors?.required"> الحقل مطلوب </ion-note> 
-                <ion-note slot="error" *ngIf="isSubmitted2 == true && error2Control.email.errors?.pattern">    خطأ في صيغة البريد  </ion-note>
+                <ion-note slot="error" *ngIf="isSubmitted2 == true && error2Control.email.errors?.required">  {{'LOGIN.requirdFeild' | translate}}   </ion-note> 
+                <ion-note slot="error" *ngIf="isSubmitted2 == true && error2Control.email.errors?.pattern">     {{'LOGIN.emailError' | translate}}        </ion-note>
               </ion-item> 
 
               
               <ion-item class="custInput mgt10"> 
                 <!-- <ion-label position="floating"> <ion-text color="dark"> </ion-text></ion-label>  -->
-                <ion-input   formControlName="password" type="password" placeholder="المرور كلمة"  [(ngModel)]="password">
+                <ion-input   formControlName="password" type="password" [placeholder]="'LOGIN.placeholderPassword' | translate"  [(ngModel)]="password">
                 </ion-input>
-                <ion-note slot="error" *ngIf="isSubmitted2 == true && error2Control.password.errors?.required"> الحقل مطلوب </ion-note> 
+                <ion-note slot="error" *ngIf="isSubmitted2 == true && error2Control.password.errors?.required">   {{'LOGIN.requirdFeild' | translate}}   </ion-note> 
 
               </ion-item>
             </ion-list>
@@ -504,14 +504,14 @@
           <ion-row class="ion-justify-content-center">
             <ion-col size="9">
               <ion-item class="custItem" [disabled]="spinner == true" color="dark" button (click)="login()"> 
-                <ion-label class="ion-text-center">دخــول</ion-label>
+                <ion-label class="ion-text-center"> {{'LOGIN.loginButton' | translate}}</ion-label>
                 <ion-spinner name="lines" color="light" *ngIf="spinner == true"></ion-spinner> 
               </ion-item>
             </ion-col>
           </ion-row> 
            <ion-row class="ion-justify-content-center ion-margin-bottom">
                 <ion-button fill="clear" (click)="froget()">
-                  <ion-label><ion-text color="dark"><b>نسيت كلمة السر؟</b></ion-text></ion-label>
+                  <ion-label><ion-text color="dark"><b>{{'LOGIN.forgetPass' | translate}}</b></ion-text></ion-label>
                 </ion-button>
           </ion-row>
         </form> 
@@ -552,8 +552,8 @@
     <ion-row class="ion-justify-content-center"> 
       <ion-col size="12" class="ion-text-end">
         <ion-button fill="clear"  (click)="signUp()">
-          <ion-label><ion-text>ليس لديك حساب ؟ </ion-text> 
-          <ion-text color="dark">انشاء حساب</ion-text>
+          <ion-label><ion-text>    {{'LOGIN.youHaveAccount' | translate}}</ion-text> 
+          <ion-text color="dark">    {{'LOGIN.signUp' | translate}}</ion-text>
         </ion-label>
         </ion-button>
       </ion-col>

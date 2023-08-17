@@ -13,6 +13,28 @@
     <ion-icon name="person-outline" color="primary"></ion-icon>
     الملف الشخصي 
   </ion-item>
+  <ion-item button (click)="presentPopLang($event)" > 
+    <ion-icon name="language-outline" color="primary"></ion-icon>
+    اللغة 
+  </ion-item>
+  <ion-item button> 
+    <ion-icon name="cash-outline" color="primary"></ion-icon>
+    العملة  
+  </ion-item>
+  <ion-popover trigger="click-trigger" triggerAction="click">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <ion-item button> 
+          <ion-icon name="cash-outline" color="primary"></ion-icon>
+          اللغة العربية  
+        </ion-item>
+        <ion-item button> 
+          <ion-icon name="cash-outline" color="primary"></ion-icon>
+         English
+        </ion-item>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
   <ion-item button (click)="logout()" >
     <ion-icon name="power-outline" color="danger"></ion-icon>
      تسجيل خروج 

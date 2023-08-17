@@ -31,9 +31,9 @@ export class ForgetPasswordPage implements OnInit {
     if(this.validate() == true){
       this.spinner = true
       this.api.sendMail(this.user).subscribe(data =>{
-        console.log('user was created',data)
+        //console.log('user was created',data)
         let res = data
-        console.log('email was sent',res['digit']) 
+        //console.log('email was sent',res['digit']) 
         let navigationExtras: NavigationExtras = {
           queryParams: {
             digit: JSON.stringify(res['digit']),
@@ -43,7 +43,7 @@ export class ForgetPasswordPage implements OnInit {
         this.rout.navigate(['virefy-rest'], navigationExtras);  
         this.spinner = false 
       }, (err) => {
-      console.log(err); 
+      //console.log(err); 
       this.spinner = false
       this.handleError(err.error.error) 
     },()=>{ 
@@ -85,7 +85,7 @@ export class ForgetPasswordPage implements OnInit {
   validate(){
     this.isSubmitted = true;
     if (this.ionicForm.valid == false) {
-      console.log('Please provide all the required values!') 
+      //console.log('Please provide all the required values!') 
       return false
     }   else {
        return true
