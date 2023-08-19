@@ -18,9 +18,9 @@ if (environment.hmr) {
     //console.log('Are you using the --hmr flag for ng serve?');
   }
 } else {
-  bootstrap().catch(err => //console.log(err));
+  bootstrap().catch(err => console.log(err));
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .then(() => defineCustomElements(window))
-  .catch(err => //console.log(err));
+  .catch(err => console.log(err));

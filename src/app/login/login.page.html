@@ -484,7 +484,7 @@
             <ion-list class="w100"> 
               <ion-item  class="custInput">  
                 <!-- <ion-label  position="floating"> <ion-text color="dark"> </ion-text></ion-label> -->
-                <ion-input   formControlName="email"  type="email" placeholder=" 'LOGIN.placeholderEmail' | translate   "  [(ngModel)]="email">
+                <ion-input   formControlName="email"  type="email" [placeholder]="'LOGIN.placeholderEmail' | translate"  [(ngModel)]="email">
                  
                 </ion-input>
                 <ion-note slot="error" *ngIf="isSubmitted2 == true && error2Control.email.errors?.required">  {{'LOGIN.requirdFeild' | translate}}   </ion-note> 

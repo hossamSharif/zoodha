@@ -13,5 +13,20 @@
     "errUserName":"خطأ في اسم المستخدم او كلمة المرور" ,
     "errTry":" حدث خطأ ما ,حاول مرة اخري" ,
     "errPhone": " خطأ في رقم الجوال" 
- }   
+ }  ,
+ "SIGNUP":{
+   "title":"تسجيل دخول " ,
+   "or":"أو" ,
+   "placeholderEmail":" البريد الإلكتروني " ,
+   "placeholderPassword":"كلمة المرور" ,
+   "requirdFeild":" الحقل مطلوب" ,
+   "emailError":"خطأ في صيغة البريد" ,
+   "loginButton":"دخول" ,
+   "forgetPass":" نسيت كلمة السر ؟  " ,
+   "youHaveAccount":"ليس لديك حساب " ,
+   "signUp":"إنشاء حساب" ,
+   "errUserName":"خطأ في اسم المستخدم او كلمة المرور" ,
+   "errTry":" حدث خطأ ما ,حاول مرة اخري" ,
+   "errPhone": " خطأ في رقم الجوال" 
+}   
 }
