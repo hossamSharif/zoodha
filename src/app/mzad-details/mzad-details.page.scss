@@ -6,7 +6,14 @@
   .header-md::after { 
     background-image: none; 
   }
-
+ .descImg{
+    position: absolute;
+    bottom: 0%;
+    // text-align: center;
+    width: 100%;
+    background-color: #80808059;
+    // padding: 10px;
+ }
   .roundedGrid{ 
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;

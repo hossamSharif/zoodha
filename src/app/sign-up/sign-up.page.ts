@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 import { ModalController, ToastController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { TermsPage } from '../terms/terms.page';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.page.html',
@@ -63,7 +64,7 @@ export class SignUpPage implements OnInit {
 // Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character:
 
 // "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$"
-  constructor(private modalController:ModalController,private formBuilder: FormBuilder,private toast:ToastController,private route: ActivatedRoute,private storage: Storage, private rout : Router ,private api:SocketServiceService) {
+  constructor(private translate: TranslateService,private modalController:ModalController,private formBuilder: FormBuilder,private toast:ToastController,private route: ActivatedRoute,private storage: Storage, private rout : Router ,private api:SocketServiceService) {
     this.ionic2Form = this.formBuilder.group({
       code: ['', [Validators.required, Validators.minLength(4),Validators.maxLength(4),Validators.pattern('^[0-9]+$')]],
    })
@@ -220,10 +221,12 @@ export class SignUpPage implements OnInit {
           //console.log('Please provide all the required values!') 
           return false
         } else if (this.outdateCode == true){ 
-          this.presentToast(' انتهت المهلة ,إضغط إعادة ارسال للحصول علي رمز جديد' , 'danger')
+        this.presentToast(this.translate.instant('SIGNUP.timeUp') , 'danger') 
+
         }
          else if (this.code != this.orignalCode){ 
-            this.presentToast(' الرمز غير صحيح' , 'danger')
+        this.presentToast(this.translate.instant('SIGNUP.errCode') , 'danger') 
+        
             return false
           }else{
            return true
@@ -309,10 +312,13 @@ export class SignUpPage implements OnInit {
 
     handleError(msg){
       if (msg == "duplicate phone") {   
-        this.presentToast('رقم الهاتف موجود مسبقا , قم بتسجيل الدخول', 'danger') 
+        this.presentToast(this.translate.instant('SIGNUP.errPhoneExist') , 'danger') 
         return false
        } else if (msg == "duplicate email"){ 
-        this.presentToast("البريد موجود مسبقا" ,'danger') 
+        this.presentToast(this.translate.instant('SIGNUP.emailExist') , 'danger') 
+        return false
+       }else{
+        this.presentToast(this.translate.instant('SIGNUP.errTry') , 'danger') 
         return false
        }  
     }

@@ -4,6 +4,8 @@ import { SocketServiceService } from '../services/socket-service.service';
 import { Storage } from '@ionic/storage';
 import { ModalController, ToastController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms"; 
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-new-password',
   templateUrl: './new-password.page.html',
@@ -39,7 +41,7 @@ style:any = 'style2'
   show :boolean = false
   showConf :boolean = false
    
-  constructor(private modalController:ModalController,private formBuilder: FormBuilder,private toast:ToastController,private route: ActivatedRoute,private storage: Storage, private rout : Router ,private api:SocketServiceService) { 
+  constructor(private translate: TranslateService,private modalController:ModalController,private formBuilder: FormBuilder,private toast:ToastController,private route: ActivatedRoute,private storage: Storage, private rout : Router ,private api:SocketServiceService) { 
 
     this.ionicForm = this.formBuilder.group({ 
       password: ['', [Validators.required, Validators.minLength(5),Validators.pattern('^([^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$')]],
@@ -112,7 +114,8 @@ style:any = 'style2'
       //console.log(); 
       this.spinner = false
       // this.handleError( err.error.error ) 
-      this.presentToast("حدث خطأ ما , حاول مرة اخري " ,  'danger') 
+      this.presentToast(this.translate.instant('new-password.errNetwork') , 'danger') 
+
     
     },()=>{
     
@@ -124,17 +127,21 @@ style:any = 'style2'
 
   handleError(msg){
     if (msg == "duplicate phone") {   
-      this.presentToast('رقم الهاتف موجود مسبقا , قم بتسجيل الدخول', 'danger') 
+      this.presentToast(this.translate.instant('new-password.errPhoneExist') , 'danger') 
+     
       return false
      } else if (msg == "duplicate email"){ 
-      this.presentToast("البريد موجود مسبقا" ,  'danger') 
+      this.presentToast(this.translate.instant('new-password.emailExist') , 'danger') 
+    
       return false
     } else if (msg == "duplicate email"){ 
-      this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+      this.presentToast(this.translate.instant('new-password.errNetwork') , 'danger') 
+
       return false
     } 
      else{
-      this.presentToast("حدث خطأ ما , حاول مرة اخري " ,  'danger') 
+      this.presentToast(this.translate.instant('new-password.errNetwork') , 'danger') 
+
       return false
      } 
   }
@@ -149,7 +156,8 @@ style:any = 'style2'
     } else if(this.password.length>0 && this.password != this.confirmPass){
       return false
     } else if(this.USER_INFO.password.length > 0 && this.USER_INFO.password == this.password){
-      this.presentToast('لقد ادخلت كلمة مرورك القديمة , الرجاء ادخال كلمة مرور اخري') 
+
+      this.presentToast(this.translate.instant('new-password.errEnteredOldPassword') , 'danger') 
       return false
     } else {
        return true

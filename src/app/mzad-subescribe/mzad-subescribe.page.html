@@ -9,25 +9,44 @@
 
 <ion-content>
   <ion-grid class="ion-no-margin  ion-no-padding"  dir="rtl" >
-    <ion-row class="ion-no-padding"> 
+    <ion-row class="ion-no-padding">
+      <ion-card class="w100"> 
+        <ion-card-header>  
+          <ion-card-title>
+            <ion-icon name="cash-outline" color="primary"></ion-icon> 
+            المنتجات
+          </ion-card-title>
+      </ion-card-header>
+      <ion-grid class="ion-no-margin  ion-no-padding ion-padding-bottom" dir="rtl">
+        <ion-row class="ion-no-margin  ion-no-padding"> 
+          <ion-col size="12" class="ion-text-center"> 
+              <ion-grid>
+                <ion-row *ngFor="let prod of mzd['productsList']">
+                  <ion-col size="8"  class="ion-text-start ion-padding">
+                    <ion-label> <ion-text color="dark">{{ prod.prodName }}</ion-text>    </ion-label>
+                  </ion-col>
+                  <ion-col size="4"  class="ion-text-end ion-padding">
+                    <ion-label> 
+                      <ion-text color="dark">{{ prod.qty }} </ion-text> 
+                    <ion-text> <ion-note>{{ prod.unit }}</ion-note></ion-text> 
+                  </ion-label>
+                </ion-col>
+                </ion-row>
+              </ion-grid> 
+          </ion-col> 
+        </ion-row>
+      </ion-grid>
+      </ion-card> 
       <ion-card class="w100"> 
         <ion-card-header>  
             <ion-card-title>
               <ion-icon name="cash-outline" color="primary"></ion-icon> 
               رسوم المشاركة
             </ion-card-title>
-          </ion-card-header>
+        </ion-card-header>
           <ion-grid class="ion-no-margin  ion-no-padding ion-padding-bottom" dir="rtl">
             <ion-row class="ion-no-margin  ion-no-padding"> 
-              <ion-col size="12" class="ion-text-center">
-                <ion-item lines="none"> 
-                    <ion-label><ion-text color="primary"><b>المنتج </b> </ion-text>  </ion-label>
-                    <ion-label slot="end">
-                      <ion-text> {{ mzd['title'] }} </ion-text>
-                       
-                    </ion-label>
-                  </ion-item>
-              </ion-col>
+            
               <ion-col size="12" class="ion-text-center">
                 <ion-item lines="none"> 
                     <ion-label><ion-text color="primary"><b>العربون</b> </ion-text>  </ion-label>

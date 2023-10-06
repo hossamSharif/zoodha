@@ -139,7 +139,6 @@ export class StripePaymentPage implements OnInit {
    }
 
    prepareOrderbj(){
-     
       let mzdTemp  = { 
         _id:this.order['_id'],
         auctId:this.mzd['_id'],

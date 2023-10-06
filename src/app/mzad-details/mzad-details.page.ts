@@ -94,7 +94,7 @@ USER_INFO : {
   logMethod:any
   imgUrl:any
 };
-   
+  imgsArray:Array<any>=[] 
   id:any 
   terms: Array<any>=[];
   timeLeft :any = {da:"" ,hr:"",mn:"" ,sc:"" } 
@@ -135,7 +135,7 @@ USER_INFO : {
       //console.log(data)
       let res = data['auction']
       this.mzd = res
-      //console.log('mzzzz',this.mzd)
+     console.log('mzzzz',this.mzd)
       this.prepare()
     }, (err) => {
       this.errorLoad = true
@@ -143,7 +143,35 @@ USER_INFO : {
   })  
   }
 
-   prepare(){   
+
+  prepareImages(){
+    for (let index = 0; index < this.mzd['imgs'].length; index++) {
+      const element = this.mzd['imgs'][index];
+      this.imgsArray.push(
+        {
+          imgUrl:element
+        }
+      )
+    }
+   
+    if(this.mzd['productsList'].length > 0){ 
+      for (let index = 0; index < this.mzd['productsList'].length; index++) {
+        const element = this.mzd['productsList'][index];
+        this.imgsArray.push(
+          {
+            imgUrl:element.img,
+            prodName:element.prodName,
+            prodDesc:element.prodDesc,
+            qty:element.qty
+
+          }
+        )
+      }
+      console.log('case multi' ,this.mzd['productsList'] , this.imgsArray ,  )
+    }
+  }
+   prepare(){ 
+    this.prepareImages()  
      this.timeLeft = this.endAfterounter()  
      if(this.mzd['currentStatus'] == 1 ){
       this.mzd['timeLeft'] = this.startAfterounter( ) 

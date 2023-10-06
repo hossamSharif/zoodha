@@ -98,7 +98,7 @@ export class HomePage implements OnInit {
       //console.log(data)
       let res = data['auctions'] 
       this.auctionsArray = res
-      //console.log(this.auctionsArray)
+       console.log('lkdflkadjlf',this.auctionsArray)
       this.prepareAuc()
     }, (err) => {
     //console.log(err);

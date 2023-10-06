@@ -121,24 +121,26 @@
               </ion-col>  
               <ion-col size="12" class="ion-text-center">
                 <ion-item lines="none"> 
-                    <ion-label> <ion-note color="primary"><b>    المنتج: </b>  </ion-note>  </ion-label>
-                    <ion-label slot="end">
-                      <ion-note>  {{order.auctions[0].title}} </ion-note> 
+                    <ion-label> <ion-note color="primary"><b>    المنتجات : </b>  </ion-note>  </ion-label>
+                </ion-item>
+                <ion-grid>
+                  <ion-row *ngFor="let prod of order['auctions'][0]['productsList']">
+                    <ion-col size="8"  class="ion-text-start ion-padding">
+                      <ion-label> <ion-text color="dark">{{ prod.prodName }}</ion-text>    </ion-label>
+                    </ion-col>
+                    <ion-col size="4"  class="ion-text-end ion-padding">
+                      <ion-label> 
+                        <ion-text color="dark">{{ prod.qty }} </ion-text> 
+                      <ion-text> <ion-note>{{ prod.unit }}</ion-note></ion-text> 
                     </ion-label>
-                  </ion-item>
+                  </ion-col>
+                  </ion-row>
+                </ion-grid> 
               </ion-col> 
-                <ion-col size="12" class="ion-text-center">
-                <ion-item lines="none"> 
-                    <ion-label> <ion-note color="primary"><b>    العدد: </b>  </ion-note>  </ion-label>
-                    <ion-label slot="end">
-                      <ion-note>  1 </ion-note>
-                      <ion-note>  قطعة </ion-note>
-                    </ion-label>
-                  </ion-item>
-              </ion-col> 
+                
               <ion-col size="12" class="ion-text-center">
                 <ion-item lines="none"> 
-                    <ion-label> <ion-note color="primary"><b>سعر المنتج :</b>  </ion-note>  </ion-label>
+                    <ion-label> <ion-note color="primary"><b>سعر المنتجات :</b>  </ion-note>  </ion-label>
                     <ion-label slot="end">
                       <ion-note>  {{higtPayedPrie}}</ion-note>
                       <ion-note>  usd</ion-note>
@@ -164,7 +166,7 @@
                       <ion-note>  {{order.delivary}}</ion-note>
                       <ion-note>  usd</ion-note>
                     </ion-label>
-                  </ion-item>
+                </ion-item>
               </ion-col>
               <ion-col size="12" class="ion-text-center" *ngIf="order.discount">
                 <ion-item>  

@@ -106,13 +106,14 @@
      <ion-card class=" roundedGrid w100" >
       <ion-card-header>
         <ion-card-title class="ion-text-center">
-         <h3 ><b> رمز التأكيد</b></h3> 
+         <h3 ><b>  {{'virefy-reset.title' | translate}}   </b></h3> 
         </ion-card-title>
         <ion-card-subtitle class="ion-text-center">
-           قمنا بإرسال بريد اليك         
+          {{'virefy-reset.confirmTitle' | translate}}        
+       
         </ion-card-subtitle>
         <ion-card-subtitle class="ion-text-center">
-         الرجاء ادخال رمز التأكيد المكون من 4 ارقام         
+          {{'virefy-reset.confirmSub' | translate}}        
        </ion-card-subtitle>
         <ion-card-subtitle class="ion-text-center">
           <ion-text *ngIf="orignalCode">  {{orignalCode}} </ion-text>
@@ -124,10 +125,10 @@
         <ion-row class="ion-margin" *ngIf="orignalCode"> 
           <ion-col> 
             <ion-item class="custInput">
-              <ion-input placeholder="ادخل رمز التأكيد هنا"  formControlName="code" [(ngModel)]="code" (ionChange)="inputChang($event)"></ion-input>
-                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.code.errors?.pattern">ادخل ارقام فقط  </ion-note> 
-                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.code.errors?.required">رمز التأكيد مطلوب </ion-note>
-                <ion-note slot="error" *ngIf="isSubmitted == true && (errorControl.code.errors?.minlength || errorControl.code.errors?.maxlength)">يجب ان يتكون من4 أرقام </ion-note> 
+              <ion-input  [placeholder]="'virefy-reset.placeholderConfirmationNumber' | translate"    formControlName="code" [(ngModel)]="code" (ionChange)="inputChang($event)"></ion-input>
+                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.code.errors?.pattern"> {{'virefy-reset.confirmNumberPatternError' | translate}}      </ion-note> 
+                <ion-note slot="error" *ngIf="isSubmitted == true && errorControl.code.errors?.required">    {{'virefy-reset.requirdFeild' | translate}}   </ion-note>
+                <ion-note slot="error" *ngIf="isSubmitted == true && (errorControl.code.errors?.minlength || errorControl.code.errors?.maxlength)"> {{'virefy-reset.confirmNumberLengthError' | translate}}         </ion-note> 
             </ion-item> 
           </ion-col> 
         </ion-row> 
@@ -135,7 +136,7 @@
         <ion-row class="ion-margin" >
           <ion-col size="12">
             <ion-item   class="custItem" color="dark"  button  [disabled]="spinner == true"  (click)="confirmAccount()">
-              <ion-label class="ion-text-center">إرسال</ion-label> 
+              <ion-label class="ion-text-center">{{'virefy-reset.send' | translate}}</ion-label> 
               <ion-spinner name="lines" color="light" *ngIf="spinner == true"></ion-spinner> 
 
             </ion-item>
@@ -143,7 +144,7 @@
         </ion-row>
         <ion-row class="ion-justify-content-start">
           <ion-button [disabled]="spinner2 == true" fill="clear"(click)="sendMail()"> 
-            <ion-label><ion-text color="primary"><b>إعادة إرسال الرمز</b></ion-text> <ion-spinner name="lines" color="light" *ngIf="spinner2 == true"></ion-spinner> </ion-label>
+            <ion-label><ion-text color="primary"><b> {{'virefy-reset.resendConfirmationNumber' | translate}}    </b></ion-text> <ion-spinner name="lines" color="light" *ngIf="spinner2 == true"></ion-spinner> </ion-label>
           </ion-button>
         </ion-row>  
          </form>

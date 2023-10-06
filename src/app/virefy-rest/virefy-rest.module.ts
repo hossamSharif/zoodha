@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { VirefyRestPageRoutingModule } from './virefy-rest-routing.module';
 
 import { VirefyRestPage } from './virefy-rest.page';
+import {TranslateModule} from '@ngx-translate/core'
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { VirefyRestPage } from './virefy-rest.page';
     FormsModule,
     IonicModule,
     ReactiveFormsModule, 
-    VirefyRestPageRoutingModule
+    VirefyRestPageRoutingModule,
+    TranslateModule
   ],
   declarations: [VirefyRestPage]
 })

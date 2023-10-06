@@ -4,6 +4,8 @@ import { SocketServiceService } from '../services/socket-service.service';
 import { Storage } from '@ionic/storage';
 import { ModalController, ToastController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-forget-password',
   templateUrl: './forget-password.page.html',
@@ -15,7 +17,7 @@ export class ForgetPasswordPage implements OnInit {
   ionicForm: FormGroup;
    user : { email:any  }
    isSubmitted :boolean = false
-  constructor(private formBuilder: FormBuilder,private toast:ToastController,private route: ActivatedRoute,private storage: Storage, private rout : Router ,private api:SocketServiceService) {
+  constructor(private translate: TranslateService,private formBuilder: FormBuilder,private toast:ToastController,private route: ActivatedRoute,private storage: Storage, private rout : Router ,private api:SocketServiceService) {
    
     this.ionicForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
@@ -53,15 +55,20 @@ export class ForgetPasswordPage implements OnInit {
 
   handleError(msg){
    if (msg == "email not found"){ 
-      this.presentToast("البريد ليس موجود " ,'danger') 
+     
+      this.presentToast(this.translate.instant('forgetPassword.errEmailNotFound') , 'danger') 
+
       return false
      }
      else if(!msg){
-      this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+      this.presentToast(this.translate.instant('forgetPassword.errNetwork') , 'danger') 
+
+    
       return false
     }
      else {
-      this.presentToast("حدث خطأ ما ,الرجاء المحاولة لاحقا    " ,'danger') 
+      this.presentToast(this.translate.instant('forgetPassword.errNetwork') , 'danger') 
+
       return false
      } 
   }

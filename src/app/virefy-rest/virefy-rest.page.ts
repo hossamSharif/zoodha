@@ -4,6 +4,7 @@ import { SocketServiceService } from '../services/socket-service.service';
 import { Storage } from '@ionic/storage';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ToastController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-virefy-rest',
@@ -41,7 +42,7 @@ export class VirefyRestPage implements OnInit {
 
     digit 
     user : {email:any}
-  constructor(private toast:ToastController,private formBuilder: FormBuilder,private route: ActivatedRoute,private storage: Storage, private rout : Router ,private api:SocketServiceService) {
+  constructor(private translate: TranslateService,private toast:ToastController,private formBuilder: FormBuilder,private route: ActivatedRoute,private storage: Storage, private rout : Router ,private api:SocketServiceService) {
     this.user = { 
       email:""
     }
@@ -83,10 +84,13 @@ export class VirefyRestPage implements OnInit {
           //console.log('Please provide all the required values!') 
           return false
         } else if (this.outdateCode == true){ 
-          this.presentToast(' انتهت المهلة ,إضغط إعادة ارسال للحصول علي رمز جديد' , 'danger')
+         this.presentToast(this.translate.instant('virefy-reset.timeUp') , 'danger') 
+
+
         }
          else if (this.code != this.orignalCode){ 
-            this.presentToast(' الرمز غير صحيح' , 'danger')
+          this.presentToast(this.translate.instant('virefy-reset.errCode') , 'danger') 
+
             return false
           }else{
            return true
@@ -117,7 +121,9 @@ export class VirefyRestPage implements OnInit {
            //console.log('email was sent',res['digit']) 
            this.orignalCode = res['digit']
            this.spinner2 = false
-           this.presentToast('تم ارسال الرمز بنجاح' , 'success') 
+         this.presentToast(this.translate.instant('virefy-reset.emailSent') , 'success') 
+
+           
           }, (err) => {
           //console.log(err); 
           this.spinner2 = false
@@ -130,13 +136,18 @@ export class VirefyRestPage implements OnInit {
 
       handleError(msg){
         if (msg == "email not found"){ 
-           this.presentToast("البريد ليس موجود " ,'danger') 
+           
+         this.presentToast(this.translate.instant('virefy-reset.errEmailNotFound') , 'danger') 
+
            return false
           } else if(!msg){
-            this.presentToast('حدث خطأ ما ,حاول مرة اخري','danger')
+         this.presentToast(this.translate.instant('virefy-reset.errNetwork') , 'danger') 
+
+           
             return false
           }else {
-           this.presentToast("حدث خطأ ما ,الرجاء المحاولة لاحقا    " ,'danger') 
+                  this.presentToast(this.translate.instant('virefy-reset.errNetwork') , 'danger') 
+
            return false
           } 
        }

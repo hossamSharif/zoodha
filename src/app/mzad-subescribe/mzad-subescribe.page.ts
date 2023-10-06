@@ -5,6 +5,7 @@ import { SocketServiceService } from '../services/socket-service.service';
 import * as momentObj from 'moment';
 import * as momentTz from 'moment-timezone';
 import { StripePaymentPage } from '../stripe-payment/stripe-payment.page';
+import { SubiscribeWalletPage } from '../subiscribe-wallet/subiscribe-wallet.page';
 @Component({
   selector: 'app-mzad-subescribe',
   templateUrl: './mzad-subescribe.page.html',
@@ -31,6 +32,7 @@ USER_INFO : {
   logMethod:any
   imgUrl:any
 };
+balanceLoding :Boolean = false
   constructor(private route: ActivatedRoute ,private api:SocketServiceService,private rout : Router,private loadingController:LoadingController , private toast:ToastController,private actionSheetCtl:ActionSheetController ,private modalController:ModalController) {
 
     this.route.queryParams.subscribe(params => {
@@ -44,6 +46,7 @@ USER_INFO : {
    }
 
   ngOnInit() {
+    this.getWalletBalance()
    // //console.log(this.mzd , this.USER_INFO)
   }
 
@@ -75,7 +78,43 @@ USER_INFO : {
    } 
 
 
-   
+  
+
+    handleErrorGetBalance(err){ 
+        this.presentToast('حدث خطأ ما الرجاء المحاولة مرة اخري','danger')  
+     }
+
+
+     prepareActonSheet(){
+      this.presentLoadingWithOptions()
+      this.api.getBalance(this.USER_INFO._id).subscribe(data =>{
+        //console.log(data)
+        let res = data['transaction'][0]
+        this.walletBalance = +res.balance
+        this.loadingController.dismiss()
+        this.presentActionSheet()
+      }, (err) => {
+      //console.log(err);
+      this.loadingController.dismiss()
+      this.handleErrorGetBalance(err) 
+    } ,
+    ()=>{ 
+    })   
+     }
+
+  getWalletBalance(){ 
+      this.api.getBalance(this.USER_INFO._id).subscribe(data =>{
+        //console.log(data)
+        let res = data['transaction'][0]
+        this.walletBalance = +res.balance
+      
+      }, (err) => {
+      //console.log(err);
+      this.handleErrorGetBalance(err) 
+    } ,
+    ()=>{ 
+    })  
+  }
 
     validate(){
       if(this.agreeTerms == false){
@@ -92,8 +131,7 @@ USER_INFO : {
         return true
       }   
         // validate if user not restircted
-        // validate if user not from staff
-         
+        // validate if user not from staff    
     }
 
     // wallet pehavior subject must change when user add balance to his wallet from anotherapp
@@ -132,8 +170,7 @@ checkRemainTime(){
       }] 
     } 
     return mzdTemp
-  }
-  
+  } 
  }
 
  
@@ -161,7 +198,8 @@ checkRemainTime(){
    //
    //socket emmit to tell others + push notification 
   }  
-}
+  }
+
 
 reSubiscribtion(){
   // when user cancel subiscribe to auctions 
@@ -187,8 +225,7 @@ reSubiscribtion(){
    //api to add pay transaction + 
    //
    //socket emmit to tell others + push notification 
-  }
-   
+  }   
 }
 
 
@@ -199,7 +236,7 @@ validateAuctionCondition(){
     //console.log('validateAuctionCondition',data)
     if(data['success'] == true){
       this.loadingController.dismiss()
-      this.presentModal()
+      this.presentModalWallet()
     }else{
       this.handleError('err') 
     } 
@@ -233,18 +270,42 @@ async presentModal(id?, status?) {
         this.doAfterDissmiss(dataReturned)
       }
     });
-  
     return await modal.present(); 
-  
- 
 }
+
+
+async presentModalWallet() {   
+    const modal = await this.modalController.create({
+      component: SubiscribeWalletPage ,
+      componentProps: {
+        "mzd" : this.mzd ,
+        "USER_INFO": this.USER_INFO ,
+        "amount": +this.mzd['fee'] + this.mzd['deposit'],
+        'walletBalance' :this.walletBalance
+      }
+    });
+    
+    modal.onDidDismiss().then((dataReturned) => {
+      if (dataReturned !== null) {
+        //console.log(dataReturned )
+        this.doAfterDissmiss(dataReturned)
+      }
+    });
+    return await modal.present(); 
+}
+
+doAfterDissmissWallet(dataReturned){
+  //console.log(dataReturned , dataReturned.data , dataReturned.role)
+  if( dataReturned.role == 'done'){ 
+   this.rout.navigate(['tabs/wallet']); 
+  } 
+ }
 
   doAfterDissmiss(dataReturned){
    //console.log(dataReturned , dataReturned.data , dataReturned.role)
    if( dataReturned.role == 'done'){ 
     this.rout.navigate(['tabs/home']);
    // this.mzd = dataReturned.data
-   
     // this.socket.userJoiningAuction([this.USER_INFO._id,this.USER_INFO.firstName , this.mzad._id ])
     //push notification to aution's subiscribed users
   
@@ -275,12 +336,12 @@ handleError(err){
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetCtl.create({
-      header: 'دفع رسوم الإشتراك ',
-      subHeader: this.mzd.fee + this.mzd.deposit + 'ج.س',
+      header: 'دفع عبر المحفظة',
+      subHeader: this.walletBalance + 'رصيدك الحالي',
       cssClass: 'my-custom-class',
       mode:'ios',
       buttons: [{
-        text: 'المحفظة',
+        text:'عبر المحفظة' + this.mzd.fee + this.mzd.deposit + 'ج.س' +  'دفع مبلغ '  ,
         // role: 'destructive',
         icon: 'wallet',
         // data: {

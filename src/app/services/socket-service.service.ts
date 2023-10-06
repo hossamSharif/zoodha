@@ -12,8 +12,8 @@ import { map, switchMap, tap } from 'rxjs/operators';
 
 
 export class SocketServiceService { 
-  //api = 'http://localhost:3000/'
-  api ='https://coral-app-pr5y9.ondigitalocean.app/'
+  api = 'http://localhost:3000/'
+  //api ='https://coral-app-pr5y9.ondigitalocean.app/'
     public message$: BehaviorSubject<string> = new BehaviorSubject('');
     public liveStremUserHadJoined: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
     public liveStremUserHadBidding: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
@@ -22,8 +22,8 @@ export class SocketServiceService {
     public liveStremUserFucosLostToBidding: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
     constructor(public http: HttpClient ) {}
   
-  //  socket = io('http://localhost:3000/',{ transports: ['websocket', 'polling', 'flashsocket'] });
-    socket = io('https://coral-app-pr5y9.ondigitalocean.app/',{ transports: ['websocket', 'polling', 'flashsocket'] });
+   socket = io('http://localhost:3000/',{ transports: ['websocket', 'polling', 'flashsocket'] });
+  //  socket = io('https://coral-app-pr5y9.ondigitalocean.app/',{ transports: ['websocket', 'polling', 'flashsocket'] });
   
     public sendMessage(message) {
       this.socket.emit('message', message);
@@ -148,6 +148,13 @@ export class SocketServiceService {
       return this.http.post(this.api+'transactions/createtransaction/', trasaction)
     }
 
+    createTransChargeWallet(trasaction){ 
+      let params = new HttpParams() 
+      params=params.append('trasaction' , trasaction)
+      return this.http.post(this.api+'transactions/createtransactionchargewallet/', trasaction)
+    }
+    
+
     cancelAuctionUsers(auction){ 
       let params = new HttpParams() 
       params=params.append('auction' , auction)
@@ -181,6 +188,10 @@ export class SocketServiceService {
       return this.http.get(this.api+'users/loginemail/'+email+'&'+password)
     }
     
+    getAppInfo(){  
+      return this.http.get(this.api+'appinfo/all/')
+    }
+
     createUser(user){ 
       let params = new HttpParams() 
       params=params.append('user' , user)

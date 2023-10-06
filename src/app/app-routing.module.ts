@@ -95,6 +95,14 @@ const routes: Routes = [
   {
     path: 'curren-lang',
     loadChildren: () => import('./curren-lang/curren-lang.module').then( m => m.CurrenLangPageModule)
+  },
+  {
+    path: 'stripe-charge-wallet',
+    loadChildren: () => import('./stripe-charge-wallet/stripe-charge-wallet.module').then( m => m.StripeChargeWalletPageModule)
+  },
+  {
+    path: 'subiscribe-wallet',
+    loadChildren: () => import('./subiscribe-wallet/subiscribe-wallet.module').then( m => m.SubiscribeWalletPageModule)
   }
 ];
 @NgModule({

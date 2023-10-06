@@ -273,7 +273,23 @@
   </ion-row> 
 
   <ion-row>
-    <img class="radus5 img"  [src]="mzd['imgs'][0]"/>   
+   
+    <ion-col size="12" *ngIf="imgsArray.length > 1">
+      <ion-slides pager="true">
+        <ion-slide *ngFor="let img of imgsArray">
+          <div class="slide">
+              <img [src]='img.imgUrl'/>
+              <div class="descImg" *ngIf="img.prodName">
+                 <p class="slide-title">{{img.prodName}}</p>
+              </div>  
+          </div>
+        </ion-slide>
+      </ion-slides>
+      <!-- update to swiber.js -->
+    </ion-col>
+    <ion-col size="12" *ngIf="imgsArray.length <= 1">
+      <img class="radus5 img"  [src]="mzd['imgs'][0].url"/>    
+    </ion-col>
   </ion-row>
 
 
