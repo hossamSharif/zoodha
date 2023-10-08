@@ -13,7 +13,7 @@ import { error } from 'console';
   templateUrl: './stripe-charge-wallet.page.html',
   styleUrls: ['./stripe-charge-wallet.page.scss'],
 })
-export class StripeChargeWalletPage implements OnInit {
+export class StripeChargeWalletPage implements OnInit { 
   card: any;
   mzd : any ;   
   USER_INFO : {
@@ -34,15 +34,19 @@ export class StripeChargeWalletPage implements OnInit {
     imgUrl:any,
     refNo:any
   };
+  spinner : boolean = false ;
+
   data:any = {};
   amount:any 
   status:any 
+  description:any;
   appInfoArr:Array<any> = []
 
  // apis:any  ='https://coral-app-pr5y9.ondigitalocean.app/transactions/subescribestripe'
   apis:any  ='http://localhost:3000/transactions'
   transaction : {_id:any,orderId:any , userId:any , auctId:any , currentStatus:0 ,typee:2 , pay:0 ,details , comment ,fromAccount:any,toAccount:any,fromAccountTitle:any,toAccountTitle:any,walletId:any,paymentMethod:any,detailsEn:any,vatFee:Number,vatOrder:Number, taxId:any}
   constructor(private alertController :AlertController,private storage: Storage,private toast:ToastController ,private loadingController:LoadingController  ,private modalCtrl: ModalController,private api:SocketServiceService , private httpClient:HttpClientModule ,private http:HttpClient) { 
+ 
     Stripe.initialize({
       publishableKey: environment.stripe.publishableKey,
     }); 
@@ -55,12 +59,16 @@ export class StripeChargeWalletPage implements OnInit {
    return this.http.post<any>(this.apis , data).pipe(first());
   }
 
-  httpPostCustomer(data){
+  httpPostCustomer(USER_INFO ,amount ,currency,description,descriptionEn){
     
     let params = new HttpParams() 
-    params=params.append('data' , data)
-
-   return this.http.post<any>(this.apis+'/createcustomerstripe' , data).pipe(first());
+    params=params.append('USER_INFO' , USER_INFO)
+    params=params.append('amount' , amount)
+    params=params.append('currency' , currency)
+    params=params.append('description' , description)
+    params=params.append('descriptionEn' , descriptionEn)
+    
+   return this.http.post<any>(this.apis+'/createcustomerstripe' , params).pipe(first());
   }
 
   getAppInfo(){
@@ -77,6 +85,7 @@ export class StripeChargeWalletPage implements OnInit {
 
   ngOnInit() { 
     //console.log(this.mzd , this.USER_INFO , this.amount ,this.order,this.status)
+    console.log('userinfo',this.USER_INFO)
       this.getAppInfo()
       
     }
@@ -153,39 +162,63 @@ export class StripeChargeWalletPage implements OnInit {
 
   async createCustomerStripe() {
     try {
+      this.presentLoadingWithOptions ()
       // be able to get event of PaymentSheet
-      Stripe.addListener(PaymentSheetEventsEnum.Completed, () => {
+       Stripe.addListener(PaymentSheetEventsEnum.Completed, () => {
        console.log('PaymentSheetEventsEnum.Completed');
       });
-
-     let custdata={
-      email:this.USER_INFO.email ,
-      name:this.USER_INFO.userName,
-      id:this.USER_INFO.refNo,
-      phone:this.USER_INFO.phone
-    } 
+       
       // Connect to your backend endpoint, and get every key.
-      const data$ = this.httpPostCustomer(custdata)
-
-
-      //let paymentIntent :any 
+      const data$ = this.httpPostCustomer(JSON.stringify(this.USER_INFO) , +this.amount*100 ,'usd',this.transaction.details,this.transaction.detailsEn) 
+      let paymentIntent :any 
       let ephemeralKey: any
       let customer: any
 
       const res = await data$.subscribe(data => {
-        ephemeralKey = data['ephemeralKey']
-        customer = data['customer']
-        console.log('res f customer', res)
-      }, (error) => {
-        console.log('error', error)
+        paymentIntent = data['keys'].paymentIntent
+        ephemeralKey = data['keys'].ephemeralKey 
+        customer = data['keys'].customer 
+        console.log('res f customer', data)
+        this.USER_INFO = data['user']
+        // this.storage.set('user_info', data['user']).then((response) => {
+        //   if(response){ } 
+        // }) 
+        this.presentPaymentSheet(customer, paymentIntent ,ephemeralKey)
+        this.loadingController.dismiss()
+       }, (error) => {
+        this.presentToast('somthing Went wrong', 'danger')
+        console.log('error', error) 
+        throw (error); 
+        // return(error);
       }
       );
+ 
+   
     } catch (error) {
       console.log('err', error)
+      this.loadingController.dismiss() 
       this.presentToast('somthing Went wrong', 'danger')
     }
   }
 
+  async presentPaymentSheet(customer ,paymentIntent,ephemeralKey){
+ //createPament sheet 
+ await Stripe.createPaymentSheet({
+  paymentIntentClientSecret: paymentIntent,
+  customerId: customer,
+  customerEphemeralKeySecret: ephemeralKey,
+  merchantDisplayName:this.appInfoArr[0].appName
+}); 
+
+  // present PaymentSheet and get result.
+  const result = await Stripe.presentPaymentSheet();
+  if (result.paymentResult === PaymentSheetEventsEnum.Completed) {
+    this.crateTrans(result.paymentResult)
+   console.log('Happy path paymentSheet created' ,result.paymentResult,result)
+  }else if('//search for other cases in stripe doc//' ){
+
+  }
+  }
 
 
 
@@ -196,10 +229,7 @@ export class StripeChargeWalletPage implements OnInit {
        //console.log('PaymentSheetEventsEnum.Completed');
        });
     
-    // const data = new HttpParams({
-    //   fromObject:this.data
-    // })
-  
+   
     // Connect to your backend endpoint, and get every key.
      const data$ =  this.httpPost(this.data)
     //  this.http.post<{

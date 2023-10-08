@@ -37,9 +37,10 @@ export class HomePage implements OnInit {
     imei:any,
     birthDate:any,
     logMethod:any
-    imgUrl:any
+    imgUrl:any,
+    stripeId:any
 };
-  timeLeftArr :Array<Object> =[{da:String ,hr:String,mn:String ,sc:String }] 
+   timeLeftArr :Array<Object> =[{da:String ,hr:String,mn:String ,sc:String }] 
   auctionsArray:Array<any>=[]
    segment:any = 'upcoming'
    slideOpts = {

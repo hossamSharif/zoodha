@@ -16,8 +16,10 @@
   <ion-item button (click)="createCustomerStripe()"> 
     <ion-icon  slot="start" name="card-outline" color="dark"></ion-icon> 
     <ion-label>دفع عبر البطاقة 
-    </ion-label>  
-    <ion-label slot="end"><ion-note >usd</ion-note> &nbsp;<ion-text >{{amount}}</ion-text> </ion-label> 
+    </ion-label> 
+    <!-- <ion-label slot="end" *ngIf="spinner == true"> <ion-spinner name="lines" color="light" ></ion-spinner>   </ion-label> -->
+
+    <ion-label slot="end" *ngIf="spinner == false"><ion-note >usd</ion-note> &nbsp;<ion-text >{{amount}}</ion-text> </ion-label> 
   </ion-item>
 
     <!-- <ion-item button (click)="paymentSheet()" class="ion-margin-top">  

@@ -32,7 +32,7 @@ export class WalletPage implements OnInit {
       this.storage.get('user_info').then((response) => {
         if (response) {
           this.USER_INFO = response.user
-          //console.log('kkkkkkkkkk',this.USER_INFO) 
+          console.log('kkkkkkkkkk',this.USER_INFO) 
            this.getWalletBalance()
         }
        });
@@ -133,7 +133,9 @@ export class WalletPage implements OnInit {
       component: StripeChargeWalletPage ,
       componentProps: { 
         "USER_INFO": this.USER_INFO,
-        "amount":amount
+        "amount":amount,
+        "description":this.transactions,
+        "descriptionEn":this.transactions
       }
      });
     
@@ -187,10 +189,14 @@ export class WalletPage implements OnInit {
 doAfterDismissAlert(role , amount){
   if( role == 'ok'){
     this.presentModal(amount)
-   }else{
+   }else if(role == 'cancel'){
+    
+   }else {
+    this.presentToast('somthing went wron', 'danger')
     console.log('dismiss')
    } 
 }
+
 
 doAfterDissmiss(dataReturned){
   //console.log(dataReturned , dataReturned.data , dataReturned.role)
