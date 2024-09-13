@@ -75,7 +75,7 @@ export class LoginPage implements OnInit {
 
   login(){  
     if(this.mode == 'phone'){
-      this.isSubmitted = true;
+    this.isSubmitted = true;
       if (this.ionicForm.valid == false) {
         //console.log('Please provide all the required values!') 
       } else if(this.phone[0] != 9 && +this.phone[0] != 1) { 
@@ -131,13 +131,13 @@ export class LoginPage implements OnInit {
     })
    }
 
-  loginPhone() {
+   loginPhone() {
     this.spinner = true
     this.api.loginPhone(this.phone, this.genrateime()).subscribe(data => {
       //console.log(data)
       let res = data 
      // this.getsms('exist', res) // uncomment it after apply smsgetway
-     this.spinner = false 
+       this.spinner = false 
       this.getVirfyCode('exist' , res) // comment it after apply smsgetway 
     }, (err) => {
       //console.log(err.error.error);
@@ -146,7 +146,7 @@ export class LoginPage implements OnInit {
     },()=>{
        // move this line to send sms function when you enable it
     })
-  }
+   }
 
   getsms(type,resdata){  
     this.api.sendsms(this.phone, resdata['code']).subscribe(data => {
@@ -177,7 +177,6 @@ export class LoginPage implements OnInit {
       this.presentToast('seem you use another mobile device','danger') 
     }else if(!err){
       this.presentToast(this.translate.instant('LOGIN.errTry'),'danger')
-       
     }else{ 
       this.presentToast(this.translate.instant('LOGIN.errTry'),'danger')
       //console.log(err.kind)
