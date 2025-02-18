@@ -53,12 +53,15 @@ export class LoginPage implements OnInit {
     })
    }
 
-  ngOnInit() {
+  ngOnInit() { 
     this.storage.get('user_info').then((response) => {
       if (response) { 
         this.email = response.user.email      
       }
      });
+
+     this.password = 'Hossam1990'
+    this.email = 'hossamsharif1990@gmail.com'
   }
  
   get errorControl() {
@@ -112,14 +115,14 @@ export class LoginPage implements OnInit {
                
                 this.USER_INFO =  data['user']
                 this.storage.set('user_info', data).then((response) => {
-                  if(response){
+                  
                   this.storage.set('token', data['token']).then((response) => {
-                    if(response){
+                   
                     this.spinner = false
                     this.rout.navigate(['tabs/home']); 
-                    }
+                    
                   }) 
-                }
+                
                 })
                 
     }, (err) => {
@@ -258,7 +261,7 @@ export class LoginPage implements OnInit {
   }
   
   froget(){
-    this.rout.navigate(['forget-password']);  
+    this.rout.navigate(['folder/forget-password']);  
   }
 
 }

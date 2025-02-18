@@ -18,7 +18,7 @@ export class AppComponent {
   initializeApp(){
     this.storage.create(); 
     this.langService.setInitialAppLangauge()
-    this.getAppInfo()
+   this.getAppInfo()
   }
     getAppInfo(){
       this.presentLoadingWithOptions()
