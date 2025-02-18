@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkapp=self.webpackChunkapp||[]).push([[5564],{5564:(D,o,a)=>{a.r(o),a.d(o,{TabsPageModule:()=>s});var u=a(3497),E=a(6895),P=a(4006),l=a(1983),_=a(6738);let s=(()=>{class n{}return n.\u0275fac=function(t){return new(t||n)},n.\u0275mod=_.oAB({type:n}),n.\u0275inj=_.cJS({imports:[u.Pc,E.ez,P.u5,l.c]}),n})()}}]);
