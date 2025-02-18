@@ -12,7 +12,8 @@ import { map, switchMap, tap } from 'rxjs/operators';
 
 
 export class SocketServiceService { 
-  api = 'http://localhost:3000/'
+ // api = 'http://localhost:3000/'
+  api ='https://zoodohaapi.onrender.com/'
   //api ='https://coral-app-pr5y9.ondigitalocean.app/'
     public message$: BehaviorSubject<string> = new BehaviorSubject('');
     public liveStremUserHadJoined: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
